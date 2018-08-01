@@ -1,7 +1,6 @@
 # zarzadzanie-salami
 
-# Konwencje zwiÄ…zane z procedurami skÅ‚adowanymi
+# Konwencje zwi±zane z procedurami sk³adowanymi
 
-<ul>
-	<li>aa</li>
-</ul>
+1. Ca³a komunikacja z baz± danych odbywa siê poprzez procedury sk³adowane
+2. Test
