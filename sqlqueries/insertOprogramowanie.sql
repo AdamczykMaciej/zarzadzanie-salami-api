@@ -1,0 +1,1 @@
+INSERT INTO dbo.Oprogramowanie (Nazwa) VALUES ('Photoshop');
