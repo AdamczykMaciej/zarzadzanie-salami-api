@@ -1,60 +1,75 @@
 ﻿using Dapper;
 using DapperExample.Models;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace ZarzadzanieSalamiApi.Models
+namespace ClassroomManagement.Models
 {
-    public interface IZarzadzanieSalamiRepository
+    public interface IClassroomManagementRepository
     {
-        IEnumerable<Budynek> GetAllBudynek();
-        Budynek GetBudynek(int id);
-        IEnumerable<FunkcjaSali> GetAllFunkcjaSali();
-        FunkcjaSali GetFunkcjaSali(int id);
-        IEnumerable<Kampus> GetAllKampus();
-        Kampus GetKampus(int id);
-        IEnumerable<MaszynaWirtualna> GetAllMaszynaWirtualna();
-        MaszynaWirtualna GetMaszynaWirtualna(int id);
-        IEnumerable<Monitor> GetAllMonitor();
+        //TODO: Remove unnecessary methods
+        IEnumerable<Building> GetBuildings();
+        Building GetBuilding(int id);
+        IEnumerable<ClassroomFunction> GetClassroomFunctions();
+        ClassroomFunction GetClassroomFunction(int id);
+        IEnumerable<Campus> GetCampus();
+        Campus GetCampus(int id);
+        IEnumerable<VirtualMachine> GetVirtualMachines();
+        VirtualMachine GetVirtualMachine(int id);
+        IEnumerable<Monitor> GetMonitors();
         Monitor GetMonitor(int id);
-        IEnumerable<Oprogramowanie> GetAllOprogramowanie();
-        Oprogramowanie GetOprogramowanie(int id);
-        IEnumerable<OprogramowanieKomputerow> GetAllOprogramowanieKomputerow();
-        IEnumerable<OprogramowanieKomputerow> GetOprogramowanieDlaKomputer(int id);
-        IEnumerable<OprogramowanieKomputerow> GetKomputeryDlaOprogramowanie(int id);
-        IEnumerable<Komputer> GetAllKomputer();
-        Komputer GetKomputer(int id);
-        IEnumerable<RozkladSali> GetAllRozkladSali();
-        RozkladSali GetRozkladSali(int id);
-        IEnumerable<Sala> GetAllSala();
-        Sala GetSala(int id);
-        void AddSala(Sala s);
-        IEnumerable<SalaDydaktyczna> GetAllSalaDydaktyczna();
-        SalaDydaktyczna GetSalaDydaktyczna(int id);
-
-
+        IEnumerable<Software> GetSoftware();
+        Software GetSoftware(int id);
+        IEnumerable<ComputerSoftware> GetComputerSoftware();
+        IEnumerable<ComputerSoftware> GetSoftwareForComputer(int id);
+        IEnumerable<ComputerSoftware> GetComputersForSoftware(int id);
+        IEnumerable<Computer> GetComputers();
+        Computer GetComputer(int id);
+        IEnumerable<ClassroomStructure> GetClassroomStructures();
+        ClassroomStructure GetClassroomStructure(int id);
+        IEnumerable<Classroom> GetClassrooms();
+        IEnumerable<Classroom> FilterClassrooms(int IdBudynek, int IdFunkcjaSali);
+        Classroom GetClassroom(int id);
+        void AddClassroom(Classroom s);
+        IEnumerable<EducationalClassroom> GetEducationalClassrooms();
+        EducationalClassroom GetEducationalClassroom(int id);
     }
-    public class ZarzadzanieSalamiRepository : IZarzadzanieSalamiRepository
+    public class ClassroomManagementRepository : IClassroomManagementRepository
     {
         private readonly string connectionString;
 
-        public ZarzadzanieSalamiRepository(string connectionString)
+        public ClassroomManagementRepository()
+        {
+            var builder = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetCurrentDirectory())
+               .AddJsonFile("appsettings.json");
+
+            var conString = builder.Build().GetConnectionString("DefaultConnection");
+            this.connectionString = conString;
+        }
+
+        // TODO: delete it: it is equivalent to the above
+        public ClassroomManagementRepository(string connectionString)
         {
             this.connectionString = connectionString;
         }
 
-        public IEnumerable<Budynek> GetAllBudynek()
+        public IEnumerable<Building> GetBuildings()
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
-                const string query = @"SELECT * FROM Budynek;";
+                const string query = @"EXEC zss_BudynekAll_sel;";
                 try
                 {
-                    return connection.Query<Budynek>(query);
+                    return connection.Query<Building>(query);
                 }
                 catch (InvalidOperationException e)
                 {
@@ -64,14 +79,14 @@ namespace ZarzadzanieSalamiApi.Models
             }
         }
 
-        public Budynek GetBudynek(int id)
+        public Building GetBuilding(int id)
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
                 const string query = @"EXEC zss_Budynek_sel @IdBudynek = @IdBudynek;";
                 try
                 {
-                    return connection.Query<Budynek>(query, new { IdBudynek = id }).First();
+                    return connection.Query<Building>(query, new { IdBudynek = id }).First();
                 }
                 catch (InvalidOperationException e)
                 {
@@ -81,8 +96,8 @@ namespace ZarzadzanieSalamiApi.Models
             }
         }
 
-        //TODO: No records in Kampus so I am not including Kampus column here
-        public void AddBudynek(Budynek budynek)
+        //TODO: No records in Campus so I am not including Campus column here
+        public void AddBuilding(Building building)
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
@@ -92,11 +107,11 @@ namespace ZarzadzanieSalamiApi.Models
                     connection.Execute(query,
                         new
                         {
-                            budynek.Nazwa,
-                            budynek.IdMiasto,
-                            budynek.Adres_budynku,
-                            budynek.Opis,
-                            budynek.Istnieje,
+                            building.Nazwa,
+                            building.IdMiasto,
+                            building.Adres_budynku,
+                            building.Opis,
+                            building.Istnieje,
                         });
                 }
                 catch (InvalidOperationException e)
@@ -106,14 +121,14 @@ namespace ZarzadzanieSalamiApi.Models
             }
         }
 
-        public IEnumerable<FunkcjaSali> GetAllFunkcjaSali()
+        public IEnumerable<ClassroomFunction> GetClassroomFunctions()
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
-                const string query = @"SELECT * FROM Funkcja_sali;";
+                const string query = @"EXEC zss_FunkcjaSaliAll_sel;";
                 try
                 {
-                    return connection.Query<FunkcjaSali>(query);
+                    return connection.Query<ClassroomFunction>(query);
                 }
                 catch (InvalidOperationException e)
                 {
@@ -123,14 +138,14 @@ namespace ZarzadzanieSalamiApi.Models
             }
         }
 
-        public FunkcjaSali GetFunkcjaSali(int id)
+        public ClassroomFunction GetClassroomFunction(int id)
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
-                const string query = @"EXEC zss_Funkcja_sali_sel @IdFunkcja_sali = @IdFunkcja_sali;";
+                const string query = @"EXEC zss_FunkcjaSali_sel @IdFunkcja_sali = @IdFunkcja_sali;";
                 try
                 {
-                    return connection.Query<FunkcjaSali>(query, new { IdFunkcja_sali = id }).First();
+                    return connection.Query<ClassroomFunction>(query, new { IdFunkcja_sali = id }).First();
                 }
                 catch (InvalidOperationException e)
                 {
@@ -140,14 +155,14 @@ namespace ZarzadzanieSalamiApi.Models
             }
         }
 
-        public IEnumerable<Kampus> GetAllKampus()
+        public IEnumerable<Campus> GetCampus()
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
                 const string query = @"SELECT * FROM Kampus;";
                 try
                 {
-                    return connection.Query<Kampus>(query);
+                    return connection.Query<Campus>(query);
                 }
                 catch (InvalidOperationException e)
                 {
@@ -157,14 +172,14 @@ namespace ZarzadzanieSalamiApi.Models
             }
         }
 
-        public Kampus GetKampus(int id)
+        public Campus GetCampus(int id)
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
                 const string query = @"EXEC zss_Kampus_sel @IdKampus = @IdKampus;";
                 try
                 {
-                    return connection.Query<Kampus>(query, new { IdKampus = id }).First();
+                    return connection.Query<Campus>(query, new { IdKampus = id }).First();
                 }
                 catch (InvalidOperationException e)
                 {
@@ -174,14 +189,14 @@ namespace ZarzadzanieSalamiApi.Models
             }
         }
 
-        public IEnumerable<MaszynaWirtualna> GetAllMaszynaWirtualna()
+        public IEnumerable<VirtualMachine> GetVirtualMachines()
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
                 const string query = @"SELECT * FROM MaszynaWirtualna;";
                 try
                 {
-                    return connection.Query<MaszynaWirtualna>(query);
+                    return connection.Query<VirtualMachine>(query);
                 }
                 catch (InvalidOperationException e)
                 {
@@ -191,14 +206,14 @@ namespace ZarzadzanieSalamiApi.Models
             }
         }
 
-        public MaszynaWirtualna GetMaszynaWirtualna(int id)
+        public VirtualMachine GetVirtualMachine(int id)
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
-                const string query = @"SELECT * FROM MaszynaWirtualna WHERE IdMaszynaWirtualna = @IdMaszynaWirtualna ;";
+                const string query = @"SELECT * FROM MaszynaWirtualna WHERE IdMaszynaWirtualna = @IdMaszynaWirtualna;";
                 try
                 {
-                    return connection.Query<MaszynaWirtualna>(query, new { IdMaszynaWirtualna = id }).First();
+                    return connection.Query<VirtualMachine>(query, new { IdVirtualMachine = id }).First();
                 }
                 catch (InvalidOperationException e)
                 {
@@ -208,7 +223,7 @@ namespace ZarzadzanieSalamiApi.Models
             }
         }
 
-        public IEnumerable<Monitor> GetAllMonitor()
+        public IEnumerable<Monitor> GetMonitors()
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
@@ -242,14 +257,14 @@ namespace ZarzadzanieSalamiApi.Models
             }
         }
 
-        public IEnumerable<Oprogramowanie> GetAllOprogramowanie()
+        public IEnumerable<Software> GetSoftware()
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
-                const string query = @"SELECT * FROM Oprogramowanie;";
+                const string query = @"EXEC zss_OprogramowanieAll_sel;";
                 try
                 {
-                    return connection.Query<Oprogramowanie>(query);
+                    return connection.Query<Software>(query);
                 }
                 catch (InvalidOperationException e)
                 {
@@ -259,14 +274,14 @@ namespace ZarzadzanieSalamiApi.Models
             }
         }
 
-        public Oprogramowanie GetOprogramowanie(int id)
+        public Software GetSoftware(int id)
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
-                const string query = @"SELECT * FROM Oprogramowanie WHERE IdOprogramowanie = @IdOprogramowanie;";
+                const string query = @"EXEC zss_Oprogramowanie_sel @IdOprogramowanie;";
                 try
                 {
-                    return connection.Query<Oprogramowanie>(query, new { IdOprogramowanie = id }).First();
+                    return connection.Query<Software>(query, new { IdOprogramowanie = id }).First();
                 }
                 catch (InvalidOperationException e)
                 {
@@ -276,14 +291,14 @@ namespace ZarzadzanieSalamiApi.Models
             }
         }
 
-        public IEnumerable<OprogramowanieKomputerow> GetAllOprogramowanieKomputerow()
+        public IEnumerable<ComputerSoftware> GetComputerSoftware()
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
                 const string query = @"SELECT * FROM OprogramowanieKomputerow;";
                 try
                 {
-                    return connection.Query<OprogramowanieKomputerow>(query);
+                    return connection.Query<ComputerSoftware>(query);
                 }
                 catch (InvalidOperationException e)
                 {
@@ -293,14 +308,14 @@ namespace ZarzadzanieSalamiApi.Models
             }
         }
 
-        public IEnumerable<OprogramowanieKomputerow> GetOprogramowanieDlaKomputer(int id)
+        public IEnumerable<ComputerSoftware> GetSoftwareForComputer(int id)
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
                 const string query = @"SELECT * FROM OprogramowanieKomputerow WHERE IdKomputer = @IdKomputer;";
                 try
                 {
-                    return connection.Query<OprogramowanieKomputerow>(query);
+                    return connection.Query<ComputerSoftware>(query);
                 }
                 catch (InvalidOperationException e)
                 {
@@ -310,14 +325,14 @@ namespace ZarzadzanieSalamiApi.Models
             }
         }
 
-        public IEnumerable<OprogramowanieKomputerow> GetKomputeryDlaOprogramowanie(int id)
+        public IEnumerable<ComputerSoftware> GetComputersForSoftware(int id)
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
                 const string query = @"SELECT * FROM OprogramowanieKomputerow WHERE IdOprogramowanie = @IdOprogramowanie;";
                 try
                 {
-                    return connection.Query<OprogramowanieKomputerow>(query);
+                    return connection.Query<ComputerSoftware>(query);
                 }
                 catch (InvalidOperationException e)
                 {
@@ -327,14 +342,14 @@ namespace ZarzadzanieSalamiApi.Models
             }
         }
 
-        public IEnumerable<Komputer> GetAllKomputer()
+        public IEnumerable<Computer> GetComputers()
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
-                const string query = @"SELECT * FROM Komputer;";
+                const string query = @"EXEC zss_KomputerAll_sel;";
                 try
                 {
-                    return connection.Query<Komputer>(query);
+                    return connection.Query<Computer>(query);
                 }
                 catch (InvalidOperationException e)
                 {
@@ -344,14 +359,14 @@ namespace ZarzadzanieSalamiApi.Models
             }
         }
 
-        public Komputer GetKomputer(int id)
+        public Computer GetComputer(int id)
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
-                const string query = @"SELECT * FROM RodzajKomputerow WHERE IdRodzajKomputerow = @IdRodzajKomputerow;";
+                const string query = @"EXEC zss_Komputer_sel @IdKomputer;";
                 try
                 {
-                    return connection.Query<Komputer>(query, new { IdKomputer = id }).First();
+                    return connection.Query<Computer>(query, new { IdKomputer = id }).First();
                 }
                 catch (InvalidOperationException e)
                 {
@@ -361,14 +376,14 @@ namespace ZarzadzanieSalamiApi.Models
             }
         }
 
-        public IEnumerable<RozkladSali> GetAllRozkladSali()
+        public IEnumerable<ClassroomStructure> GetClassroomStructures()
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
                 const string query = @"SELECT * FROM RozkladSali;";
                 try
                 {
-                    return connection.Query<RozkladSali>(query);
+                    return connection.Query<ClassroomStructure>(query);
                 }
                 catch (InvalidOperationException e)
                 {
@@ -378,14 +393,14 @@ namespace ZarzadzanieSalamiApi.Models
             }
         }
 
-        public RozkladSali GetRozkladSali(int id)
+        public ClassroomStructure GetClassroomStructure(int id)
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
                 const string query = @"SELECT * FROM RozkladSali WHERE IdRozkladSali = @IdRozkladSali;";
                 try
                 {
-                    return connection.Query<RozkladSali>(query, new { IdRozkladSali = id }).First();
+                    return connection.Query<ClassroomStructure>(query, new { IdRozkladSali = id }).First();
                 }
                 catch (InvalidOperationException e)
                 {
@@ -395,14 +410,15 @@ namespace ZarzadzanieSalamiApi.Models
             }
         }
 
-        public IEnumerable<Sala> GetAllSala()
+
+        public IEnumerable<Classroom> GetClassrooms()
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
                 const string query = @"EXEC zss_SalaAll_sel;";
                 try
                 {
-                    return connection.Query<Sala>(query);
+                    return connection.Query<Classroom>(query);
                 }
                 catch (InvalidOperationException e)
                 {
@@ -412,14 +428,34 @@ namespace ZarzadzanieSalamiApi.Models
             }
         }
 
-        public Sala GetSala(int id)
+
+        public IEnumerable<Classroom> FilterClassrooms(int IdBudynek, int IdFunkcjaSali)
+        {
+            using (IDbConnection connection = new SqlConnection(connectionString))
+            {
+                //const string query = @"EXEC zss_SalaAll_sel;";
+                const string query2 = @"EXEC zs_Sala_sel @IdBudynek = @IdBudynek, @IdFunkcja_sali = @IdFunkcjaSali;";
+                try
+                {
+                    return connection.Query<Classroom>(query2, new { IdBudynek = IdBudynek, IdFunkcjaSali = IdFunkcjaSali });
+                }
+                catch (InvalidOperationException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                return null;
+            }
+        }
+
+        public Classroom GetClassroom(int id)
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
                 const string query = @"EXEC zss_Sala_sel @IdSala = @IdSala;";
+
                 try
                 {
-                    return connection.Query<Sala>(query, new { IdSala = id }).First();
+                    return connection.Query<Classroom>(query, new { IdSala = id }).First();
                 }
                 catch (InvalidOperationException e)
                 {
@@ -429,7 +465,7 @@ namespace ZarzadzanieSalamiApi.Models
             }
         }
 
-        public void AddSala(Sala s)
+        public void AddClassroom(Classroom s)
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
@@ -465,17 +501,18 @@ namespace ZarzadzanieSalamiApi.Models
                 {
                     Console.WriteLine(e.Message);
                 }
+     
             }
         }
-
-        public IEnumerable<SalaDydaktyczna> GetAllSalaDydaktyczna()
+        //CHECKED
+        public IEnumerable<EducationalClassroom> GetEducationalClassrooms()
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
                 const string query = @"SELECT * FROM Sala_dydaktyczna;";
                 try
                 {
-                    return connection.Query<SalaDydaktyczna>(query);
+                    return connection.Query<EducationalClassroom>(query);
                 }
                 catch (InvalidOperationException e)
                 {
@@ -484,15 +521,15 @@ namespace ZarzadzanieSalamiApi.Models
                 return null;
             }
         }
-
-        public SalaDydaktyczna GetSalaDydaktyczna(int id)
+        //CHECKED
+        public EducationalClassroom GetEducationalClassroom(int id)
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
                 const string query = @"EXEC zss_SalaDydaktyczna_sel @IdSala = @IdSala;";
                 try
                 {
-                    return connection.Query<SalaDydaktyczna>(query, new { IdSala = id }).First();
+                    return connection.Query<EducationalClassroom>(query, new { IdSala = id }).First();
                 }
                 catch (InvalidOperationException e)
                 {

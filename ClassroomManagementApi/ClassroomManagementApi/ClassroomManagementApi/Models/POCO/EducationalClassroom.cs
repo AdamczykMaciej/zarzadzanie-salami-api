@@ -6,8 +6,17 @@ using System.Threading.Tasks;
 
 namespace DapperExample.Models
 {
-    public class Sala
+    public class EducationalClassroom
     {
+        // TODO: Delete one of versions eventually
+        // VERSION(EducationalClassroom): Simple Version
+        //public int IdSala { get; set; }
+        //public int Liczba_gniazd_sieciowych { get; set; }
+        //public bool TV { get; set; }
+        //public bool Projektor { get; set; }
+        //public int Liczba_miejsc_dydaktycznych { get; set; }
+
+        // VERSION(EducationalClassroom): Complex Version
         public int IdSala { get; set; }
         public string Nazwa_sali { get; set; }
         public int Liczba_miejsc { get; set; }
@@ -24,5 +33,9 @@ namespace DapperExample.Models
         public int LiczbaKomputerow { get; set; }
         public int IdKomputer { get; set; }
         public bool Klimatyzacja { get; set; }
+        public int Liczba_gniazd_sieciowych { get; set; }
+        public bool TV { get; set; }
+        public bool Projektor { get; set; }
+        public int Liczba_miejsc_dydaktycznych { get; set; }
     }
 }

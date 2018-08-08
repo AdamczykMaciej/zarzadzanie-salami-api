@@ -77,13 +77,13 @@ namespace ZarzadzanieSalamiApi.Controllers
                 return NotFound();
             return k;
         }
-        //CHECKED with no data
+        //CHECKED
         [HttpGet("classroomStructures")]
         public ActionResult<List<ClassroomStructure>> GetClassroomStructures()
         {
             return _provider.GetClassroomStructures().ToList();
         }
-        //CHECKED with no data
+        //CHECKED
         [HttpGet("classroomStructures/{id}")]
         public ActionResult<ClassroomStructure> GetClassroomStructure(int id)
         {
@@ -93,10 +93,16 @@ namespace ZarzadzanieSalamiApi.Controllers
             return rs;
         }
         //CHECKED
-        [HttpGet("classrooms", Name ="GetClassrooms")]
+        [HttpGet("classrooms", Name = "GetClassrooms")]
         public ActionResult<List<Classroom>> GetClassrooms()
         {
             return _provider.GetClassrooms().ToList();
+        }
+        //CHECKED
+        [HttpGet("classrooms/filter/{idBudynek}/{idFunkcjaSali}")]
+        public ActionResult<List<Classroom>> FilterClassrooms(int idBudynek, int idFunkcjaSali)
+        {
+            return _provider.FilterClassrooms( idBudynek, idFunkcjaSali).ToList();
         }
         //CHECKED
         [HttpPost("classrooms")]
@@ -106,10 +112,10 @@ namespace ZarzadzanieSalamiApi.Controllers
 
             return CreatedAtRoute("GetClassroom", new { id = c.IdSala }, c);
         }
-        //TODO: resolve URL clash: GetClassrooms, GetClassroom
+        //TODO: resolve URL clash: GetClassrooms, GetClassroom - querySTring
         //CHECKED
         [HttpGet("classrooms/{id}", Name = "GetClassroom")]
-        public ActionResult<Classroom> GetClassroom([FromQuery] int id)
+        public ActionResult<Classroom> GetClassroom(int id)
         {
             Classroom s = _provider.GetClassroom(id);
             if (s == null)
