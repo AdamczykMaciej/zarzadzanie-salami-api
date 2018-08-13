@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using ClassroomManagement.Models;
+using ClassroomManagementApi.Models.Filtering;
 using DapperExample.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,15 +16,17 @@ namespace ZarzadzanieSalamiApi.Controllers
     [ApiController] 
     public class RoomsController : ControllerBase
     {
-        private readonly ClassroomManagementRepository _provider;
-        
+        private readonly IClassroomManagementRepository _provider;
+
+        //public RoomsController(IClassroomManagementRepository provider)
+        //{
+        //    _provider = provider;
+        //}
         public RoomsController()
         {
-            //TODO: change the conenctionString to appsettings.json
-            //string connectionString = "Data Source=sql-ag1-listen.pjwstk.edu.pl;Initial Catalog=dziekanat_hash;Integrated Security=True";
-            //_provider = new ClassroomManagementRepository(connectionString);
             _provider = new ClassroomManagementRepository();
         }
+        //TODO: Delete unnecessary methods
         //CHECKED
         [HttpGet("buildings")]
         public ActionResult<List<Building>> GetBuildings()
@@ -38,13 +41,6 @@ namespace ZarzadzanieSalamiApi.Controllers
             if (b == null)
                 return NotFound();
             return b;
-        }
-        //TODO: DELETE, not needed unless requirements change
-        [HttpPost("buildings")]
-        public IActionResult AddBuilding([FromBody] Building b)
-        {
-            _provider.AddBuilding(b);
-            return CreatedAtRoute("GetBuilding", new { id = b.IdBudynek }, b);
         }
         //CHECKED
         [HttpGet("classroomFunctions")]
@@ -93,16 +89,16 @@ namespace ZarzadzanieSalamiApi.Controllers
             return rs;
         }
         //CHECKED
+        //TODO: refactor GetClassroom, GetClassrooms, FilterClassrooms into a single classroom
         [HttpGet("classrooms", Name = "GetClassrooms")]
-        public ActionResult<List<Classroom>> GetClassrooms()
+        public ActionResult<List<Classroom>> GetClassrooms([FromQuery] FilteringObject f)
         {
-            return _provider.GetClassrooms().ToList();
+            return _provider.FilterClassrooms(f).ToList();
         }
-        //CHECKED
-        [HttpGet("classrooms/filter/{idBudynek}/{idFunkcjaSali}")]
-        public ActionResult<List<Classroom>> FilterClassrooms(int idBudynek, int idFunkcjaSali)
+        [HttpGet("classrooms/{id}", Name = "GetClassroom")]
+        public ActionResult<Classroom> GetClassroom(int id)
         {
-            return _provider.FilterClassrooms( idBudynek, idFunkcjaSali).ToList();
+                return _provider.GetClassroom(id);
         }
         //CHECKED
         [HttpPost("classrooms")]
@@ -112,19 +108,9 @@ namespace ZarzadzanieSalamiApi.Controllers
 
             return CreatedAtRoute("GetClassroom", new { id = c.IdSala }, c);
         }
-        //TODO: resolve URL clash: GetClassrooms, GetClassroom - querySTring
         //CHECKED
-        [HttpGet("classrooms/{id}", Name = "GetClassroom")]
-        public ActionResult<Classroom> GetClassroom(int id)
-        {
-            Classroom s = _provider.GetClassroom(id);
-            if (s == null)
-                return NotFound();
-            return s;
-        }
-        //CHECKED
-        [HttpGet("educationalClassrooms")]
-        public ActionResult<List<EducationalClassroom>> GetEducationalClassrooms()
+        [HttpGet("educationalClassrooms", Name = "GetEducationalClassrooms")]
+        public ActionResult<List<EducationalClassroom>> GetEducationaClassrooms()
         {
             return _provider.GetEducationalClassrooms().ToList();
         }
