@@ -1,0 +1,39 @@
+﻿using ClassroomManagementApi.Models.Filtering;
+using ClassroomManagementApi.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace ClassroomManagementApi.Models.DAL
+{
+    interface IClassroomManagementRepository
+    {
+        //TODO: Remove unnecessary methods
+        IEnumerable<Building> GetBuildings();
+        Building GetBuilding(int id);
+        IEnumerable<ClassroomFunction> GetClassroomFunctions();
+        ClassroomFunction GetClassroomFunction(int id);
+        IEnumerable<Campus> GetCampus();
+        Campus GetCampus(int id);
+        IEnumerable<VirtualMachine> GetVirtualMachines();
+        VirtualMachine GetVirtualMachine(int id);
+        IEnumerable<Monitor> GetMonitors();
+        Monitor GetMonitor(int id);
+        IEnumerable<Software> GetSoftware();
+        Software GetSoftware(int id);
+        IEnumerable<ComputerSoftware> GetComputerSoftware();
+        IEnumerable<ComputerSoftware> GetSoftwareForComputer(int id);
+        IEnumerable<ComputerSoftware> GetComputersForSoftware(int id);
+        IEnumerable<Computer> GetComputers();
+        Computer GetComputer(int id);
+        IEnumerable<ClassroomStructure> GetClassroomStructures();
+        ClassroomStructure GetClassroomStructure(int id);
+        IEnumerable<Classroom> GetClassrooms();
+        IEnumerable<Classroom> FilterClassrooms(FilteringObject f);
+        Classroom GetClassroom(int id);
+        void AddClassroom(Classroom s);
+        IEnumerable<EducationalClassroom> GetEducationalClassrooms();
+        EducationalClassroom GetEducationalClassroom(int id);
+    }
+}

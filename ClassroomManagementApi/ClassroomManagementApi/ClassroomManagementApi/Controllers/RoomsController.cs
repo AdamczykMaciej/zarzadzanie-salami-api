@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using ClassroomManagement.Models;
+using ClassroomManagementApi.Models.DAL;
 using ClassroomManagementApi.Models.Filtering;
-using DapperExample.Models;
-using Microsoft.AspNetCore.Http;
+using ClassroomManagementApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
 
-namespace ZarzadzanieSalamiApi.Controllers
+namespace ClassroomManagementApi.Controllers
 {
     [Route("api")]
     [ApiController] 
@@ -20,6 +17,7 @@ namespace ZarzadzanieSalamiApi.Controllers
 
         //public RoomsController(IClassroomManagementRepository provider)
         //{
+        //    provider = new ClassroomManagementRepository();
         //    _provider = provider;
         //}
         public RoomsController()

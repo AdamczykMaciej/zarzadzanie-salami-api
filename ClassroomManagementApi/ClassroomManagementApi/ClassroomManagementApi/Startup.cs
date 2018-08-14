@@ -1,16 +1,8 @@
-﻿using Autofac;
-using Autofac.Integration.WebApi;
-using DapperExample.Models;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.IO;
-using System.Reflection;
-using System.Web.Http;
 
-namespace TodoApi
+namespace ClassroomManagementApi
 {
     public class Startup
     {

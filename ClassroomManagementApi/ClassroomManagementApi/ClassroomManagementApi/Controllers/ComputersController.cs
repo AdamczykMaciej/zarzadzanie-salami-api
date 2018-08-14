@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using ClassroomManagement.Models;
-using DapperExample.Models;
-using Microsoft.AspNetCore.Http;
+using ClassroomManagementApi.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ZarzadzanieSalamiApi.Controllers
+namespace ClassroomManagementApi.Controllers
 {
     [Route("api")]
     [ApiController]

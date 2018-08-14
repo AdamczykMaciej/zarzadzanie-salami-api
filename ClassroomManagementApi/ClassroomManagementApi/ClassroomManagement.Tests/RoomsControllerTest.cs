@@ -1,5 +1,5 @@
 using ClassroomManagement.Models;
-using DapperExample.Models;
+using ClassroomManagementApi.Models;
 using FluentAssertions;
 using Moq;
 using System;

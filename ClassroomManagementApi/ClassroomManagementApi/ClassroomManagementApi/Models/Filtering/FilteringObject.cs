@@ -1,14 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
+﻿
 namespace ClassroomManagementApi.Models.Filtering
 {
     public class FilteringObject
     {
-        //public int IdClassroom { get; set; }
         public int IdClassroomFunction { get; set; }
         public int IdBuildingA { get; set; }
         public int IdBuildingC { get; set; }

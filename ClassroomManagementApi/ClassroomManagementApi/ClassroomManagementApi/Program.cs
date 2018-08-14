@@ -1,27 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using DapperExample.Models;
+﻿using ClassroomManagementApi;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using TodoApi;
 
-namespace ZarzadzanieSalamiApi  
+namespace ClassroomManagementApi
 {
     public class Program
     {
+        //private static IContainer Container { get; set; }
+
         public static void Main(string[] args)
         {
             //var builder = new ConfigurationBuilder()
             //    .SetBasePath(Directory.GetCurrentDirectory())
             //    .AddJsonFile("appsettings.json");
-
-            
             //var conString = builder.Build().GetConnectionString("DefaultConnection");
+
+         //   var host = new WebHostBuilder()
+         //.UseKestrel()
+         //.ConfigureServices(services => services.AddAutofac())
+         //.UseContentRoot(Directory.GetCurrentDirectory())
+         //.UseIISIntegration()
+         //.UseStartup<Startup>()
+         //.Build();
+
+            //host.Run();
             CreateWebHostBuilder(args).Build().Run();      
         }
 
