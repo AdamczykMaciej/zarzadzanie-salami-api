@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ClassroomManagementApi.Models.DAL
 {
-    interface IClassroomManagementRepository
+    public interface IClassroomManagementRepository
     {
         //TODO: Remove unnecessary methods
         IEnumerable<Building> GetBuildings();

@@ -1,6 +1,15 @@
-﻿using ClassroomManagementApi;
+﻿using Autofac;
+using ClassroomManagement.Models;
+using ClassroomManagementApi.Controllers;
+using ClassroomManagementApi.Models;
+using ClassroomManagementApi.Models.DAL;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace ClassroomManagementApi
 {
@@ -10,20 +19,6 @@ namespace ClassroomManagementApi
 
         public static void Main(string[] args)
         {
-            //var builder = new ConfigurationBuilder()
-            //    .SetBasePath(Directory.GetCurrentDirectory())
-            //    .AddJsonFile("appsettings.json");
-            //var conString = builder.Build().GetConnectionString("DefaultConnection");
-
-         //   var host = new WebHostBuilder()
-         //.UseKestrel()
-         //.ConfigureServices(services => services.AddAutofac())
-         //.UseContentRoot(Directory.GetCurrentDirectory())
-         //.UseIISIntegration()
-         //.UseStartup<Startup>()
-         //.Build();
-
-            //host.Run();
             CreateWebHostBuilder(args).Build().Run();      
         }
 

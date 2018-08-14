@@ -1,10 +1,18 @@
+using Autofac;
+using Autofac.Configuration;
 using ClassroomManagement.Models;
+using ClassroomManagementApi.Controllers;
 using ClassroomManagementApi.Models;
+using ClassroomManagementApi.Models.DAL;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace ZarzadzanieSalami.Tests
+namespace ClassroomManagement.Tests
 {
     public class UnitTest1
     {
@@ -20,7 +28,7 @@ namespace ZarzadzanieSalami.Tests
         {
             string connectionString = "Data Source=sql-ag1-listen.pjwstk.edu.pl;Initial Catalog=dziekanat_hash;Integrated Security=True";
             ClassroomManagementRepository p = new ClassroomManagementRepository(connectionString);
-            output.WriteLine(p.GetBuilding(1).Adres_budynku);
+
             //Building b = new Building
             //{
             //    Nazwa = "test",

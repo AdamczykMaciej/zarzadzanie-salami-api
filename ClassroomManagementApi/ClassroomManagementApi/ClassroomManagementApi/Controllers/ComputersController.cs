@@ -2,6 +2,7 @@
 using System.Linq;
 using ClassroomManagement.Models;
 using ClassroomManagementApi.Models;
+using ClassroomManagementApi.Models.DAL;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClassroomManagementApi.Controllers
@@ -10,12 +11,13 @@ namespace ClassroomManagementApi.Controllers
     [ApiController]
     public class ComputersController : ControllerBase
     {
-        private readonly ClassroomManagementRepository _provider;
+        private readonly IClassroomManagementRepository _provider;
 
-        public ComputersController()
+        public ComputersController(IClassroomManagementRepository provider)
         {
-            _provider = new ClassroomManagementRepository();
+            _provider = provider;
         }
+
         //CHECKED
         [HttpGet("computers")]
         public ActionResult<List<Computer>> GetComputers()

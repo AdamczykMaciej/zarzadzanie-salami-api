@@ -5,7 +5,7 @@ using ClassroomManagementApi.Models.DAL;
 using ClassroomManagementApi.Models.Filtering;
 using ClassroomManagementApi.Models;
 using Microsoft.AspNetCore.Mvc;
-
+using System;
 
 namespace ClassroomManagementApi.Controllers
 {
@@ -15,16 +15,11 @@ namespace ClassroomManagementApi.Controllers
     {
         private readonly IClassroomManagementRepository _provider;
 
-        //public RoomsController(IClassroomManagementRepository provider)
-        //{
-        //    provider = new ClassroomManagementRepository();
-        //    _provider = provider;
-        //}
-        public RoomsController()
+        public RoomsController(IClassroomManagementRepository provider)
         {
-            _provider = new ClassroomManagementRepository();
+            _provider = provider;
         }
-        //TODO: Delete unnecessary methods
+
         //CHECKED
         [HttpGet("buildings")]
         public ActionResult<List<Building>> GetBuildings()
@@ -91,8 +86,19 @@ namespace ClassroomManagementApi.Controllers
         [HttpGet("classrooms", Name = "GetClassrooms")]
         public ActionResult<List<Classroom>> GetClassrooms([FromQuery] FilteringObject f)
         {
-            return _provider.FilterClassrooms(f).ToList();
+            List<Classroom> result = _provider.FilterClassrooms(f).ToList();
+            return result;
         }
+
+        public void MethodToTest()
+        {
+            var classrooms = this._provider.GetClassrooms();
+            foreach (Classroom x in classrooms)
+            {
+                Console.WriteLine(x.Nazwa_sali);
+            }
+        }
+
         [HttpGet("classrooms/{id}", Name = "GetClassroom")]
         public ActionResult<Classroom> GetClassroom(int id)
         {

@@ -398,7 +398,6 @@ namespace ClassroomManagement.Models
                 return null;
             }
         }
-
         public IEnumerable<Classroom> FilterClassrooms(FilteringObject f)
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
