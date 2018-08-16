@@ -39,7 +39,7 @@ CREATE TABLE dziekanat_hash.dbo.Oprogramowanie (
 
 -- Table: OprogramowanieKomputerow
 CREATE TABLE dziekanat_hash.dbo.OprogramowanieKomputerow (
-    IdKomputerow int  NOT NULL,
+    IdKomputer int  NOT NULL,
     IdOprogramowanie int  NOT NULL,
     CONSTRAINT OprogramowanieKomputerow_pk PRIMARY KEY  (IdKomputerow,IdOprogramowanie)
 );
@@ -78,7 +78,7 @@ ALTER TABLE dziekanat_hash.dbo.Sala ADD CONSTRAINT Sala_RozkladSali
 	REFERENCES dziekanat_hash.dbo.RozkladSali (IdRozkladSali);
 
 -- Reference: SpecjalistyczneOprogramowanie_OprogramowanieKomputerow (table: OprogramowanieKomputerow)
-ALTER TABLE dziekanat_hash.dbo.OprogramowanieKomputerow ADD CONSTRAINT SpecjalistyczneOprogramowanie_OprogramowanieKomputerow
+ALTER TABLE dziekanat_hash.dbo.OprogramowanieKomputerow ADD CONSTRAINT Oprogramowanie_OprogramowanieKomputerow
     FOREIGN KEY (IdOprogramowanie)
     REFERENCES dziekanat_hash.dbo.Oprogramowanie (IdOprogramowanie);
 
