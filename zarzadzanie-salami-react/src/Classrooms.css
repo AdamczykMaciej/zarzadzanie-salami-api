@@ -22,13 +22,20 @@
 .wrap-classrooms {
     width: 1060px;
     border-radius: 10px;
-    overflow: hidden;
+    overflow: auto;
+    position: relative;
+
 }
 
 .table {
     width: 100%;
     display: table;
     margin: 0;
+}
+
+.info{
+    font-family: sans-serif;
+    font-size: 12px;
 }
 
 @media screen and (max-width: 768px) {
@@ -103,73 +110,87 @@
     font-family: sans-serif;
     font-size: 16px;
     color: #fff;
-    line-height: 0.8;
+    line-height: 1.2;
     font-weight: unset !important;
-
     padding-top: 19px;
     padding-bottom: 19px;
+
 }
 
 .row .cell:nth-child(1) {
     width: 30px;
-    padding-left: 20px;
+    padding-left: 10px;
 }
 
 .row .cell:nth-child(2) {
     width: 40px;
+    padding-left: 10px;
 }
 
 .row .cell:nth-child(3) {
     width: 40px;
+    padding-left: 10px;
 }
 
 .row .cell:nth-child(4) {
     width: 40px;
+    padding-left: 10px;
 }
 
 .row .cell:nth-child(5) {
     width: 40px;
+    padding-left: 10px;
 }
 
 .row .cell:nth-child(6) {
     width: 40px;
+    padding-left: 10px;
 }
 
 .row .cell:nth-child(7) {
     width: 40px;
+    padding-left: 10px;
 }
 
 .row .cell:nth-child(8) {
     width: 40px;
+    padding-left: 10px;
 }
 
 .row .cell:nth-child(9) {
     width: 40px;
+    padding-left: 10px;
 }
 
 .row .cell:nth-child(10) {
     width: 40px;
+    padding-left: 10px;
 }
 
 .row .cell:nth-child(11) {
     width: 40px;
+    padding-left: 10px;
 }
 
 .row .cell:nth-child(12) {
     width: 40px;
+    padding-left: 10px;
 }
 
 
 .row .cell:nth-child(13) {
     width: 40px;
+    padding-left: 10px;
 }
 
 .row .cell:nth-child(14) {
     width: 40px;
+    padding-left: 10px;
 }
 
 .row .cell:nth-child(15) {
     width: 290px;
+    padding-left: 10px;
 }
 
 .table, .row {

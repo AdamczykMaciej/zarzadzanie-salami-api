@@ -40,6 +40,9 @@ export class Classrooms extends Component{
         return (
             <div className="classrooms">
                 <div className="container-classrooms">
+                    <div className="info">
+                        <p><b>T - tv; P - projektor; K - klimatyzacja; D - dostęp dla niepełnosprawnych</b></p>
+                    </div>
                     <div className="wrap-classrooms">
                         <div className="table">
                         <div className="row header">
@@ -68,16 +71,16 @@ export class Classrooms extends Component{
                                 Gniazda sieciowe
                             </div>
                             <div className="cell">
-                                Projektor
+                                P
                             </div>
                             <div className="cell">
-                                TV
+                                T
                             </div>
                             <div className="cell">
-                                Klimatyzacja
+                                K
                             </div>
                             <div className="cell">
-                                Dostęp dla niepełnosprawnych
+                                D
                             </div>
                             <div className="cell">
                                 Rozkład sali
@@ -115,16 +118,16 @@ export class Classrooms extends Component{
                                 <div className="cell" data-title="Gniazda sieciowe">
                                     {classroom.liczba_gniazd_sieciowych}
                                 </div>
-                                <div className="cell" data-title="Projektor">
+                                <div className="cell" data-title="P">
                                     {classroom.projektor ? '+' : '-'}
                                 </div>
-                                <div className="cell" data-title="TV">
+                                <div className="cell" data-title="T">
                                     {classroom.tv ? '+' : '-'}
                                 </div>
-                                <div className="cell" data-title="Klimatyzacja">
+                                <div className="cell" data-title="K">
                                     {classroom.klimatyzacja ? '+' : '-'}
                                 </div>
-                                <div className="cell" data-title="Dostęp dla niepełnosprawnych">
+                                <div className="cell" data-title="D">
                                     {classroom.dostep_dla_niepelnosprawnych ? '+' : '-'}
                                 </div>
                                 <div className="cell" data-title="Rozkład sali">
@@ -143,24 +146,6 @@ export class Classrooms extends Component{
                 </div>
             </div>
 
-            /*<p>Classrooms list</p>
-             <table>
-                 <thead>
-                 <tr>
-                     <th></th>
-                 </tr>
-                 </thead>
-                 <tbody>
-                 {classrooms.map(classroom =>
-                     <tr>
-                         <td>
-                             {classroom.idSala}. {classroom.nazwa_sali} {classroom.funkcja_sali} {classroom.nazwaBudynku}
-                         </td>
-                     </tr>
-                 )}
-                 </tbody>
-             </table>
-             */
         )
     }
 }
