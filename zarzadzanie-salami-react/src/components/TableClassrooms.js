@@ -1,62 +1,115 @@
 import React from 'react';
-import TableClassroomsHeader from "./TableClassroomsHeader";
+import ReactTable from "react-table";
+import "react-table/react-table.css";
+import TableAbbr from "./TableAbbr";
 
 
 const TableClassrooms  = (props) => {
     return (
         <div className="table-classrooms-container">
-            <div className="table">
-                <TableClassroomsHeader/>
-                {props.data.map(classroom =>
-                    <div className="row">
-                        <div className="cell" data-title="Id">
-                            {classroom.idSala}
-                        </div>
-                        <div className="cell" data-title="Nazwa">
-                            {classroom.nazwa_sali}
-                        </div>
-                        <div className="cell" data-title="Budynek">
-                            {classroom.nazwaBudynku}
-                        </div>
-                        <div className="cell" data-title="Piętro">
-                            {classroom.poziom}
-                        </div>
-                        <div className="cell" data-title="m2">
-                            {classroom.pow_m2}
-                        </div>
-                        <div className="cell" data-title="Liczba miejsc">
-                            {classroom.liczba_miejsc}
-                        </div>
-                        <div className="cell" data-title="Komputery">
-                            {classroom.liczbaKomputerow}
-                        </div>
-                        <div className="cell" data-title="Gniazda sieciowe">
-                            {classroom.liczba_gniazd_sieciowych}
-                        </div>
-                        <div className="cell" data-title="P">
-                            {classroom.projektor ? '+' : '-'}
-                        </div>
-                        <div className="cell" data-title="T">
-                            {classroom.tv ? '+' : '-'}
-                        </div>
-                        <div className="cell" data-title="K">
-                            {classroom.klimatyzacja ? '+' : '-'}
-                        </div>
-                        <div className="cell" data-title="D">
-                            {classroom.dostep_dla_niepelnosprawnych ? '+' : '-'}
-                        </div>
-                        <div className="cell" data-title="Rozkład sali">
-                            {classroom.nazwaRozkladSali}
-                        </div>
-                        <div className="cell" data-title="Funkcja">
-                            {classroom.funkcja_sali}
-                        </div>
-                        <div className="cell" data-title="Uwagi">
-                            {classroom.uwagi}
-                        </div>
-                    </div>
-                )}
-            </div>
+            <TableAbbr/>
+            <ReactTable
+                data={props.data}
+                columns={[
+                    {
+                        Header: "Lista sal",
+                        columns: [
+                            {
+                                Header: "Id",
+                                accessor: "idSala",
+                                maxWidth: 50,
+                            },
+                            {
+                                Header: "Nazwa",
+                                accessor: "nazwa_sali",
+                            },
+                            {
+                                Header: "Budynek",
+                                accessor: "nazwaBudynku"
+                            },
+                            {
+                                Header: "Piętro",
+                                accessor: "poziom"
+                            },
+                            {
+                                Header: "m2",
+                                accessor: "pow_m2"
+                            },
+                            {
+                                Header: "Liczba miejsc",
+                                accessor: "liczba_miejsc_dydaktycznych"
+                            },
+                            {
+                                Header: "Komputery",
+                                accessor: "liczbaKomputerow"
+                            },
+                            {
+                                Header: "Gniazda sieciowe",
+                                accessor: "liczba_gniazd_sieciowych"
+                            },
+                            {
+                                Header: "P",
+                                id: "projektor",
+                                accessor: d =>
+                                    <span style={{
+                                        color: d.projektor  ? '#57d500' : '#ff2e00'
+                                    }}>
+                                        &#x25cf;
+                                    </span>
+                            },
+                            {
+                                Header: "TV",
+                                id: "tv",
+                                accessor: d =>
+                                    <span style={{
+                                        color: d.tv  ? '#57d500' : '#ff2e00'
+                                    }}>
+                                        &#x25cf;
+                                    </span>
+                            },
+                            {
+                                Header: "K",
+                                id: "klimatyzacja",
+                                accessor: d =>
+                                    <span style={{
+                                        color: d.klimatyzacja  ? '#57d500' : '#ff2e00'
+                                    }}>
+                                        &#x25cf;
+                                    </span>
+                            },
+                            {
+                                Header: "D",
+                                id: "dostep_dla_niepelnosprawnych",
+                                accessor: d =>
+                                    <span style={{
+                                        color: d.dostep_dla_niepelnosprawnych ? '#57d500' : '#ff2e00'
+                                    }}>
+                                        &#x25cf;
+                                    </span>
+                            },
+                            {
+                                Header: "Rozklad sali",
+                                accessor: "nazwa_rozklad_sali"
+                            },
+                            {
+                                Header: "Funkcja",
+                                accessor: "funkcja_sali"
+                            },
+                            {
+                                Header: "Uwagi",
+                                accessor: "uwagi"
+                            }
+
+                        ]
+                    }
+                ]}
+                defaultPageSize={25}
+                style={{
+                    height: 800
+                }}
+                className="-striped -highlight"
+            />
+            <br />
         </div>
     )
 }
