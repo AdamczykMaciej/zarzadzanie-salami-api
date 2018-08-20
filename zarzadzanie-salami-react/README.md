@@ -138,7 +138,7 @@ my-app/
     favicon.ico
   src/
     Header.css
-    Header.jsx.js
+    HeaderMainMain.jsx.js
     Header.test.js
     index.css
     index.js
@@ -783,13 +783,13 @@ import 'bootstrap/dist/css/bootstrap-theme.css';
 // components takes precedence over default styles.
 ```
 
-Import required React Bootstrap components within ```src/Header.jsx.js``` file or your custom component files:
+Import required React Bootstrap components within ```src/HeaderMainMain.jsx.js``` file or your custom component files:
 
 ```js
 import { Navbar, Jumbotron, Button } from 'react-bootstrap';
 ```
 
-Now you are ready to use the imported React Bootstrap components within your component hierarchy defined in the render method. Here is an example [`Header.jsx.js`](https://gist.githubusercontent.com/gaearon/85d8c067f6af1e56277c82d19fd4da7b/raw/6158dd991b67284e9fc8d70b9d973efe87659d72/Headerder.js) redone using React Bootstrap.
+Now you are ready to use the imported React Bootstrap components within your component hierarchy defined in the render method. Here is an example [`Header.js.js`](https://gist.githubusercontent.com/gaearon/85d8c067f6af1e56277c82d19fd4da7b/raw/6158dd991b67284e9fc8d70b9d973efe87659d72/Headerder.js) redone using React Bootstrap.
 
 ### Using a Custom Theme
 

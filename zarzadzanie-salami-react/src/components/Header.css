@@ -2,7 +2,7 @@
     box-sizing: border-box;
 }
 
-.app-header{
+.app-header-main{
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
     overflow: hidden;
@@ -14,7 +14,7 @@
     float: right;
 }
 
-.app-header a {
+.app-header-main a {
     float: left;
     color: white;
     text-align: center;
@@ -27,7 +27,7 @@
 
 
 @media screen and (max-width: 500px) {
-    .app-header a {
+    .app-header main a {
         float: none;
         display: block;
         text-align: left;

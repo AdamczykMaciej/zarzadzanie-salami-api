@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import {Header} from './Header.jsx';
-import {Classrooms} from "./Classrooms.jsx";
+import { App } from './App.js';
 
 
-ReactDOM.render(<Header />, document.getElementById('header'));
-ReactDOM.render(<Classrooms />, document.getElementById('classrooms'));
+
+ReactDOM.render(<App/>, document.getElementById('app'));
+
 
