@@ -1,35 +1,63 @@
 import React from 'react';
 import ReactTable from "react-table";
 import "react-table/react-table.css";
+import matchSorter from 'match-sorter';
 import TableAbbr from "./TableAbbr";
 
 
 const TableClassrooms  = (props) => {
+
+    const data = props.classrooms;
     return (
         <div className="table-classrooms-container">
             <TableAbbr/>
             <ReactTable
-                data={props.data}
+                data={data}
+                filterable
+                defaultFilterMethod={(filter, row) =>
+                    String(row[filter.id]) === filter.value}
                 columns={[
                     {
                         Header: "Lista sal",
                         columns: [
                             {
-                                Header: "Id",
-                                accessor: "idSala",
-                                maxWidth: 50,
-                            },
-                            {
                                 Header: "Nazwa",
                                 accessor: "nazwa_sali",
+                                filterMethod: (filter, row) =>
+                                    row[filter.id].startsWith(filter.value) &&
+                                    row[filter.id].endsWith(filter.value)
                             },
                             {
                                 Header: "Budynek",
-                                accessor: "nazwaBudynku"
+                                id: "building_name",
+                                accessor: "nazwaBudynku",
+                                filterMethod: (filter, row) => {
+                                    if (filter.value === "all") {
+                                        return true;
+                                    }
+                                    return row[filter.id] === filter.value;
+                                },
+                                Filter: ({ filter, onChange }) =>
+                                    <select
+                                        onChange={event => onChange(event.target.value)}
+                                        style={{ width: "100%" }}
+                                        value={filter ? filter.value : "all"}
+                                    >
+                                        <option value="all">Wszystkie</option>
+                                        <option value="A">A</option>
+                                        <option value="C">C</option>
+                                        <option value="G">G</option>
+
+                                    </select>
+
                             },
                             {
                                 Header: "Piętro",
-                                accessor: "poziom"
+                                id: "level",
+                                accessor: d => d.poziom,
+                                filterMethod: (filter, rows) =>
+                                    matchSorter(rows, filter.value, { keys: ["level"] }),
+                                filterAll: true
                             },
                             {
                                 Header: "m2",
@@ -37,55 +65,243 @@ const TableClassrooms  = (props) => {
                             },
                             {
                                 Header: "Liczba miejsc",
-                                accessor: "liczba_miejsc_dydaktycznych"
+                                id: "places_less_over",
+                                accessor: "liczba_miejsc_dydaktycznych",
+                                filterMethod: (filter, row) => {
+                                    if (filter.value === "all") {
+                                        return true;
+                                    }
+                                    switch(filter.value) {
+                                        case "lessThan_10":
+                                            return row[filter.id] < 10;
+                                            break;
+                                        case "from_10_to_15":
+                                            return row[filter.id] >= 10 && row[filter.id] <= 15;
+                                            break;
+                                        case "from_16_to_20":
+                                            return row[filter.id] >= 16 && row[filter.id] <= 20;
+                                            break;
+                                        case "greaterThan_20":
+                                            return row[filter.id] > 20;
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                },
+                                Filter: ({ filter, onChange }) =>
+                                    <select
+                                        onChange={event => onChange(event.target.value)}
+                                        style={{ width: "100%" }}
+                                        value={filter ? filter.value : "all"}
+                                    >
+                                        <option value="all">Wszystkie</option>
+                                        <option value="lessThan_10">{'<'}10</option>
+                                        <option value="from_10_to_15">10-15</option>
+                                        <option value="from_16_to_20">16-20</option>
+                                        <option value="greaterThan_20">{'>'}20</option>
+                                    </select>
                             },
                             {
                                 Header: "Komputery",
-                                accessor: "liczbaKomputerow"
+                                id: "more_less_computers",
+                                accessor: "liczbaKomputerow",
+                                filterMethod: (filter, row) => {
+                                    if (filter.value === "all") {
+                                        return true;
+                                    }
+                                    switch(filter.value) {
+                                        case "lessThan_10":
+                                            return row[filter.id] < 10;
+                                            break;
+                                        case "from_10_to_15":
+                                            return row[filter.id] >= 10 && row[filter.id] <= 15;
+                                            break;
+                                        case "from_16_to_20":
+                                            return row[filter.id] >= 16 && row[filter.id] <= 20;
+                                            break;
+                                        case "greaterThan_20":
+                                            return row[filter.id] > 20;
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                },
+                                Filter: ({ filter, onChange }) =>
+                                    <select
+                                        onChange={event => onChange(event.target.value)}
+                                        style={{ width: "100%" }}
+                                        value={filter ? filter.value : "all"}
+                                    >
+                                        <option value="all">Wszystkie</option>
+                                        <option value="lessThan_10">{'<'}10</option>
+                                        <option value="from_10_to_15">10-15</option>
+                                        <option value="from_16_to_20">16-20</option>
+                                        <option value="greaterThan_20">{'>'}20</option>
+                                    </select>
                             },
                             {
                                 Header: "Gniazda sieciowe",
-                                accessor: "liczba_gniazd_sieciowych"
+                                id: "more_less_network_connectors",
+                                accessor: "liczba_gniazd_sieciowych",
+                                filterMethod: (filter, row) => {
+                                    if (filter.value === "all") {
+                                        return true;
+                                    }
+                                    switch(filter.value) {
+                                        case "lessThan_10":
+                                            return row[filter.id] < 10;
+                                            break;
+                                        case "from_10_to_15":
+                                            return row[filter.id] >= 10 && row[filter.id] <= 15;
+                                            break;
+                                        case "from_16_to_20":
+                                            return row[filter.id] >= 16 && row[filter.id] <= 20;
+                                            break;
+                                        case "greaterThan_20":
+                                            return row[filter.id] > 20;
+                                            break;
+                                        default:
+                                            break;
+                                    }
+
+                                },
+                                Filter: ({ filter, onChange }) =>
+                                    <select
+                                        onChange={event => onChange(event.target.value)}
+                                        style={{ width: "100%" }}
+                                        value={filter ? filter.value : "all"}
+                                    >
+                                        <option value="all">Wszystkie</option>
+                                        <option value="lessThan_10">{'<'}10</option>
+                                        <option value="from_10_to_15">10-15</option>
+                                        <option value="from_16_to_20">16-20</option>
+                                        <option value="greaterThan_20">{'>'}20</option>
+                                    </select>
                             },
                             {
                                 Header: "P",
-                                id: "projektor",
-                                accessor: d =>
-                                    <span style={{
-                                        color: d.projektor  ? '#57d500' : '#ff2e00'
-                                    }}>
+                                id: "projector",
+                                accessor: "projektor",
+                                Cell: ({ value }) => (value ? <span style={{
+                                    color: '#57d500'
+                                }}>
                                         &#x25cf;
-                                    </span>
+                                    </span> : <span style={{
+                                        color: '#ff2e00'
+                                }}>
+                                        &#x25cf;
+                                    </span>),
+                                filterMethod: (filter, row) => {
+                                    if (filter.value === "all") {
+                                        return true;
+                                    }
+                                        return row[filter.id];
+
+
+                                },
+                                Filter: ({ filter, onChange }) =>
+                                    <select
+                                        onChange={event => onChange(event.target.value)}
+                                        style={{ width: "100%" }}
+                                        value={filter ? filter.value : "all"}
+                                    >
+                                        <option value="all">Wszystkie</option>
+                                        <option value="true">+</option>
+                                    </select>
                             },
                             {
                                 Header: "TV",
                                 id: "tv",
-                                accessor: d =>
-                                    <span style={{
-                                        color: d.tv  ? '#57d500' : '#ff2e00'
-                                    }}>
+                                accessor: "tv",
+                                Cell: ({ value }) => (value ? <span style={{
+                                    color: '#57d500'
+                                }}>
                                         &#x25cf;
-                                    </span>
+                                    </span> : <span style={{
+                                    color: '#ff2e00'
+                                }}>
+                                        &#x25cf;
+                                    </span>),
+                                filterMethod: (filter, row) => {
+                                    if (filter.value === "all") {
+                                        return true;
+                                    }
+                                    return row[filter.id];
+
+
+                                },
+                                Filter: ({ filter, onChange }) =>
+                                    <select
+                                        onChange={event => onChange(event.target.value)}
+                                        style={{ width: "100%" }}
+                                        value={filter ? filter.value : "all"}
+                                    >
+                                        <option value="all">Wszystkie</option>
+                                        <option value="true">+</option>
+                                    </select>
                             },
                             {
                                 Header: "K",
-                                id: "klimatyzacja",
-                                accessor: d =>
-                                    <span style={{
-                                        color: d.klimatyzacja  ? '#57d500' : '#ff2e00'
-                                    }}>
+                                id: "air_conditioner",
+                                accessor: "klimatyzacja",
+                                Cell: ({ value }) => (value ? <span style={{
+                                    color: '#57d500'
+                                }}>
                                         &#x25cf;
-                                    </span>
+                                    </span> : <span style={{
+                                    color: '#ff2e00'
+                                }}>
+                                        &#x25cf;
+                                    </span>),
+                                filterMethod: (filter, row) => {
+                                    if (filter.value === "all") {
+                                        return true;
+                                    }
+                                    return row[filter.id];
+
+
+                                },
+                                Filter: ({ filter, onChange }) =>
+                                    <select
+                                        onChange={event => onChange(event.target.value)}
+                                        style={{ width: "100%" }}
+                                        value={filter ? filter.value : "all"}
+                                    >
+                                        <option value="all">Wszystkie</option>
+                                        <option value="true">+</option>
+                                    </select>
                             },
                             {
                                 Header: "D",
-                                id: "dostep_dla_niepelnosprawnych",
-                                accessor: d =>
-                                    <span style={{
-                                        color: d.dostep_dla_niepelnosprawnych ? '#57d500' : '#ff2e00'
-                                    }}>
+                                id: "disabled_access",
+                                accessor: "dostep_dla_niepelnosprawnych",
+                                Cell: ({ value }) => (value ? <span style={{
+                                    color: '#57d500'
+                                }}>
                                         &#x25cf;
-                                    </span>
+                                    </span> : <span style={{
+                                    color: '#ff2e00'
+                                }}>
+                                        &#x25cf;
+                                    </span>),
+                                filterMethod: (filter, row) => {
+                                    if (filter.value === "all") {
+                                        return true;
+                                    }
+                                    return row[filter.id];
+
+
+                                },
+                                Filter: ({ filter, onChange }) =>
+                                    <select
+                                        onChange={event => onChange(event.target.value)}
+                                        style={{ width: "100%" }}
+                                        value={filter ? filter.value : "all"}
+                                    >
+                                        <option value="all">Wszystkie</option>
+                                        <option value="true">+</option>
+                                    </select>
+
                             },
                             {
                                 Header: "Rozklad sali",

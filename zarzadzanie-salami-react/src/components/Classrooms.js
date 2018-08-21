@@ -41,7 +41,7 @@ export class Classrooms extends Component{
         }
         return (
                 <div className="container-classrooms">
-                    <TableClassrooms data={classrooms}/>
+                    <TableClassrooms classrooms={classrooms}/>
                 </div>
         )
     }
