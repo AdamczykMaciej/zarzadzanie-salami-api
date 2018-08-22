@@ -37,6 +37,15 @@ const ClassroomsTable  = (props) => {
                 filterable
                 defaultFilterMethod={(filter, row) =>
                     String(row[filter.id]) === filter.value}
+                getTdProps={(state, rowInfo, column, instance) => {
+                    return {
+                        onClick: (e, handleOriginal) => {
+                            //TODO
+                            console.log("It was in this row:", rowInfo.original.idSala);
+
+                        }
+                    };
+                }}
                 columns={[
                     {
                         Header: "Lista sal",
