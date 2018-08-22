@@ -7,6 +7,6 @@ const TableAbbr = () => {
         <p><b>P - projektor; K - klimatyzacja; D - dostęp dla niepełnosprawnych</b></p>
     </div>
     )
-};
+}
 
 export default TableAbbr;

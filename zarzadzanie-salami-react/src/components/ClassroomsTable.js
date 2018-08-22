@@ -4,9 +4,29 @@ import "react-table/react-table.css";
 import matchSorter from 'match-sorter';
 import TableAbbr from "./TableAbbr";
 
+const filterSwitcher = (filter, row) => {
+    if (filter.value === "all") {
+        return true;
+    }
+        switch (filter.value) {
+            case "lessThan_10":
+                return row[filter.id] < 10;
+                break;
+            case "from_10_to_15":
+                return row[filter.id] >= 10 && row[filter.id] <= 15;
+                break;
+            case "from_16_to_20":
+                return row[filter.id] >= 16 && row[filter.id] <= 20;
+                break;
+            case "greaterThan_20":
+                return row[filter.id] > 20;
+                break;
+            default:
+                break;
+        }
+}
 
-const TableClassrooms  = (props) => {
-
+const ClassroomsTable  = (props) => {
     const data = props.classrooms;
     return (
         <div className="table-classrooms-container">
@@ -24,8 +44,7 @@ const TableClassrooms  = (props) => {
                                 Header: "Nazwa",
                                 accessor: "nazwa_sali",
                                 filterMethod: (filter, row) =>
-                                    row[filter.id].startsWith(filter.value) &&
-                                    row[filter.id].endsWith(filter.value)
+                                    row[filter.id].startsWith(filter.value)
                             },
                             {
                                 Header: "Budynek",
@@ -61,32 +80,15 @@ const TableClassrooms  = (props) => {
                             },
                             {
                                 Header: "m2",
-                                accessor: "pow_m2"
+                                accessor: "pow_m2",
+
                             },
                             {
                                 Header: "Liczba miejsc",
                                 id: "places_less_over",
                                 accessor: "liczba_miejsc_dydaktycznych",
                                 filterMethod: (filter, row) => {
-                                    if (filter.value === "all") {
-                                        return true;
-                                    }
-                                    switch(filter.value) {
-                                        case "lessThan_10":
-                                            return row[filter.id] < 10;
-                                            break;
-                                        case "from_10_to_15":
-                                            return row[filter.id] >= 10 && row[filter.id] <= 15;
-                                            break;
-                                        case "from_16_to_20":
-                                            return row[filter.id] >= 16 && row[filter.id] <= 20;
-                                            break;
-                                        case "greaterThan_20":
-                                            return row[filter.id] > 20;
-                                            break;
-                                        default:
-                                            break;
-                                    }
+                                    return filterSwitcher(filter, row);
                                 },
                                 Filter: ({ filter, onChange }) =>
                                     <select
@@ -106,25 +108,7 @@ const TableClassrooms  = (props) => {
                                 id: "more_less_computers",
                                 accessor: "liczbaKomputerow",
                                 filterMethod: (filter, row) => {
-                                    if (filter.value === "all") {
-                                        return true;
-                                    }
-                                    switch(filter.value) {
-                                        case "lessThan_10":
-                                            return row[filter.id] < 10;
-                                            break;
-                                        case "from_10_to_15":
-                                            return row[filter.id] >= 10 && row[filter.id] <= 15;
-                                            break;
-                                        case "from_16_to_20":
-                                            return row[filter.id] >= 16 && row[filter.id] <= 20;
-                                            break;
-                                        case "greaterThan_20":
-                                            return row[filter.id] > 20;
-                                            break;
-                                        default:
-                                            break;
-                                    }
+                                    return filterSwitcher(filter, row);
                                 },
                                 Filter: ({ filter, onChange }) =>
                                     <select
@@ -144,25 +128,7 @@ const TableClassrooms  = (props) => {
                                 id: "more_less_network_connectors",
                                 accessor: "liczba_gniazd_sieciowych",
                                 filterMethod: (filter, row) => {
-                                    if (filter.value === "all") {
-                                        return true;
-                                    }
-                                    switch(filter.value) {
-                                        case "lessThan_10":
-                                            return row[filter.id] < 10;
-                                            break;
-                                        case "from_10_to_15":
-                                            return row[filter.id] >= 10 && row[filter.id] <= 15;
-                                            break;
-                                        case "from_16_to_20":
-                                            return row[filter.id] >= 16 && row[filter.id] <= 20;
-                                            break;
-                                        case "greaterThan_20":
-                                            return row[filter.id] > 20;
-                                            break;
-                                        default:
-                                            break;
-                                    }
+                                    return filterSwitcher(filter, row);
 
                                 },
                                 Filter: ({ filter, onChange }) =>
@@ -309,7 +275,11 @@ const TableClassrooms  = (props) => {
                             },
                             {
                                 Header: "Funkcja",
-                                accessor: "funkcja_sali"
+                                id: "class_func",
+                                accessor: d => d.funkcja_sali,
+                                filterMethod: (filter, rows) =>
+                                    matchSorter(rows, filter.value, { keys: ["class_func"] }),
+                                filterAll: true
                             },
                             {
                                 Header: "Uwagi",
@@ -330,4 +300,4 @@ const TableClassrooms  = (props) => {
     )
 }
 
-export default TableClassrooms;
+export default ClassroomsTable;
