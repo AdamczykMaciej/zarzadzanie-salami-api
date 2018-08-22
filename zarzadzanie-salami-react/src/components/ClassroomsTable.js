@@ -3,7 +3,8 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import matchSorter from 'match-sorter';
 import TableAbbr from "./TableAbbr";
-import TableSelects from "./TableSelects";
+import TableSelect from "./TableSelect";
+import TableTwoOptionsSelect from "./TableTwoOptionsSelect";
 
 const filterSwitcher = (filter, row) => {
     if (filter.value === "all") {
@@ -92,12 +93,12 @@ const ClassroomsTable  = (props) => {
                                     return filterSwitcher(filter, row);
                                 },
                                 Filter: ({ filter, onChange }) =>
-                                    <TableSelects
+                                    <TableSelect
                                         onChange={event => onChange(event.target.value)}
                                         style={{ width: "100%" }}
                                         value={filter ? filter.value : "all"}
                                     >
-                                    </TableSelects>
+                                    </TableSelect>
                             },
                             {
                                 Header: "Komputery",
@@ -107,12 +108,12 @@ const ClassroomsTable  = (props) => {
                                     return filterSwitcher(filter, row);
                                 },
                                 Filter: ({ filter, onChange }) =>
-                                    <TableSelects
+                                    <TableSelect
                                         onChange={event => onChange(event.target.value)}
                                         style={{ width: "100%" }}
                                         value={filter ? filter.value : "all"}
                                     >
-                                    </TableSelects>
+                                    </TableSelect>
                             },
                             {
                                 Header: "Gniazda sieciowe",
@@ -123,12 +124,12 @@ const ClassroomsTable  = (props) => {
 
                                 },
                                 Filter: ({ filter, onChange }) =>
-                                    <TableSelects
+                                    <TableSelect
                                         onChange={event => onChange(event.target.value)}
                                         style={{ width: "100%" }}
                                         value={filter ? filter.value : "all"}
                                     >
-                                    </TableSelects>
+                                    </TableSelect>
                             },
                             {
                                 Header: "P",
@@ -152,14 +153,13 @@ const ClassroomsTable  = (props) => {
 
                                 },
                                 Filter: ({ filter, onChange }) =>
-                                    <select
+                                    <TableTwoOptionsSelect
                                         onChange={event => onChange(event.target.value)}
                                         style={{ width: "100%" }}
                                         value={filter ? filter.value : "all"}
                                     >
-                                        <option value="all">Wszystkie</option>
-                                        <option value="true">+</option>
-                                    </select>
+
+                                    </TableTwoOptionsSelect>
                             },
                             {
                                 Header: "TV",
@@ -183,14 +183,13 @@ const ClassroomsTable  = (props) => {
 
                                 },
                                 Filter: ({ filter, onChange }) =>
-                                    <select
+                                    <TableTwoOptionsSelect
                                         onChange={event => onChange(event.target.value)}
                                         style={{ width: "100%" }}
                                         value={filter ? filter.value : "all"}
                                     >
-                                        <option value="all">Wszystkie</option>
-                                        <option value="true">+</option>
-                                    </select>
+
+                                    </TableTwoOptionsSelect>
                             },
                             {
                                 Header: "K",
@@ -214,14 +213,13 @@ const ClassroomsTable  = (props) => {
 
                                 },
                                 Filter: ({ filter, onChange }) =>
-                                    <select
+                                    <TableTwoOptionsSelect
                                         onChange={event => onChange(event.target.value)}
                                         style={{ width: "100%" }}
                                         value={filter ? filter.value : "all"}
                                     >
-                                        <option value="all">Wszystkie</option>
-                                        <option value="true">+</option>
-                                    </select>
+
+                                    </TableTwoOptionsSelect>
                             },
                             {
                                 Header: "D",
@@ -245,14 +243,13 @@ const ClassroomsTable  = (props) => {
 
                                 },
                                 Filter: ({ filter, onChange }) =>
-                                    <select
+                                    <TableTwoOptionsSelect
                                         onChange={event => onChange(event.target.value)}
                                         style={{ width: "100%" }}
                                         value={filter ? filter.value : "all"}
                                     >
-                                        <option value="all">Wszystkie</option>
-                                        <option value="true">+</option>
-                                    </select>
+
+                                    </TableTwoOptionsSelect>
 
                             },
                             {
