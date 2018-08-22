@@ -2,9 +2,9 @@ import React from 'react';
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import matchSorter from 'match-sorter';
-import TableAbbr from "./TableAbbr";
-import TableSelect from "./TableSelect";
-import TableTwoOptionsSelect from "./TableTwoOptionsSelect";
+import Abbreviation from "./Abbreviation";
+import Select from "./Select";
+import TwoOptionsSelect from "./TwoOptionsSelect";
 
 const filterSwitcher = (filter, row) => {
     if (filter.value === "all") {
@@ -29,12 +29,11 @@ const filterSwitcher = (filter, row) => {
 }
 
 const ClassroomsTable  = (props) => {
-    const data = props.classrooms;
     return (
         <div className="table-classrooms-container">
-            <TableAbbr/>
+            <Abbreviation/>
             <ReactTable
-                data={data}
+                data={props.classrooms}
                 filterable
                 defaultFilterMethod={(filter, row) =>
                     String(row[filter.id]) === filter.value}
@@ -93,12 +92,12 @@ const ClassroomsTable  = (props) => {
                                     return filterSwitcher(filter, row);
                                 },
                                 Filter: ({ filter, onChange }) =>
-                                    <TableSelect
+                                    <Select
                                         onChange={event => onChange(event.target.value)}
                                         style={{ width: "100%" }}
                                         value={filter ? filter.value : "all"}
                                     >
-                                    </TableSelect>
+                                    </Select>
                             },
                             {
                                 Header: "Komputery",
@@ -108,12 +107,12 @@ const ClassroomsTable  = (props) => {
                                     return filterSwitcher(filter, row);
                                 },
                                 Filter: ({ filter, onChange }) =>
-                                    <TableSelect
+                                    <Select
                                         onChange={event => onChange(event.target.value)}
                                         style={{ width: "100%" }}
                                         value={filter ? filter.value : "all"}
                                     >
-                                    </TableSelect>
+                                    </Select>
                             },
                             {
                                 Header: "Gniazda sieciowe",
@@ -124,12 +123,12 @@ const ClassroomsTable  = (props) => {
 
                                 },
                                 Filter: ({ filter, onChange }) =>
-                                    <TableSelect
+                                    <Select
                                         onChange={event => onChange(event.target.value)}
                                         style={{ width: "100%" }}
                                         value={filter ? filter.value : "all"}
                                     >
-                                    </TableSelect>
+                                    </Select>
                             },
                             {
                                 Header: "P",
@@ -153,13 +152,13 @@ const ClassroomsTable  = (props) => {
 
                                 },
                                 Filter: ({ filter, onChange }) =>
-                                    <TableTwoOptionsSelect
+                                    <TwoOptionsSelect
                                         onChange={event => onChange(event.target.value)}
                                         style={{ width: "100%" }}
                                         value={filter ? filter.value : "all"}
                                     >
 
-                                    </TableTwoOptionsSelect>
+                                    </TwoOptionsSelect>
                             },
                             {
                                 Header: "TV",
@@ -183,13 +182,13 @@ const ClassroomsTable  = (props) => {
 
                                 },
                                 Filter: ({ filter, onChange }) =>
-                                    <TableTwoOptionsSelect
+                                    <TwoOptionsSelect
                                         onChange={event => onChange(event.target.value)}
                                         style={{ width: "100%" }}
                                         value={filter ? filter.value : "all"}
                                     >
 
-                                    </TableTwoOptionsSelect>
+                                    </TwoOptionsSelect>
                             },
                             {
                                 Header: "K",
@@ -213,13 +212,13 @@ const ClassroomsTable  = (props) => {
 
                                 },
                                 Filter: ({ filter, onChange }) =>
-                                    <TableTwoOptionsSelect
+                                    <TwoOptionsSelect
                                         onChange={event => onChange(event.target.value)}
                                         style={{ width: "100%" }}
                                         value={filter ? filter.value : "all"}
                                     >
 
-                                    </TableTwoOptionsSelect>
+                                    </TwoOptionsSelect>
                             },
                             {
                                 Header: "D",
@@ -243,13 +242,13 @@ const ClassroomsTable  = (props) => {
 
                                 },
                                 Filter: ({ filter, onChange }) =>
-                                    <TableTwoOptionsSelect
+                                    <TwoOptionsSelect
                                         onChange={event => onChange(event.target.value)}
                                         style={{ width: "100%" }}
                                         value={filter ? filter.value : "all"}
                                     >
 
-                                    </TableTwoOptionsSelect>
+                                    </TwoOptionsSelect>
 
                             },
                             {

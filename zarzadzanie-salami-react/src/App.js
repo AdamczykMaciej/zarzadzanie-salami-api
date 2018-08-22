@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import Header from "./components/Header";
+import Header from "./Header";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
-import {Welcome} from "./components/Welcome";
-import {Classrooms} from "./components/Classrooms";
+import {Welcome} from "./Welcome";
+import {Classrooms} from "./components/classrooms/Classrooms";
 
 
 

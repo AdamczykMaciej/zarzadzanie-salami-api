@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-const TableAbbr = () => {
+const Abbreviation = () => {
     return (
     <div className="table-abbr-container">
         <p><b>P - projektor; K - klimatyzacja; D - dostęp dla niepełnosprawnych</b></p>
@@ -9,4 +9,4 @@ const TableAbbr = () => {
     )
 }
 
-export default TableAbbr;
+export default Abbreviation;

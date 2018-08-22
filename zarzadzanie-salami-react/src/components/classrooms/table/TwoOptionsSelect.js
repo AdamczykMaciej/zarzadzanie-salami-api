@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-const TableTwoOptionsSelect = (props) => {
+const TwoOptionsSelect = (props) => {
     return (
         <select onChange={props.onChange}
                 style={props.style}
@@ -13,4 +13,4 @@ const TableTwoOptionsSelect = (props) => {
     )
 }
 
-export default TableTwoOptionsSelect;
+export default TwoOptionsSelect;
