@@ -3,6 +3,7 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import matchSorter from 'match-sorter';
 import TableAbbr from "./TableAbbr";
+import TableSelects from "./TableSelects";
 
 const filterSwitcher = (filter, row) => {
     if (filter.value === "all") {
@@ -91,17 +92,12 @@ const ClassroomsTable  = (props) => {
                                     return filterSwitcher(filter, row);
                                 },
                                 Filter: ({ filter, onChange }) =>
-                                    <select
+                                    <TableSelects
                                         onChange={event => onChange(event.target.value)}
                                         style={{ width: "100%" }}
                                         value={filter ? filter.value : "all"}
                                     >
-                                        <option value="all">Wszystkie</option>
-                                        <option value="lessThan_10">{'<'}10</option>
-                                        <option value="from_10_to_15">10-15</option>
-                                        <option value="from_16_to_20">16-20</option>
-                                        <option value="greaterThan_20">{'>'}20</option>
-                                    </select>
+                                    </TableSelects>
                             },
                             {
                                 Header: "Komputery",
@@ -111,17 +107,12 @@ const ClassroomsTable  = (props) => {
                                     return filterSwitcher(filter, row);
                                 },
                                 Filter: ({ filter, onChange }) =>
-                                    <select
+                                    <TableSelects
                                         onChange={event => onChange(event.target.value)}
                                         style={{ width: "100%" }}
                                         value={filter ? filter.value : "all"}
                                     >
-                                        <option value="all">Wszystkie</option>
-                                        <option value="lessThan_10">{'<'}10</option>
-                                        <option value="from_10_to_15">10-15</option>
-                                        <option value="from_16_to_20">16-20</option>
-                                        <option value="greaterThan_20">{'>'}20</option>
-                                    </select>
+                                    </TableSelects>
                             },
                             {
                                 Header: "Gniazda sieciowe",
@@ -132,17 +123,12 @@ const ClassroomsTable  = (props) => {
 
                                 },
                                 Filter: ({ filter, onChange }) =>
-                                    <select
+                                    <TableSelects
                                         onChange={event => onChange(event.target.value)}
                                         style={{ width: "100%" }}
                                         value={filter ? filter.value : "all"}
                                     >
-                                        <option value="all">Wszystkie</option>
-                                        <option value="lessThan_10">{'<'}10</option>
-                                        <option value="from_10_to_15">10-15</option>
-                                        <option value="from_16_to_20">16-20</option>
-                                        <option value="greaterThan_20">{'>'}20</option>
-                                    </select>
+                                    </TableSelects>
                             },
                             {
                                 Header: "P",
