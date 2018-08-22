@@ -1,0 +1,1 @@
+INSERT INTO dbo.RozkladSali (NazwaRozkladuSali) VALUES ('Trapez');
