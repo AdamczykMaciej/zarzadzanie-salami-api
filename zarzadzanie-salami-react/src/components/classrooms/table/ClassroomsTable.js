@@ -6,10 +6,13 @@ import Abbreviation from "./Abbreviation";
 import Select from "./Select";
 import TwoOptionsSelect from "./TwoOptionsSelect";
 
-const filterSwitcher = (filter, row) => {
-    if (filter.value === "all") {
-        return true;
-    }
+
+const ClassroomsTable  = (props) => {
+
+     const filterSwitcher = (filter, row) => {
+        if (filter.value === "all") {
+            return true;
+        }
         switch (filter.value) {
             case "lessThan_10":
                 return row[filter.id] < 10;
@@ -26,26 +29,13 @@ const filterSwitcher = (filter, row) => {
             default:
                 break;
         }
-}
+    }
 
-const ClassroomsTable  = (props) => {
     return (
         <div className="table-classrooms-container">
             <Abbreviation/>
             <ReactTable
                 data={props.classrooms}
-                filterable
-                defaultFilterMethod={(filter, row) =>
-                    String(row[filter.id]) === filter.value}
-                getTdProps={(state, rowInfo, column, instance) => {
-                    return {
-                        onClick: (e, handleOriginal) => {
-                            //TODO
-                            console.log("It was in this row:", rowInfo.original.idSala);
-
-                        }
-                    };
-                }}
                 columns={[
                     {
                         Header: "Lista sal",
@@ -148,7 +138,7 @@ const ClassroomsTable  = (props) => {
                                 }}>
                                         &#x25cf;
                                     </span> : <span style={{
-                                        color: '#ff2e00'
+                                    color: '#ff2e00'
                                 }}>
                                         &#x25cf;
                                     </span>),
@@ -156,7 +146,7 @@ const ClassroomsTable  = (props) => {
                                     if (filter.value === "all") {
                                         return true;
                                     }
-                                        return row[filter.id];
+                                    return row[filter.id];
 
 
                                 },
@@ -285,6 +275,19 @@ const ClassroomsTable  = (props) => {
                     height: 800
                 }}
                 className="-striped -highlight"
+                filterable
+                defaultFilterMethod={(filter, row) =>
+                    String(row[filter.id]) === filter.value}
+                getTdProps={(state, rowInfo, column, instance) => {
+                    return {
+                        onClick: (e, handleOriginal) => {
+                            //TODO
+                            console.log("It was in this row:", rowInfo.original.idSala);
+
+                        }
+                    };
+                }}
+
             />
             <br />
         </div>

@@ -3,8 +3,7 @@ import './Header.css';
 import { NavLink } from 'react-router-dom';
 
 
-const Header = () => {
-    return (
+const Header = () =>
       <div className="app-header-main">
           <a>Zarządzanie salami</a>
           <div className="app-header-right">
@@ -13,8 +12,6 @@ const Header = () => {
               <NavLink to="/computers">Komputery</NavLink>
           </div>
       </div>
-    );
-}
 
 export default Header;
 
