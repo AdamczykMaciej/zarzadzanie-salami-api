@@ -6,6 +6,11 @@ import Abbreviation from "./Abbreviation";
 import Select from "./Select";
 import TwoOptionsSelect from "./TwoOptionsSelect";
 
+const styles = {
+    fontWeight: 300,
+    fontSize: 14,
+    fontFamily: "sans-serif"
+};
 
 const ClassroomsTable  = (props) => {
 
@@ -32,7 +37,7 @@ const ClassroomsTable  = (props) => {
     }
 
     return (
-        <div className="table-classrooms-container">
+        <div className="table-classrooms-container" style={styles}>
             <Abbreviation/>
             <ReactTable
                 data={props.classrooms}

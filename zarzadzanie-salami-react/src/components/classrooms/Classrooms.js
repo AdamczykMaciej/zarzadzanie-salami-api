@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './Classrooms.css';
 import ClassroomsTable from "./table/ClassroomsTable";
 import {getClassrooms} from './Requests';
 
@@ -41,7 +40,7 @@ export class Classrooms extends Component{
             return <p>Loading... Please, wait!</p>
         }
         return (
-                <div className="container-classrooms">
+                <div className="container-classrooms" style={{ padding: 10 }}>
                     <ClassroomsTable classrooms={classrooms}/>
                 </div>
         )
