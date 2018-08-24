@@ -1,45 +1,44 @@
-import React, { Component } from 'react';
-import './Classrooms.css';
+import React, {Component} from 'react';
 import ClassroomsTable from "./table/ClassroomsTable";
+import {getClassrooms} from './Requests';
 
 
-const API = 'https://29c5b169-c6d7-4060-b24a-df6a2e30d917.mock.pstmn.io/api/classrooms';
+export class Classrooms extends Component {
+    state = {
+        classrooms: [],
+        isLoading: false,
+        error: null
+    };
 
-
-export class Classrooms extends Component{
-        state = {
-            classrooms: [],
-            isLoading: false,
-            error: null
-        };
-
-    componentDidMount() {
+    async componentDidMount() {
         this.setState({isLoading: true});
+        const result = await getClassrooms();
+        if (result.error) {
+            this.setState({
+                error: result.error,
+                isLoading: false
+            });
+        } else {
+            this.setState({
+                classrooms: result.data,
+                isLoading: false
+            });
+        }
 
-        fetch(API)
-            .then(response => {
-                if(response.ok){
-                   return response.json()
-                }else{
-                    throw new Error('Something went wrong...');
-                }
-            })
-            .then(data => this.setState({classrooms: data, isLoading: false}))
-            .catch(error => this.setState({error, isLoading: false}));
     }
 
-    render (){
+    render() {
         const {classrooms, isLoading, error} = this.state;
-        if(error){
+        if (error) {
             return <p>{error.message}</p>;
         }
-        if(isLoading){
-            return <p>Loading...</p>
+        if (isLoading) {
+            return <p>Loading... Please, wait!</p>
         }
         return (
-                <div className="container-classrooms">
-                    <ClassroomsTable classrooms={classrooms}/>
-                </div>
+            <div className="container-classrooms" style={{padding: 10}}>
+                <ClassroomsTable classrooms={classrooms}/>
+            </div>
         )
     }
 }
