@@ -1,5 +1,5 @@
 import React from 'react';
-import injectSheet, { jss, ThemeProvider } from "react-jss";
+import injectSheet, { ThemeProvider } from "react-jss";
 import { NavLink } from 'react-router-dom';
 
 const styles = theme => ({
