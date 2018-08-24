@@ -11,6 +11,13 @@ export function getClassrooms() {
     }
 }
 
+export function getClassroomById(id) {
+    try {
+        return axios.get(`${URI}/classroom/${id}`);
+    }catch(error) {
+        return error;
+    }
+}
 
 
 
