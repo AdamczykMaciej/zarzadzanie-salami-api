@@ -16,19 +16,19 @@ export class Classrooms extends Component{
 
     async componentDidMount() {
         this.setState({isLoading: true});
-        try {
             const result = await getClassrooms();
-            this.setState({
-                classrooms: result.data,
-                isLoading: false
-            });
+            if(result.error){
+                this.setState({
+                    error: result.error,
+                    isLoading: false
+                });
+            }else {
+                this.setState({
+                    classrooms: result.data,
+                    isLoading: false
+                });
+            }
 
-        }catch(error) {
-            this.setState({
-                error,
-                isLoading: false
-            });
-        }
     }
 
     render (){
