@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ClassroomManagementApi.Controllers
 {
-    // TODO: After holidays - Add missing methods and add DTO model for MaszynaWirtualnaKomputer + insert some dummy data, and procedure for classroomDetails
+    // TODO: After holidays - Add missing methods + insert some dummy data, and procedure for classroomDetails
     [Route("api")]
     [ApiController]
     public class ComputersController : ControllerBase
@@ -43,7 +43,7 @@ namespace ClassroomManagementApi.Controllers
             return _provider.GetVirtualMachines().ToList();
         }
         //TODO: CHECK
-        [HttpGet("computers")]
+        [HttpGet("virtualMachineComputers")]
         public ActionResult<List<VirtualMachineComputer>> GetVirtualMachineComputers()
         {
             return _provider.GetVirtualMachineComputers().ToList();

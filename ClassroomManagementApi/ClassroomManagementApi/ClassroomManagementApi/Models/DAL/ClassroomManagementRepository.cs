@@ -473,7 +473,7 @@ namespace ClassroomManagement.Models
 
             }
         }
-        //CHECKED
+
         public IEnumerable<EducationalClassroom> GetEducationalClassrooms()
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
@@ -490,7 +490,7 @@ namespace ClassroomManagement.Models
                 }
             }
         }
-        //CHECKED
+ 
         public EducationalClassroom GetEducationalClassroom(int id)
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
