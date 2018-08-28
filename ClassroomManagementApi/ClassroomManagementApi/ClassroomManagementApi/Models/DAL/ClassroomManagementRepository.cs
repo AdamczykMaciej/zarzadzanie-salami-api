@@ -10,6 +10,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using ClassroomManagementApi.Models.DTO.Basic;
+using ClassroomManagementApi.Models.DTO.ComputerDetails;
 
 namespace ClassroomManagement.Models
 {
@@ -507,7 +508,7 @@ namespace ClassroomManagement.Models
                 }
             }
         }
-
+        //TODO: create procedures instead of select statements (no *)
         public IEnumerable<VirtualMachineComputer> GetVirtualMachineComputers()
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
@@ -516,6 +517,29 @@ namespace ClassroomManagement.Models
                 try
                 {
                     return connection.Query<VirtualMachineComputer>(query);
+                }
+                catch (InvalidOperationException e)
+                {
+                    Console.WriteLine(e.Message);
+                    return null;
+                }
+            }
+        }
+
+        public ComputerDetails GetComputerDetails(int id)
+        {
+            using (IDbConnection connection = new SqlConnection(connectionString))
+            {
+                const string queryVirtualMachinesForComputer = @"EXEC zss_MaszynyWirtualneDlaKomputer_sel @IdKomputer = @IdKomputer ";
+                const string queryComputer = @"EXEC zss_Komputer_sel @IdKomputer = @IdKomputer";
+                try
+                {
+                    ComputerDetails cd = new ComputerDetails
+                    {
+                        ComputerInfo = connection.Query<Computer>(queryComputer, new { IdKomputer = id }).First(),
+                        WirtualneMaszyny = connection.Query<VirtualMachine>(queryVirtualMachinesForComputer, new { IdKomputer = id })
+                    };
+                    return cd;
                 }
                 catch (InvalidOperationException e)
                 {

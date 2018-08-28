@@ -4,6 +4,7 @@ using ClassroomManagement.Models;
 using ClassroomManagementApi.Models;
 using ClassroomManagementApi.Models.DAL;
 using ClassroomManagementApi.Models.DTO.Basic;
+using ClassroomManagementApi.Models.DTO.ComputerDetails;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClassroomManagementApi.Controllers
@@ -74,6 +75,15 @@ namespace ClassroomManagementApi.Controllers
         public ActionResult<List<ComputerSoftware>> GetComputerSoftware()
         {
             return _provider.GetComputerSoftware().ToList();
+        }
+
+        [HttpGet("computerDetails/{id}")]
+        public ActionResult<ComputerDetails> GetComputerDetails(int id)
+        {
+            ComputerDetails cd = _provider.GetComputerDetails(id);
+            if (cd == null)
+                return NotFound();
+            return cd;
         }
     }
 }

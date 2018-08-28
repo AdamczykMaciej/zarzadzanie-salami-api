@@ -7,6 +7,5 @@
         public string Procesor { get; set; }
         public string RAM { get; set; }
         public string KartaGraficzna { get; set; }
-        public int IdMaszynaWirtualna { get; set; }
     }
 }

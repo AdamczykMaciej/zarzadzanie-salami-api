@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace ClassroomManagementApi.Models.DTO.ComputerDetails
 {
-    public class ComputerDetails : Computer
+    public class ComputerDetails
     {
-        
+        public Computer ComputerInfo { get; set; }
+        public IEnumerable<VirtualMachine> WirtualneMaszyny { get; set; }
     }
 }
