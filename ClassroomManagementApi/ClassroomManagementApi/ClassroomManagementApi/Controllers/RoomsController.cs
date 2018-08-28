@@ -6,6 +6,7 @@ using ClassroomManagementApi.Models.Filtering;
 using ClassroomManagementApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using Newtonsoft.Json;
 
 namespace ClassroomManagementApi.Controllers
 {
@@ -22,78 +23,103 @@ namespace ClassroomManagementApi.Controllers
 
         //CHECKED
         [HttpGet("buildings")]
-        public ActionResult<List<Building>> GetBuildings()
+        public ActionResult GetBuildings()
         {
-            return _provider.GetBuildings().ToList();
+            List<Building> result = _provider.GetBuildings().ToList();
+            if (result == null)
+                return NotFound("No records here");
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented);
+            return Ok(json);
         }
         //CHECKED
         [HttpGet("buildings/{id}", Name ="GetBuilding")]
-        public ActionResult<Building> GetBuilding(int id)
+        public IActionResult GetBuilding(int id)
         {
-            Building b = _provider.GetBuilding(id);
-            if (b == null)
-                return NotFound();
-            return b;
+            Building result = _provider.GetBuilding(id);
+            if (result == null)
+                return NotFound("Not found. There isn't any record with such an id: " + id);
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented);
+            return Ok(json);
         }
         //CHECKED
         [HttpGet("classroomFunctions")]
-        public ActionResult<List<ClassroomFunction>> GeClassroomFunctions()
+        public IActionResult GeClassroomFunctions()
         {
-            return _provider.GetClassroomFunctions().ToList();
+            List<ClassroomFunction> result = _provider.GetClassroomFunctions().ToList();
+            if (result == null)
+                return NotFound("No records here");
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented);
+            return Ok(json);
         }
         //CHECKED
         [HttpGet("classroomFunctions/{id}")]
-        public ActionResult<ClassroomFunction> GetClassroomFunction(int id)
+        public IActionResult GetClassroomFunction(int id)
         {
-            ClassroomFunction fs = _provider.GetClassroomFunction(id);
-            if (fs == null)
-                return NotFound();
-            return fs;
+            ClassroomFunction result = _provider.GetClassroomFunction(id);
+            if (result == null)
+                return NotFound("Not found. There isn't any record with such an id: " + id);
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented);
+            return Ok(json);
         }
         //CHECKED
         [HttpGet("campus")]
-        public ActionResult<List<Campus>> GetCampus()
+        public IActionResult GetCampus()
         {
-            return _provider.GetCampus().ToList();
+            List<Campus> result = _provider.GetCampus().ToList();
+            if (result == null)
+                return NotFound("No records here");
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented);
+            return Ok(json);
         }
         //CHECKED
         [HttpGet("campus/{id}")]
-        public ActionResult<Campus> GetCampus(int id)
+        public IActionResult GetCampus(int id)
         {
-            Campus k = _provider.GetCampus(id);
-            // to give some information to the browser
-            if (k == null)
-                return NotFound();
-            return k;
+            Campus result = _provider.GetCampus(id);
+            if (result == null)
+                return NotFound("Not found. There isn't any record with such an id: " + id);
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented);
+            return Ok(json);
         }
         //CHECKED
         [HttpGet("classroomStructures")]
-        public ActionResult<List<ClassroomStructure>> GetClassroomStructures()
+        public IActionResult GetClassroomStructures()
         {
-            return _provider.GetClassroomStructures().ToList();
+            List<ClassroomStructure> result = _provider.GetClassroomStructures().ToList();
+            if (result == null)
+                return NotFound("No records here");
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented);
+            return Ok(json);
         }
         //CHECKED
         [HttpGet("classroomStructures/{id}")]
-        public ActionResult<ClassroomStructure> GetClassroomStructure(int id)
+        public IActionResult GetClassroomStructure(int id)
         {
-            ClassroomStructure rs = _provider.GetClassroomStructure(id);
-            if (rs == null)
-                return NotFound();
-            return rs;
+            ClassroomStructure result = _provider.GetClassroomStructure(id);
+            if (result == null)
+                return NotFound("Not found. There isn't any record with such an id: " + id);
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented);
+            return Ok(json);
         }
         //CHECKED
-        //TODO: refactor GetClassroom, GetClassrooms, FilterClassrooms into a single classroom
         [HttpGet("classrooms", Name = "GetClassrooms")]
-        public ActionResult<List<Classroom>> GetClassrooms([FromQuery] FilteringObject f)
+        public IActionResult GetClassrooms([FromQuery] FilteringObject f)
         {
             List<Classroom> result = _provider.FilterClassrooms(f).ToList();
-            return result;
+            if (result == null)
+                return NotFound("No records here.");
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented);
+            return Ok(json);
         }
 
         [HttpGet("classrooms/{id}", Name = "GetClassroom")]
-        public ActionResult<Classroom> GetClassroom(int id)
+        public IActionResult GetClassroom(int id)
         {
-                return _provider.GetClassroom(id);
+            Classroom result = _provider.GetClassroom(id);
+            if (result == null)
+                return NotFound("Not found. There isn't any record with such an id: " + id);
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented);
+            return Ok(json);
         }
         //CHECKED
         [HttpPost("classrooms")]
@@ -105,18 +131,23 @@ namespace ClassroomManagementApi.Controllers
         }
         //CHECKED
         [HttpGet("educationalClassrooms", Name = "GetEducationalClassrooms")]
-        public ActionResult<List<EducationalClassroom>> GetEducationaClassrooms()
+        public IActionResult GetEducationaClassrooms()
         {
-            return _provider.GetEducationalClassrooms().ToList();
+            List<EducationalClassroom> result = _provider.GetEducationalClassrooms().ToList();
+            if (result == null)
+                return NotFound("No records here");
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented);
+            return Ok(json);
         }
         //CHECKED
         [HttpGet("educationalClassrooms/{id}")]
-        public ActionResult<EducationalClassroom> GetEducationalClassroom(int id)
+        public IActionResult GetEducationalClassroom(int id)
         {
-            EducationalClassroom sd = _provider.GetEducationalClassroom(id);
-            if (sd == null)
-                return NotFound();
-            return sd;
+            EducationalClassroom result = _provider.GetEducationalClassroom(id);
+            if (result == null)
+                return NotFound("Not found. There isn't any record with such an id: " + id);
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented);
+            return Ok(json);
         }
     }
 }

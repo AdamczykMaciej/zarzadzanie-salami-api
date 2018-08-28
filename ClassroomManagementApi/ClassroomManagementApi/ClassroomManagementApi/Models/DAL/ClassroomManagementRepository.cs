@@ -14,6 +14,7 @@ using ClassroomManagementApi.Models.DTO.ComputerDetails;
 
 namespace ClassroomManagement.Models
 {
+    // CONVENTION: Polish names - DTO classes' fields to map data from the database
     public class ClassroomManagementRepository : IClassroomManagementRepository
     {
         private readonly string connectionString;
@@ -400,15 +401,20 @@ namespace ClassroomManagement.Models
                 }
             }
         }
+
         public IEnumerable<Classroom> FilterClassrooms(FilteringObject f)
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
                 //TODO: finish if statements, we will be filtering by names later not ids
-                string query = @"EXEC zss_FilterSala_sel @IdBudynekA = @IdBuildingA, @IdBudynekC = @IdBuildingC, @IdBudynekG = @IdBuildingG, @IdFunkcja_sali = @IdClassroomFunction, @Klimatyzacja = @AirConditioning, @TV = @TV, @Projektor = @Projector, @TylkoSalaDydaktyczna = @OnlyEducationalClassrooms;";
+                string query = @"EXEC zss_FilterSala_sel @BudynekA = @BuildingA, @BudynekB = @BuildingB,
+                @BudynekC = @BuildingC, @IdFunkcja_sali = @IdClassroomFunction, @Klimatyzacja = @AirConditioning,
+                @TV = @TV, @Projektor = @Projector, @TylkoSalaDydaktyczna = @OnlyEducationalClassrooms,
+                @RozmiarSaliMin = @SizeMin, @RozmiarSaliMax = @SizeMax, @LiczbaMiejscMin = @PlacesMin, @LiczbaMiejscMax = @PlacesMax;";
                 try
                 {
-                     return connection.Query<EducationalClassroom>(query, new { IdBuildingA = f.IdBuildingA, IdBuildingC = f.IdBuildingC, IdBuildingG = f.IdBuildingG, IdClassroomFunction = f.IdClassroomFunction, AirConditioning = f.AirConditioning, TV = f.TV, Projector = f.Projector, OnlyEducationalClassrooms = f.OnlyEducationalClassrooms });
+                    // we return EducationalClassrooms because we want to get additional data for Classrooms which are EducationalClassrooms
+                     return connection.Query<EducationalClassroom>(query, new { BuildingA = f.BuildingA, BuildingB = f.BuildingB, BuildingC = f.BuildingC, IdClassroomFunction = f.IdClassroomFunction, AirConditioning = f.AirConditioning, TV = f.TV, Projector = f.Projector, OnlyEducationalClassrooms = f.OnlyEducationalClassrooms, SizeMin = f.sizeMin, SizeMax = f.sizeMax, PlacesMin = f.placesMin, PlacesMax = f.placesMax});
                 }
                 catch (InvalidOperationException e)
                 {

@@ -6,6 +6,7 @@ using ClassroomManagementApi.Models.DAL;
 using ClassroomManagementApi.Models.DTO.Basic;
 using ClassroomManagementApi.Models.DTO.ComputerDetails;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace ClassroomManagementApi.Controllers
 {
@@ -23,67 +24,94 @@ namespace ClassroomManagementApi.Controllers
 
         //CHECKED
         [HttpGet("computers")]
-        public ActionResult<List<Computer>> GetComputers()
+        public IActionResult GetComputers()
         {
-            return _provider.GetComputers().ToList();
+           List<Computer> result = _provider.GetComputers().ToList();
+            if (result == null)
+                return NotFound("No records found");
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented);
+            return Ok(json);
         }
         //CHECKED
         [HttpGet("computers/{id}")]
-        public ActionResult<Computer> GetComputer(int id)
+        public IActionResult GetComputer(int id)
         {
-            Computer c = _provider.GetComputer(id);
-            if (c == null)
-                return NotFound();
-            return c;
+            Computer result = _provider.GetComputer(id);
+            if (result == null)
+                return NotFound("Not found. There isn't any record with such an id: " + id);
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented);
+            return Ok(json);
         }
 
         //CHECKED
         [HttpGet("virtualMachines")]
-        public ActionResult<List<VirtualMachine>> GetVirtualMachines()
+        public IActionResult GetVirtualMachines()
         {
-            return _provider.GetVirtualMachines().ToList();
+            List<VirtualMachine> result = _provider.GetVirtualMachines().ToList();
+            if (result == null)
+                return NotFound("No records found");
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented);
+            return Ok(json);
         }
         //TODO: CHECK
         [HttpGet("virtualMachineComputers")]
-        public ActionResult<List<VirtualMachineComputer>> GetVirtualMachineComputers()
+        public IActionResult GetVirtualMachineComputers()
         {
-            return _provider.GetVirtualMachineComputers().ToList();
+            List<VirtualMachineComputer> result = _provider.GetVirtualMachineComputers().ToList();
+            if (result == null)
+                return NotFound("No records found");
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented);
+            return Ok(json);
         }
         //CHECKED
         [HttpGet("monitors")]
-        public ActionResult<List<Monitor>> GetMonitors()
+        public IActionResult GetMonitors()
         {
-            return _provider.GetMonitors().ToList();
+            List<Monitor> result = _provider.GetMonitors().ToList();
+            if (result == null)
+                return NotFound("No records found");
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented);
+            return Ok(json);
         }
         //CHECKED
         [HttpGet("software")]
-        public ActionResult<List<Software>> GetSoftware()
+        public IActionResult GetSoftware()
         {
-            return _provider.GetSoftware().ToList();
+            List<Software> result = _provider.GetSoftware().ToList();
+            if (result == null)
+                return NotFound("No records found");
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented);
+            return Ok(json);
         }
 
         [HttpGet("software/{id}")]
-        public ActionResult<Software> GetSoftware(int id)
+        public IActionResult GetSoftware(int id)
         {
-            Software s = _provider.GetSoftware(id);
-            if (s == null)
-                return NotFound();
-            return s;
+            Software result = _provider.GetSoftware(id);
+            if (result == null)
+                return NotFound("Not found. There isn't any record with such an id: " + id);
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented);
+            return Ok(json);
         }
         //CHECKED
         [HttpGet("computerSoftware")]
-        public ActionResult<List<ComputerSoftware>> GetComputerSoftware()
+        public IActionResult GetComputerSoftware()
         {
-            return _provider.GetComputerSoftware().ToList();
+            List<ComputerSoftware> result = _provider.GetComputerSoftware().ToList();
+            if (result == null)
+                return NotFound("No records found");
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented);
+            return Ok(json);
         }
 
         [HttpGet("computerDetails/{id}")]
-        public ActionResult<ComputerDetails> GetComputerDetails(int id)
+        public IActionResult GetComputerDetails(int id)
         {
-            ComputerDetails cd = _provider.GetComputerDetails(id);
-            if (cd == null)
-                return NotFound();
-            return cd;
+            ComputerDetails result = _provider.GetComputerDetails(id);
+            if (result == null)
+                return NotFound("Not found. There isn't any record with such an id: " + id);
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented);
+            return Ok(json);
         }
     }
 }
