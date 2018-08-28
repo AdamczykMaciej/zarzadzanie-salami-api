@@ -5,6 +5,7 @@
 -- =============================================
 
 -- IMPORTANT --
+-- mainly for deletion purposes
 -- IdRozkladSali conflict - Sala_RozkladSali
 ALTER TABLE dziekanat_hash.dbo.Sala
 	DROP CONSTRAINT Sala_RozkladSali;
