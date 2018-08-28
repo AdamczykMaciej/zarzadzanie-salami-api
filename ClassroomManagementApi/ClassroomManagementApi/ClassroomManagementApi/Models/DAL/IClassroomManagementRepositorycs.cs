@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ClassroomManagementApi.Models.DTO.Basic;
 
 namespace ClassroomManagementApi.Models.DAL
 {
@@ -35,5 +36,6 @@ namespace ClassroomManagementApi.Models.DAL
         void AddClassroom(Classroom s);
         IEnumerable<EducationalClassroom> GetEducationalClassrooms();
         EducationalClassroom GetEducationalClassroom(int id);
+        IEnumerable<VirtualMachineComputer> GetVirtualMachineComputers();
     }
 }

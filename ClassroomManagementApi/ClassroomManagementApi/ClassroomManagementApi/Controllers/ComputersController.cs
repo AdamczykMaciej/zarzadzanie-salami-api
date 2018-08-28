@@ -3,6 +3,7 @@ using System.Linq;
 using ClassroomManagement.Models;
 using ClassroomManagementApi.Models;
 using ClassroomManagementApi.Models.DAL;
+using ClassroomManagementApi.Models.DTO.Basic;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClassroomManagementApi.Controllers
@@ -40,6 +41,12 @@ namespace ClassroomManagementApi.Controllers
         public ActionResult<List<VirtualMachine>> GetVirtualMachines()
         {
             return _provider.GetVirtualMachines().ToList();
+        }
+        //TODO: CHECK
+        [HttpGet("computers")]
+        public ActionResult<List<VirtualMachineComputer>> GetVirtualMachineComputers()
+        {
+            return _provider.GetVirtualMachineComputers().ToList();
         }
         //CHECKED
         [HttpGet("monitors")]

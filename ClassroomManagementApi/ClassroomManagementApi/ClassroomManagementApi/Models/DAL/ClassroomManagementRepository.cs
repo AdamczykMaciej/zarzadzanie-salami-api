@@ -9,6 +9,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using ClassroomManagementApi.Models.DTO.Basic;
 
 namespace ClassroomManagement.Models
 {
@@ -44,8 +45,8 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    return null;
                 }
-                return null;
             }
         }
 
@@ -61,8 +62,8 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    return null;
                 }
-                return null;
             }
         }
 
@@ -104,8 +105,8 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    return null;
                 }
-                return null;
             }
         }
 
@@ -121,8 +122,8 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    return null;
                 }
-                return null;
             }
         }
 
@@ -138,8 +139,8 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    return null;
                 }
-                return null;
             }
         }
 
@@ -155,8 +156,8 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    return null;
                 }
-                return null;
             }
         }
 
@@ -172,8 +173,8 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    return null;
                 }
-                return null;
             }
         }
 
@@ -189,8 +190,8 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    return null;
                 }
-                return null;
             }
         }
 
@@ -206,8 +207,8 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
-                }
-                return null;
+                    return null;
+                }   
             }
         }
 
@@ -223,8 +224,8 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    return null;
                 }
-                return null;
             }
         }
 
@@ -240,8 +241,8 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    return null;
                 }
-                return null;
             }
         }
 
@@ -257,8 +258,8 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
-                }
-                return null;
+                    return null;
+                }   
             }
         }
 
@@ -274,8 +275,8 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    return null;
                 }
-                return null;
             }
         }
 
@@ -291,8 +292,8 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    return null;
                 }
-                return null;
             }
         }
 
@@ -308,8 +309,8 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
-                }
-                return null;
+                    return null;
+                }    
             }
         }
 
@@ -325,8 +326,8 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
-                }
-                return null;
+                    return null;
+                } 
             }
         }
 
@@ -342,8 +343,8 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
-                }
-                return null;
+                    return null;
+                } 
             }
         }
 
@@ -359,8 +360,8 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
-                }
-                return null;
+                    return null;
+                } 
             }
         }
 
@@ -376,8 +377,8 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
-                }
-                return null;
+                    return null;
+                }  
             }
         }
 
@@ -394,8 +395,8 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    return null;
                 }
-                return null;
             }
         }
         public IEnumerable<Classroom> FilterClassrooms(FilteringObject f)
@@ -411,8 +412,8 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
-                }
-                return null;
+                    return null;
+                }  
             }
         }
 
@@ -429,8 +430,8 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    return null;
                 }
-                return null;
             }
         }
 
@@ -485,8 +486,8 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    return null;
                 }
-                return null;
             }
         }
         //CHECKED
@@ -502,8 +503,25 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    return null;
                 }
-                return null;
+            }
+        }
+
+        public IEnumerable<VirtualMachineComputer> GetVirtualMachineComputers()
+        {
+            using (IDbConnection connection = new SqlConnection(connectionString))
+            {
+                const string query = @"Select * From MaszynaWirtualnaKomputer;";
+                try
+                {
+                    return connection.Query<VirtualMachineComputer>(query);
+                }
+                catch (InvalidOperationException e)
+                {
+                    Console.WriteLine(e.Message);
+                    return null;
+                }
             }
         }
     }
