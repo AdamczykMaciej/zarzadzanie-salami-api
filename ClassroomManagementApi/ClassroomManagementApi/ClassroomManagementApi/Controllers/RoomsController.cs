@@ -90,15 +90,6 @@ namespace ClassroomManagementApi.Controllers
             return result;
         }
 
-        public void MethodToTest()
-        {
-            var classrooms = this._provider.GetClassrooms();
-            foreach (Classroom x in classrooms)
-            {
-                Console.WriteLine(x.Nazwa_sali);
-            }
-        }
-
         [HttpGet("classrooms/{id}", Name = "GetClassroom")]
         public ActionResult<Classroom> GetClassroom(int id)
         {

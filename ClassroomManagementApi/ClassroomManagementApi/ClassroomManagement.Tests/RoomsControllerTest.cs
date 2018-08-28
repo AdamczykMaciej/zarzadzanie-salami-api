@@ -52,7 +52,6 @@ namespace ClassroomManagement.Tests
             Mock<IClassroomManagementRepository> mockRepository = new Mock<IClassroomManagementRepository>();
             mockRepository.Setup(x => x.GetClassrooms()).Returns(listOfClassrooms);
             var roomsController = new RoomsController(mockRepository.Object);
-            roomsController.MethodToTest();
             roomsController.Should().NotBeNull();
         }
     }
