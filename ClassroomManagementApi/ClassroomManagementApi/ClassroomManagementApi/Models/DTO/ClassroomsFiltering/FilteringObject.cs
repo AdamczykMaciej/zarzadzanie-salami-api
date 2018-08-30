@@ -15,9 +15,9 @@ namespace ClassroomManagementApi.Models.Filtering
         // we don't take into account a case that they'd like to see rooms just without air-conditioning.
         public bool AirConditioning { get; set; }
         public bool OnlyEducationalClassrooms { get; set; }
-        public int sizeMin { get; set; }
-        public int sizeMax { get; set; }
-        public int placesMin { get; set; }
-        public int placesMax { get; set; }
+        public int SizeMin { get; set; }
+        public int SizeMax { get; set; }
+        public int PlacesMin { get; set; }
+        public int PlacesMax { get; set; }
     }
 }

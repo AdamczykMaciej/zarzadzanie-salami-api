@@ -413,7 +413,7 @@ namespace ClassroomManagement.Models
                 try
                 {
                     // we return EducationalClassrooms because we want to get additional data for Classrooms which are EducationalClassrooms
-                     return connection.Query<EducationalClassroom>(query, new { BuildingA = f.BuildingA, BuildingB = f.BuildingB, BuildingC = f.BuildingC, IdClassroomFunction = f.IdClassroomFunction, AirConditioning = f.AirConditioning, TV = f.TV, Projector = f.Projector, OnlyEducationalClassrooms = f.OnlyEducationalClassrooms, SizeMin = f.sizeMin, SizeMax = f.sizeMax, PlacesMin = f.placesMin, PlacesMax = f.placesMax});
+                     return connection.Query<EducationalClassroom>(query, new { BuildingA = f.BuildingA, BuildingB = f.BuildingB, BuildingC = f.BuildingC, IdClassroomFunction = f.IdClassroomFunction, AirConditioning = f.AirConditioning, TV = f.TV, Projector = f.Projector, OnlyEducationalClassrooms = f.OnlyEducationalClassrooms, SizeMin = f.SizeMin, SizeMax = f.SizeMax, PlacesMin = f.PlacesMin, PlacesMax = f.PlacesMax});
                 }
                 catch (InvalidOperationException e)
                 {
@@ -544,8 +544,8 @@ namespace ClassroomManagement.Models
                     ComputerDetails cd = new ComputerDetails
                     {
                         ComputerInfo = connection.Query<Computer>(queryComputer, new { IdKomputer = id }).First(),
-                        VirtualMachines = connection.Query<VirtualMachine>(queryVirtualMachinesForComputer, new { IdKomputer = id })
-
+                        VirtualMachines = connection.Query<VirtualMachine>(queryVirtualMachinesForComputer, new { IdKomputer = id }),
+                        Software = connection.Query<Software>(querySoftware, new { IdKomputer = id })
                     };
                     return cd;
                 }
