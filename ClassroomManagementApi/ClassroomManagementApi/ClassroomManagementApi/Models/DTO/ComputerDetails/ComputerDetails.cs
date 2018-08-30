@@ -9,6 +9,7 @@ namespace ClassroomManagementApi.Models.DTO.ComputerDetails
     public class ComputerDetails
     {
         public Computer ComputerInfo { get; set; }
-        public IEnumerable<VirtualMachine> WirtualneMaszyny { get; set; }
+        public IEnumerable<VirtualMachine> VirtualMachines{ get; set; }
+        public IEnumerable<Software> Software { get; set; }
     }
 }

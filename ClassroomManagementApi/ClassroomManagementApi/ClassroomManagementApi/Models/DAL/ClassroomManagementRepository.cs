@@ -406,7 +406,6 @@ namespace ClassroomManagement.Models
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
-                //TODO: finish if statements, we will be filtering by names later not ids
                 string query = @"EXEC zss_FilterSala_sel @BudynekA = @BuildingA, @BudynekB = @BuildingB,
                 @BudynekC = @BuildingC, @IdFunkcja_sali = @IdClassroomFunction, @Klimatyzacja = @AirConditioning,
                 @TV = @TV, @Projektor = @Projector, @TylkoSalaDydaktyczna = @OnlyEducationalClassrooms,
@@ -447,10 +446,11 @@ namespace ClassroomManagement.Models
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
                 const string query = @"INSERT INTO dbo.Sala
-                (Nazwa_sali, Liczba_miejsc, Pow_m2, Uwagi, IdBudynek, Istnieje, IdFunkcja_sali, Poziom, Dostep_dla_niepelnosprawnych, Uzytkownik, Kolejnosc, IdRozkladSali, LiczbaKomputerow, IdKomputer, Klimatyzacja) VALUES (@Nazwa_sali, @Liczba_miejsc, @Pow_m2, @Uwagi, @IdBudynek, @Istnieje, @IdFunkcja_sali, @Poziom, @Dostep_dla_niepelnosprawnych, @Uzytkownik, @Kolejnosc, @IdRozkladSali, @LiczbaKomputerow, @IdKomputer, @Klimatyzacja);";
-                //TODO: delete queryOld
-                const string queryOld = @"INSERT INTO dbo.Sala
-                (Nazwa_sali, Liczba_miejsc, Pow_m2, Uwagi, IdBudynek, Istnieje, IdFunkcja_sali, Poziom, Dostep_dla_niepelnosprawnych, Uzytkownik, Kolejnosc) VALUES (@Nazwa_sali, @Liczba_miejsc, @Pow_m2, @Uwagi, @IdBudynek, @Istnieje, @IdFunkcja_sali, @Poziom, @Dostep_dla_niepelnosprawnych, @Uzytkownik, @Kolejnosc);";
+                (Nazwa_sali, Liczba_miejsc, Pow_m2, Uwagi, IdBudynek, Istnieje, IdFunkcja_sali, Poziom,
+                Dostep_dla_niepelnosprawnych, Uzytkownik, Kolejnosc, IdRozkladSali, LiczbaKomputerow, IdKomputer, Klimatyzacja) 
+                VALUES (@Nazwa_sali, @Liczba_miejsc, @Pow_m2, @Uwagi, @IdBudynek, @Istnieje,
+                @IdFunkcja_sali, @Poziom, @Dostep_dla_niepelnosprawnych, @Uzytkownik,
+                @Kolejnosc, @IdRozkladSali, @LiczbaKomputerow, @IdKomputer, @Klimatyzacja);";
                 try
                 {
                     connection.Execute(query,
@@ -536,14 +536,16 @@ namespace ClassroomManagement.Models
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
-                const string queryVirtualMachinesForComputer = @"EXEC zss_MaszynyWirtualneDlaKomputer_sel @IdKomputer = @IdKomputer ";
-                const string queryComputer = @"EXEC zss_Komputer_sel @IdKomputer = @IdKomputer";
+                const string queryVirtualMachinesForComputer = @"EXEC zss_MaszynyWirtualneDlaKomputer_sel @IdKomputer = @IdKomputer;";
+                const string queryComputer = @"EXEC zss_Komputer_sel @IdKomputer = @IdKomputer;";
+                const string querySoftware = @"EXEC zss_OprogramowanieDlaKomputer_sel @IdKomputer = @IdKomputer;";
                 try
                 {
                     ComputerDetails cd = new ComputerDetails
                     {
                         ComputerInfo = connection.Query<Computer>(queryComputer, new { IdKomputer = id }).First(),
-                        WirtualneMaszyny = connection.Query<VirtualMachine>(queryVirtualMachinesForComputer, new { IdKomputer = id })
+                        VirtualMachines = connection.Query<VirtualMachine>(queryVirtualMachinesForComputer, new { IdKomputer = id })
+
                     };
                     return cd;
                 }
