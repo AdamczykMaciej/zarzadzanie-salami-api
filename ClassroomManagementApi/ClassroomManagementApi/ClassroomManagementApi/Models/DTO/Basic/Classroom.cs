@@ -17,13 +17,13 @@ namespace ClassroomManagementApi.Models
         public string Uwagi { get; set; }
         [DataMember]
         public int IdBudynek { get; set; }
-        [DataMember]
+        [DataMember(Name = "Nazwa budynku")]
         public string NazwaBudynku { get; set; }
         [DataMember]
         public bool Istnieje { get; set; }
         [DataMember(Name = "IdFunkcjaSali")]
         public int IdFunkcja_sali { get; set; }
-        [DataMember(Name = "FunkcjaSali")]
+        [DataMember(Name = "Funkcja sali")]
         public string Funkcja_sali { get; set; }
         [DataMember]
         public string Poziom { get; set; }
@@ -35,9 +35,9 @@ namespace ClassroomManagementApi.Models
         public int Kolejnosc { get; set; }
         [DataMember]
         public int IdRozkladSali { get; set; }
-        [DataMember]
+        [DataMember(Name = "Rozkład sali")]
         public string NazwaRozkladuSali { get; set; }
-        [DataMember]
+        [DataMember(Name = "Liczba komputerów")]
         public int LiczbaKomputerow { get; set; }
         [DataMember]
         public int IdKomputer { get; set; }

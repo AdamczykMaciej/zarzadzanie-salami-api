@@ -541,9 +541,15 @@ namespace ClassroomManagement.Models
                 const string querySoftware = @"EXEC zss_OprogramowanieDlaKomputer_sel @IdKomputer = @IdKomputer;";
                 try
                 {
+                    Computer c = connection.Query<Computer>(queryComputer, new { IdKomputer = id }).First();
                     ComputerDetails cd = new ComputerDetails
                     {
-                        ComputerInfo = connection.Query<Computer>(queryComputer, new { IdKomputer = id }).First(),
+                        IdKomputer = c.IdKomputer,
+                        IdMonitor = c.IdMonitor,
+                        RozmiarMonitora = c.RozmiarMonitora,
+                        Procesor = c.Procesor,
+                        RAM = c.RAM,
+                        KartaGraficzna = c.KartaGraficzna,
                         VirtualMachines = connection.Query<VirtualMachine>(queryVirtualMachinesForComputer, new { IdKomputer = id }),
                         Software = connection.Query<Software>(querySoftware, new { IdKomputer = id })
                     };
@@ -554,6 +560,56 @@ namespace ClassroomManagement.Models
                     Console.WriteLine(e.Message);
                     return null;
                 }
+            }
+        }
+
+        public void AddComputer(ComputerDetails c)
+        {
+            using (IDbConnection connection = new SqlConnection(connectionString))
+            {
+               
+                try
+                {
+                    //Queries
+                    string addComputer = @"EXEC zss_AddKomputer_ins @IdMonitor = @IdMonitor, @Procesor = @Procesor,
+                                        @RAM = @RAM, @KartaGraficzna = @KartaGraficzna;";
+
+                    string addVirtualMachinesForComputer = @"INSERT INTO dbo.MaszynaWirtualnaKomputer
+                    (IdKomputer, IdMaszynaWirtualna) 
+                    VALUES (@IdKomputer, @IdMaszynaWirtualna);";
+
+                    string addSoftwareForComputer = @"INSERT INTO dbo.OprogramowanieKomputerow
+                    (IdKomputer, IdOprogramowanie) 
+                    VALUES (@IdKomputer, @IdOprogramowanie);";
+
+                    // we need to get IdMonitor from the db because we get from FrontEnd just RozmiarMonitora, no IdMonitor.
+                    string getIdMonitor = @"Select IdMonitor From dbo.Monitor Where RozmiarMonitora = @RozmiarMonitora;";
+                    int idMonitor = connection.Query<Monitor>(getIdMonitor, new { RozmiarMonitora = c.RozmiarMonitora}).First().IdMonitor;
+
+                    int idKomputer = connection.Query<Computer>(addComputer,
+                        new
+                        {
+                            idMonitor,
+                            c.Procesor,
+                            c.RAM,
+                            c.KartaGraficzna
+                        }).First().IdKomputer;
+
+                    foreach (var item in c.VirtualMachines)
+                    {
+                        connection.Execute(addVirtualMachinesForComputer, new {IdKomputer = idKomputer, IdMaszynaWirtualna = item.IdMaszynaWirtualna });
+                    }
+
+                    foreach (var item in c.Software)
+                    {
+                        connection.Execute(addSoftwareForComputer, new { IdKomputer = idKomputer, IdOprogramowanie = item.IdOprogramowanie });
+                    }
+                }
+                catch (InvalidOperationException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+
             }
         }
     }

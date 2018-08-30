@@ -33,7 +33,7 @@ namespace ClassroomManagementApi.Controllers
             return Ok(json);
         }
         //CHECKED
-        [HttpGet("computers/{id}")]
+        [HttpGet("computers/{id}", Name = "GetComputer")]
         public IActionResult GetComputer(int id)
         {
             Computer result = _provider.GetComputer(id);
@@ -41,6 +41,14 @@ namespace ClassroomManagementApi.Controllers
                 return NotFound("Not found. There isn't any record with such an id: " + id);
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
             return Ok(json);
+        }
+
+        [HttpPost("computers")]
+        public IActionResult AddComputer([FromBody] ComputerDetails c)
+        {
+            _provider.AddComputer(c);
+
+            return CreatedAtRoute("GetComputer", new { id = c.IdKomputer }, c);
         }
 
         //CHECKED

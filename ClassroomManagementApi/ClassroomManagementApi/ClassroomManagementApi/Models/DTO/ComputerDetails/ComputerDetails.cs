@@ -8,10 +8,8 @@ using System.Threading.Tasks;
 namespace ClassroomManagementApi.Models.DTO.ComputerDetails
 {
     [DataContract]
-    public class ComputerDetails
+    public class ComputerDetails : Computer
     {
-        [DataMember(Name = "Informacje o komputerze")]
-        public Computer ComputerInfo { get; set; }
         [DataMember(Name = "Wirtualne maszyny")]
         public IEnumerable<VirtualMachine> VirtualMachines{ get; set; }
         [DataMember(Name = "Oprogramowanie")]
