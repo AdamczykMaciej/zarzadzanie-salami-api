@@ -69,32 +69,6 @@ namespace ClassroomManagement.Models
             }
         }
 
-        //TODO: No records in Campus so I am not including Campus column here
-        //TODO: Delete it not needed
-        public void AddBuilding(Building building)
-        {
-            using (IDbConnection connection = new SqlConnection(connectionString))
-            {
-                const string query = @"INSERT INTO Budynek (Nazwa, IdMiasto, Adres_budynku, Opis, Istnieje) VALUES (@Nazwa, @IdMiasto, @Adres_budynku, @Opis, @Istnieje);";
-                try
-                {
-                    connection.Execute(query,
-                        new
-                        {
-                            building.Nazwa,
-                            building.IdMiasto,
-                            building.Adres_budynku,
-                            building.Opis,
-                            building.Istnieje,
-                        });
-                }
-                catch (InvalidOperationException e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-            }
-        }
-
         public IEnumerable<ClassroomFunction> GetClassroomFunctions()
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
@@ -566,14 +540,14 @@ namespace ClassroomManagement.Models
         public void AddComputer(ComputerDetails c)
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
-            {
-               
+            { 
                 try
                 {
                     //Queries
                     string addComputer = @"EXEC zss_AddKomputer_ins @IdMonitor = @IdMonitor, @Procesor = @Procesor,
                                         @RAM = @RAM, @KartaGraficzna = @KartaGraficzna;";
 
+                    // TODO: procedures
                     string addVirtualMachinesForComputer = @"INSERT INTO dbo.MaszynaWirtualnaKomputer
                     (IdKomputer, IdMaszynaWirtualna) 
                     VALUES (@IdKomputer, @IdMaszynaWirtualna);";
@@ -611,6 +585,12 @@ namespace ClassroomManagement.Models
                 }
 
             }
+        }
+        // TODO: finish Update
+        public void UpdateComputer(ComputerDetails c)
+        {
+            string query = @"Update Table set IdMonitor = @IdMonitor, Procesor = @Procesor, RAM = @RAM, KartaGraficzna = @KartaGraficzna
+                            Where IdKomputer = @IdKomputer;";
         }
     }
 }
