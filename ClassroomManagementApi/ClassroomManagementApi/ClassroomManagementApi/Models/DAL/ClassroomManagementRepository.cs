@@ -184,7 +184,7 @@ namespace ClassroomManagement.Models
                 {
                     Console.WriteLine(e.Message);
                     return null;
-                }   
+                }
             }
         }
 
@@ -235,7 +235,7 @@ namespace ClassroomManagement.Models
                 {
                     Console.WriteLine(e.Message);
                     return null;
-                }   
+                }
             }
         }
 
@@ -286,7 +286,7 @@ namespace ClassroomManagement.Models
                 {
                     Console.WriteLine(e.Message);
                     return null;
-                }    
+                }
             }
         }
 
@@ -303,7 +303,7 @@ namespace ClassroomManagement.Models
                 {
                     Console.WriteLine(e.Message);
                     return null;
-                } 
+                }
             }
         }
 
@@ -320,7 +320,7 @@ namespace ClassroomManagement.Models
                 {
                     Console.WriteLine(e.Message);
                     return null;
-                } 
+                }
             }
         }
 
@@ -337,7 +337,7 @@ namespace ClassroomManagement.Models
                 {
                     Console.WriteLine(e.Message);
                     return null;
-                } 
+                }
             }
         }
 
@@ -354,7 +354,7 @@ namespace ClassroomManagement.Models
                 {
                     Console.WriteLine(e.Message);
                     return null;
-                }  
+                }
             }
         }
 
@@ -375,7 +375,6 @@ namespace ClassroomManagement.Models
                 }
             }
         }
-
         public IEnumerable<Classroom> FilterClassrooms(FilteringObject f)
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
@@ -387,13 +386,13 @@ namespace ClassroomManagement.Models
                 try
                 {
                     // we return EducationalClassrooms because we want to get additional data for Classrooms which are EducationalClassrooms
-                     return connection.Query<EducationalClassroom>(query, new { BuildingA = f.BuildingA, BuildingB = f.BuildingB, BuildingC = f.BuildingC, IdClassroomFunction = f.IdClassroomFunction, AirConditioning = f.AirConditioning, TV = f.TV, Projector = f.Projector, OnlyEducationalClassrooms = f.OnlyEducationalClassrooms, SizeMin = f.SizeMin, SizeMax = f.SizeMax, PlacesMin = f.PlacesMin, PlacesMax = f.PlacesMax});
+                    return connection.Query<EducationalClassroom>(query, new { BuildingA = f.BuildingA, BuildingB = f.BuildingB, BuildingC = f.BuildingC, IdClassroomFunction = f.IdClassroomFunction, AirConditioning = f.AirConditioning, TV = f.TV, Projector = f.Projector, OnlyEducationalClassrooms = f.OnlyEducationalClassrooms, SizeMin = f.SizeMin, SizeMax = f.SizeMax, PlacesMin = f.PlacesMin, PlacesMax = f.PlacesMax });
                 }
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
                     return null;
-                }  
+                }
             }
         }
 
@@ -471,7 +470,7 @@ namespace ClassroomManagement.Models
                 }
             }
         }
- 
+
         public EducationalClassroom GetEducationalClassroom(int id)
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
@@ -540,7 +539,7 @@ namespace ClassroomManagement.Models
         public void AddComputer(ComputerDetails c)
         {
             using (IDbConnection connection = new SqlConnection(connectionString))
-            { 
+            {
                 try
                 {
                     //Queries
@@ -557,13 +556,13 @@ namespace ClassroomManagement.Models
                     VALUES (@IdKomputer, @IdOprogramowanie);";
 
                     // we need to get IdMonitor from the db because we get from FrontEnd just RozmiarMonitora, no IdMonitor.
-                    string getIdMonitor = @"Select IdMonitor From dbo.Monitor Where RozmiarMonitora = @RozmiarMonitora;";
-                    int idMonitor = connection.Query<Monitor>(getIdMonitor, new { RozmiarMonitora = c.RozmiarMonitora}).First().IdMonitor;
+                    //string getIdMonitor = @"Select IdMonitor From dbo.Monitor Where RozmiarMonitora = @RozmiarMonitora;";
+                    //int idMonitor = connection.Query<Monitor>(getIdMonitor, new { RozmiarMonitora = c.RozmiarMonitora }).First().IdMonitor;
 
                     int idKomputer = connection.Query<Computer>(addComputer,
                         new
                         {
-                            idMonitor,
+                            c.IdMonitor,
                             c.Procesor,
                             c.RAM,
                             c.KartaGraficzna
@@ -571,7 +570,7 @@ namespace ClassroomManagement.Models
 
                     foreach (var item in c.VirtualMachines)
                     {
-                        connection.Execute(addVirtualMachinesForComputer, new {IdKomputer = idKomputer, IdMaszynaWirtualna = item.IdMaszynaWirtualna });
+                        connection.Execute(addVirtualMachinesForComputer, new { IdKomputer = idKomputer, IdMaszynaWirtualna = item.IdMaszynaWirtualna });
                     }
 
                     foreach (var item in c.Software)
@@ -583,14 +582,82 @@ namespace ClassroomManagement.Models
                 {
                     Console.WriteLine(e.Message);
                 }
-
             }
         }
         // TODO: finish Update
-        public void UpdateComputer(ComputerDetails c)
+        public void EditComputer(ComputerDetails c)
         {
-            string query = @"Update Table set IdMonitor = @IdMonitor, Procesor = @Procesor, RAM = @RAM, KartaGraficzna = @KartaGraficzna
+
+            using (IDbConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    // FIRST: update the computer
+                    string updateComputer = @"Update dbo.Komputer set IdMonitor = @IdMonitor, Procesor = @Procesor, RAM = @RAM, KartaGraficzna = @KartaGraficzna
                             Where IdKomputer = @IdKomputer;";
+                    connection.Execute(updateComputer, new { IdMonitor = c.IdMonitor, Procesor = c.Procesor, RAM = c.RAM, KartaGraficzna = c.KartaGraficzna, IdKomputer = c.IdKomputer });
+
+                    // SECOND: we delete all virtual machines that weren't chosen during the edit of the computer
+                    // we create a temp table to use it later as a parameter for our zss_DeleteMaszynaWirtualnaKomputer_del stored procedure
+                    DataTable virtualMachines = new DataTable();
+                    virtualMachines.Columns.Add("IdMaszynaWirtualna", typeof(int));
+                    virtualMachines.Columns.Add("Nazwa", typeof(string));
+
+                    foreach (var item in c.VirtualMachines)
+                    {
+                        virtualMachines.Rows.Add(item.IdMaszynaWirtualna,item.Nazwa);
+                    }
+                    
+                    string deleteVirtualMachineComputer = @"EXEC zss_DeleteMaszynaWirtualnaKomputer_del @IdKomputer = @IdKomputer, @MaszynyWirtualne = @MaszynyWirtualne;";
+                    connection.Execute(deleteVirtualMachineComputer, new { IdKomputer = c.IdKomputer, MaszynyWirtualne = virtualMachines.AsTableValuedParameter("dbo.MaszynaWirtualnaType")});
+
+                    // THIRD: we delete all software that wasn't chosen during the edit of the computer
+                    // we create a temp table to use it later as a parameter for our zss_DeleteOprogramowanieKomputerow_del stored procedure
+
+                    DataTable software = new DataTable();
+                    software.Columns.Add("IdOprogramowanie", typeof(int));
+                    software.Columns.Add("Nazwa", typeof(string));
+
+                    foreach (var item in c.Software)
+                    {
+                        software.Rows.Add(item.IdOprogramowanie, item.Nazwa);
+                    }
+
+                    string deleteComputerSoftware = @"EXEC zss_DeleteOprogramowanieKomputerow_del @IdKomputer = @IdKomputer, @Oprogramowanie = @Oprogramowanie";
+                    connection.Execute(deleteComputerSoftware, new { IdKomputer = c.IdKomputer, Oprogramowanie = software.AsTableValuedParameter("dbo.OprogramowanieType")});
+
+                    // FOURTH: We add missing virtual machines
+                    string addVirtualMachinesForComputer = @"IF NOT EXISTS( Select IdKomputer, IdMaszynaWirtualna
+                    FROM dbo.MaszynaWirtualnaKomputer
+                    WHERE IdKomputer = @IdKomputer AND IdMaszynaWirtualna = @IdMaszynaWirtualna)
+                    INSERT INTO dbo.MaszynaWirtualnaKomputer
+                    (IdKomputer, IdMaszynaWirtualna) 
+                    VALUES (@IdKomputer, @IdMaszynaWirtualna);";
+
+                    foreach (var item in c.VirtualMachines)
+                    {
+                        connection.Execute(addVirtualMachinesForComputer, new { IdKomputer = c.IdKomputer, IdMaszynaWirtualna = item.IdMaszynaWirtualna });
+                    }
+
+                    // FIFTH: We add missing software
+                    string addSoftwareForComputer = @"BEGIN IF NOT EXISTS( Select IdKomputer, IdOprogramowanie
+                    FROM dbo.OprogramowanieKomputerow
+                    WHERE IdKomputer = @IdKomputer AND IdOprogramowanie = @IdOprogramowanie)
+                    BEGIN
+                    INSERT INTO dbo.OprogramowanieKomputerow
+                    (IdKomputer, IdOprogramowanie) 
+                    VALUES (@IdKomputer, @IdOprogramowanie) END END;";
+
+                    foreach (var item in c.Software)
+                    {
+                        connection.Execute(addSoftwareForComputer, new { IdKomputer = c.IdKomputer, IdOprogramowanie = item.IdOprogramowanie });
+                    }
+                }
+                catch (InvalidOperationException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
         }
     }
 }

@@ -48,6 +48,14 @@ namespace ClassroomManagementApi.Controllers
         {
             _provider.AddComputer(c);
 
+            return CreatedAtRoute("GetComputerDetails", new { id = c.IdKomputer }, c);
+        }
+
+        [HttpPut("computers")]
+        public IActionResult EditComputer([FromBody] ComputerDetails c)
+        {
+            _provider.EditComputer(c);
+
             return CreatedAtRoute("GetComputer", new { id = c.IdKomputer }, c);
         }
 
@@ -112,7 +120,7 @@ namespace ClassroomManagementApi.Controllers
             return Ok(json);
         }
 
-        [HttpGet("computerDetails/{id}")]
+        [HttpGet("computerDetails/{id}", Name = "GetComputerDetails")]
         public IActionResult GetComputerDetails(int id)
         {
             ComputerDetails result = _provider.GetComputerDetails(id);
@@ -121,5 +129,7 @@ namespace ClassroomManagementApi.Controllers
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
             return Ok(json);
         }
+
+
     }
 }
