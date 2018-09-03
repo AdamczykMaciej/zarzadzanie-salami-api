@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using ClassroomManagementApi.Models.DTO.Basic;
 using ClassroomManagementApi.Models.DTO.ComputerDetails;
+using System.Threading.Tasks;
 
 namespace ClassroomManagement.Models
 {
@@ -35,26 +36,21 @@ namespace ClassroomManagement.Models
             this.connectionString = connectionString;
         }
 
-        public IEnumerable<Building> GetBuildings()
+        public async Task<IEnumerable<Building>> GetBuildings()
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            IEnumerable<Building> buildings;
+            using (var connection = new SqlConnection(connectionString))
             {
+                await connection.OpenAsync();
                 const string query = @"EXEC zss_BudynekAll_sel;";
-                try
-                {
-                    return connection.Query<Building>(query);
-                }
-                catch (InvalidOperationException e)
-                {
-                    Console.WriteLine(e.Message);
-                    return null;
-                }
+                buildings = await connection.QueryAsync<Building>(query);
             }
+            return buildings;
         }
 
         public Building GetBuilding(int id)
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 const string query = @"EXEC zss_Budynek_sel @IdBudynek = @IdBudynek;";
                 try
@@ -64,6 +60,7 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    connection.Close();
                     return null;
                 }
             }
@@ -71,7 +68,7 @@ namespace ClassroomManagement.Models
 
         public IEnumerable<ClassroomFunction> GetClassroomFunctions()
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 const string query = @"EXEC zss_FunkcjaSaliAll_sel;";
                 try
@@ -81,6 +78,7 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    connection.Close();
                     return null;
                 }
             }
@@ -88,7 +86,7 @@ namespace ClassroomManagement.Models
 
         public ClassroomFunction GetClassroomFunction(int id)
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 const string query = @"EXEC zss_FunkcjaSali_sel @IdFunkcja_sali = @IdFunkcja_sali;";
                 try
@@ -98,6 +96,7 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    connection.Close();
                     return null;
                 }
             }
@@ -105,7 +104,7 @@ namespace ClassroomManagement.Models
 
         public IEnumerable<Campus> GetCampus()
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 const string query = @"SELECT * FROM Kampus;";
                 try
@@ -115,6 +114,7 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    connection.Close();
                     return null;
                 }
             }
@@ -122,7 +122,7 @@ namespace ClassroomManagement.Models
 
         public Campus GetCampus(int id)
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 const string query = @"EXEC zss_Kampus_sel @IdKampus = @IdKampus;";
                 try
@@ -132,6 +132,7 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    connection.Close();
                     return null;
                 }
             }
@@ -139,7 +140,7 @@ namespace ClassroomManagement.Models
 
         public IEnumerable<VirtualMachine> GetVirtualMachines()
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 const string query = @"SELECT * FROM MaszynaWirtualna;";
                 try
@@ -149,6 +150,7 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    connection.Close();
                     return null;
                 }
             }
@@ -156,7 +158,7 @@ namespace ClassroomManagement.Models
 
         public VirtualMachine GetVirtualMachine(int id)
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 const string query = @"SELECT * FROM MaszynaWirtualna WHERE IdMaszynaWirtualna = @IdMaszynaWirtualna;";
                 try
@@ -166,6 +168,7 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    connection.Close();
                     return null;
                 }
             }
@@ -173,7 +176,7 @@ namespace ClassroomManagement.Models
 
         public IEnumerable<Monitor> GetMonitors()
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 const string query = @"SELECT * FROM Monitor;";
                 try
@@ -183,6 +186,7 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    connection.Close();
                     return null;
                 }
             }
@@ -190,7 +194,7 @@ namespace ClassroomManagement.Models
 
         public Monitor GetMonitor(int id)
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 const string query = @"SELECT * FROM Monitor WHERE IdMonitor = @IdMonitor;";
                 try
@@ -200,6 +204,7 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    connection.Close();
                     return null;
                 }
             }
@@ -207,7 +212,7 @@ namespace ClassroomManagement.Models
 
         public IEnumerable<Software> GetSoftware()
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 const string query = @"EXEC zss_OprogramowanieAll_sel;";
                 try
@@ -217,6 +222,7 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    connection.Close();
                     return null;
                 }
             }
@@ -224,7 +230,7 @@ namespace ClassroomManagement.Models
 
         public Software GetSoftware(int id)
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 const string query = @"EXEC zss_Oprogramowanie_sel @IdOprogramowanie;";
                 try
@@ -234,6 +240,7 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    connection.Close();
                     return null;
                 }
             }
@@ -241,7 +248,7 @@ namespace ClassroomManagement.Models
 
         public IEnumerable<ComputerSoftware> GetComputerSoftware()
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 const string query = @"SELECT * FROM OprogramowanieKomputerow;";
                 try
@@ -251,6 +258,7 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    connection.Close();
                     return null;
                 }
             }
@@ -258,7 +266,7 @@ namespace ClassroomManagement.Models
 
         public IEnumerable<ComputerSoftware> GetSoftwareForComputer(int id)
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 const string query = @"SELECT * FROM OprogramowanieKomputerow WHERE IdKomputer = @IdKomputer;";
                 try
@@ -268,6 +276,7 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    connection.Close();
                     return null;
                 }
             }
@@ -275,7 +284,7 @@ namespace ClassroomManagement.Models
 
         public IEnumerable<ComputerSoftware> GetComputersForSoftware(int id)
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 const string query = @"SELECT * FROM OprogramowanieKomputerow WHERE IdOprogramowanie = @IdOprogramowanie;";
                 try
@@ -285,6 +294,7 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    connection.Close();
                     return null;
                 }
             }
@@ -292,7 +302,7 @@ namespace ClassroomManagement.Models
 
         public IEnumerable<Computer> GetComputers()
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 const string query = @"EXEC zss_KomputerAll_sel;";
                 try
@@ -302,6 +312,7 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    connection.Close();
                     return null;
                 }
             }
@@ -309,7 +320,7 @@ namespace ClassroomManagement.Models
 
         public Computer GetComputer(int id)
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 const string query = @"EXEC zss_Komputer_sel @IdKomputer;";
                 try
@@ -319,6 +330,7 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    connection.Close();
                     return null;
                 }
             }
@@ -326,7 +338,7 @@ namespace ClassroomManagement.Models
 
         public IEnumerable<ClassroomStructure> GetClassroomStructures()
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 const string query = @"SELECT * FROM RozkladSali;";
                 try
@@ -336,6 +348,7 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    connection.Close();
                     return null;
                 }
             }
@@ -343,7 +356,7 @@ namespace ClassroomManagement.Models
 
         public ClassroomStructure GetClassroomStructure(int id)
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 const string query = @"SELECT * FROM RozkladSali WHERE IdRozkladSali = @IdRozkladSali;";
                 try
@@ -353,6 +366,7 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    connection.Close();
                     return null;
                 }
             }
@@ -360,7 +374,7 @@ namespace ClassroomManagement.Models
 
         public IEnumerable<Classroom> GetClassrooms()
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 const string query = @"EXEC zss_SalaAll_sel;";
                 try
@@ -371,13 +385,15 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    connection.Close();
                     return null;
                 }
             }
         }
+
         public IEnumerable<Classroom> FilterClassrooms(FilteringObject f)
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 string query = @"EXEC zss_FilterSala_sel @BudynekA = @BuildingA, @BudynekB = @BuildingB,
                 @BudynekC = @BuildingC, @Klimatyzacja = @AirConditioning,
@@ -391,6 +407,7 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    connection.Close();
                     return null;
                 }
             }
@@ -398,7 +415,7 @@ namespace ClassroomManagement.Models
 
         public Classroom GetClassroom(int id)
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 const string query = @"EXEC zss_Sala_sel @IdSala = @IdSala;";
 
@@ -409,6 +426,7 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    connection.Close();
                     return null;
                 }
             }
@@ -416,7 +434,7 @@ namespace ClassroomManagement.Models
 
         public void AddClassroom(Classroom s)
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 const string query = @"INSERT INTO dbo.Sala
                 (Nazwa_sali, Liczba_miejsc, Pow_m2, Uwagi, IdBudynek, Istnieje, IdFunkcja_sali, Poziom,
@@ -449,6 +467,7 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    connection.Close();
                 }
 
             }
@@ -456,7 +475,7 @@ namespace ClassroomManagement.Models
 
         public IEnumerable<EducationalClassroom> GetEducationalClassrooms()
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 const string query = @"EXEC zss_SalaDydaktycznaAll_sel;";
                 try
@@ -466,6 +485,7 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    connection.Close();
                     return null;
                 }
             }
@@ -473,7 +493,7 @@ namespace ClassroomManagement.Models
 
         public EducationalClassroom GetEducationalClassroom(int id)
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 const string query = @"EXEC zss_SalaDydaktyczna_sel @IdSala = @IdSala;";
                 try
@@ -483,6 +503,7 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    connection.Close();
                     return null;
                 }
             }
@@ -490,7 +511,7 @@ namespace ClassroomManagement.Models
         //TODO: create procedures instead of select statements (no *)
         public IEnumerable<VirtualMachineComputer> GetVirtualMachineComputers()
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 const string query = @"Select * From MaszynaWirtualnaKomputer;";
                 try
@@ -500,6 +521,7 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    connection.Close();
                     return null;
                 }
             }
@@ -507,7 +529,7 @@ namespace ClassroomManagement.Models
 
         public ComputerDetails GetComputerDetails(int id)
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 const string queryVirtualMachinesForComputer = @"EXEC zss_MaszynyWirtualneDlaKomputer_sel @IdKomputer = @IdKomputer;";
                 const string queryComputer = @"EXEC zss_Komputer_sel @IdKomputer = @IdKomputer;";
@@ -531,6 +553,7 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    connection.Close();
                     return null;
                 }
             }
@@ -538,7 +561,7 @@ namespace ClassroomManagement.Models
 
         public void AddComputer(ComputerDetails c)
         {
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 try
                 {
@@ -581,6 +604,7 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    connection.Close();
                 }
             }
         }
@@ -588,7 +612,7 @@ namespace ClassroomManagement.Models
         public void EditComputer(ComputerDetails c)
         {
 
-            using (IDbConnection connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 try
                 {
@@ -656,8 +680,14 @@ namespace ClassroomManagement.Models
                 catch (InvalidOperationException e)
                 {
                     Console.WriteLine(e.Message);
+                    connection.Close();
                 }
             }
+        }
+
+        public IEnumerable<Floor> GetFloors()
+        {
+          
         }
     }
 }

@@ -7,6 +7,7 @@ using ClassroomManagementApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace ClassroomManagementApi.Controllers
 {
@@ -23,9 +24,9 @@ namespace ClassroomManagementApi.Controllers
 
         //CHECKED
         [HttpGet("buildings")]
-        public ActionResult GetBuildings()
+        public Task<IActionResult> GetBuildings()
         {
-            List<Building> result = _provider.GetBuildings().ToList();
+            var result = _provider.GetBuildings();
             if (result == null)
                 return NotFound("No records here");
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);

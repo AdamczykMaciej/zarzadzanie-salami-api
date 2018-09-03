@@ -12,7 +12,7 @@ namespace ClassroomManagementApi.Models.DAL
     public interface IClassroomManagementRepository
     {
         //TODO: Remove unnecessary methods
-        IEnumerable<Building> GetBuildings();
+        Task<IEnumerable<Building>> GetBuildings();
         Building GetBuilding(int id);
         IEnumerable<ClassroomFunction> GetClassroomFunctions();
         ClassroomFunction GetClassroomFunction(int id);
@@ -41,5 +41,6 @@ namespace ClassroomManagementApi.Models.DAL
         EducationalClassroom GetEducationalClassroom(int id);
         IEnumerable<VirtualMachineComputer> GetVirtualMachineComputers();
         ComputerDetails GetComputerDetails(int id);
+        IEnumerable<Floor> GetFloors();
     }
 }
