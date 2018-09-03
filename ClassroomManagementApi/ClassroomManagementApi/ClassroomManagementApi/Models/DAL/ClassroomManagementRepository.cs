@@ -380,13 +380,13 @@ namespace ClassroomManagement.Models
             using (IDbConnection connection = new SqlConnection(connectionString))
             {
                 string query = @"EXEC zss_FilterSala_sel @BudynekA = @BuildingA, @BudynekB = @BuildingB,
-                @BudynekC = @BuildingC, @IdFunkcja_sali = @IdClassroomFunction, @Klimatyzacja = @AirConditioning,
+                @BudynekC = @BuildingC, @Klimatyzacja = @AirConditioning,
                 @TV = @TV, @Projektor = @Projector, @TylkoSalaDydaktyczna = @OnlyEducationalClassrooms,
                 @RozmiarSaliMin = @SizeMin, @RozmiarSaliMax = @SizeMax, @LiczbaMiejscMin = @PlacesMin, @LiczbaMiejscMax = @PlacesMax;";
                 try
                 {
                     // we return EducationalClassrooms because we want to get additional data for Classrooms which are EducationalClassrooms
-                    return connection.Query<EducationalClassroom>(query, new { BuildingA = f.BuildingA, BuildingB = f.BuildingB, BuildingC = f.BuildingC, IdClassroomFunction = f.IdClassroomFunction, AirConditioning = f.AirConditioning, TV = f.TV, Projector = f.Projector, OnlyEducationalClassrooms = f.OnlyEducationalClassrooms, SizeMin = f.SizeMin, SizeMax = f.SizeMax, PlacesMin = f.PlacesMin, PlacesMax = f.PlacesMax });
+                    return connection.Query<EducationalClassroom>(query, new { BuildingA = f.BuildingA, BuildingB = f.BuildingB, BuildingC = f.BuildingC, AirConditioning = f.AirConditioning, TV = f.TV, Projector = f.Projector, OnlyEducationalClassrooms = f.OnlyEducationalClassrooms, SizeMin = f.SizeMin, SizeMax = f.SizeMax, PlacesMin = f.PlacesMin, PlacesMax = f.PlacesMax });
                 }
                 catch (InvalidOperationException e)
                 {
