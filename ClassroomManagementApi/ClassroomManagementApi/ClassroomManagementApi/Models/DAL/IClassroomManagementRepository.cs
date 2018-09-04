@@ -41,6 +41,6 @@ namespace ClassroomManagementApi.Models.DAL
         EducationalClassroom GetEducationalClassroom(int id);
         IEnumerable<VirtualMachineComputer> GetVirtualMachineComputers();
         ComputerDetails GetComputerDetails(int id);
-        IEnumerable<Floor> GetFloors();
+        //IEnumerable<Floor> GetFloors();
     }
 }

@@ -436,7 +436,7 @@ namespace ClassroomManagement.Models
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                const string query = @"INSERT INTO dbo.Sala
+                const string query = @"INSERT INTO PJWSTK\\s15170.Sala
                 (Nazwa_sali, Liczba_miejsc, Pow_m2, Uwagi, IdBudynek, Istnieje, IdFunkcja_sali, Poziom,
                 Dostep_dla_niepelnosprawnych, Uzytkownik, Kolejnosc, IdRozkladSali, LiczbaKomputerow, IdKomputer, Klimatyzacja) 
                 VALUES (@Nazwa_sali, @Liczba_miejsc, @Pow_m2, @Uwagi, @IdBudynek, @Istnieje,
@@ -570,16 +570,16 @@ namespace ClassroomManagement.Models
                                         @RAM = @RAM, @KartaGraficzna = @KartaGraficzna;";
 
                     // TODO: procedures
-                    string addVirtualMachinesForComputer = @"INSERT INTO dbo.MaszynaWirtualnaKomputer
+                    string addVirtualMachinesForComputer = @"INSERT INTO PJWSTK\\s15170.MaszynaWirtualnaKomputer
                     (IdKomputer, IdMaszynaWirtualna) 
                     VALUES (@IdKomputer, @IdMaszynaWirtualna);";
 
-                    string addSoftwareForComputer = @"INSERT INTO dbo.OprogramowanieKomputerow
+                    string addSoftwareForComputer = @"INSERT INTO PJWSTK\\s15170.OprogramowanieKomputerow
                     (IdKomputer, IdOprogramowanie) 
                     VALUES (@IdKomputer, @IdOprogramowanie);";
 
                     // we need to get IdMonitor from the db because we get from FrontEnd just RozmiarMonitora, no IdMonitor.
-                    //string getIdMonitor = @"Select IdMonitor From dbo.Monitor Where RozmiarMonitora = @RozmiarMonitora;";
+                    //string getIdMonitor = @"Select IdMonitor From PJWSTK\\s15170.Monitor Where RozmiarMonitora = @RozmiarMonitora;";
                     //int idMonitor = connection.Query<Monitor>(getIdMonitor, new { RozmiarMonitora = c.RozmiarMonitora }).First().IdMonitor;
 
                     int idKomputer = connection.Query<Computer>(addComputer,
@@ -617,7 +617,7 @@ namespace ClassroomManagement.Models
                 try
                 {
                     // FIRST: update the computer
-                    string updateComputer = @"Update dbo.Komputer set IdMonitor = @IdMonitor, Procesor = @Procesor, RAM = @RAM, KartaGraficzna = @KartaGraficzna
+                    string updateComputer = @"Update PJWSTK\\s15170.Komputer set IdMonitor = @IdMonitor, Procesor = @Procesor, RAM = @RAM, KartaGraficzna = @KartaGraficzna
                             Where IdKomputer = @IdKomputer;";
                     connection.Execute(updateComputer, new { IdMonitor = c.IdMonitor, Procesor = c.Procesor, RAM = c.RAM, KartaGraficzna = c.KartaGraficzna, IdKomputer = c.IdKomputer });
 
@@ -633,7 +633,7 @@ namespace ClassroomManagement.Models
                     }
                     
                     string deleteVirtualMachineComputer = @"EXEC zss_DeleteMaszynaWirtualnaKomputer_del @IdKomputer = @IdKomputer, @MaszynyWirtualne = @MaszynyWirtualne;";
-                    connection.Execute(deleteVirtualMachineComputer, new { IdKomputer = c.IdKomputer, MaszynyWirtualne = virtualMachines.AsTableValuedParameter("dbo.MaszynaWirtualnaType")});
+                    connection.Execute(deleteVirtualMachineComputer, new { IdKomputer = c.IdKomputer, MaszynyWirtualne = virtualMachines.AsTableValuedParameter("PJWSTK\\s15170.MaszynaWirtualnaType")});
 
                     // THIRD: we delete all software that wasn't chosen during the edit of the computer
                     // we create a temp table to use it later as a parameter for our zss_DeleteOprogramowanieKomputerow_del stored procedure
@@ -648,13 +648,13 @@ namespace ClassroomManagement.Models
                     }
 
                     string deleteComputerSoftware = @"EXEC zss_DeleteOprogramowanieKomputerow_del @IdKomputer = @IdKomputer, @Oprogramowanie = @Oprogramowanie";
-                    connection.Execute(deleteComputerSoftware, new { IdKomputer = c.IdKomputer, Oprogramowanie = software.AsTableValuedParameter("dbo.OprogramowanieType")});
+                    connection.Execute(deleteComputerSoftware, new { IdKomputer = c.IdKomputer, Oprogramowanie = software.AsTableValuedParameter("PJWSTK\\s15170.OprogramowanieType")});
 
                     // FOURTH: We add missing virtual machines
                     string addVirtualMachinesForComputer = @"IF NOT EXISTS( Select IdKomputer, IdMaszynaWirtualna
-                    FROM dbo.MaszynaWirtualnaKomputer
+                    FROM PJWSTK\\s15170.MaszynaWirtualnaKomputer
                     WHERE IdKomputer = @IdKomputer AND IdMaszynaWirtualna = @IdMaszynaWirtualna)
-                    INSERT INTO dbo.MaszynaWirtualnaKomputer
+                    INSERT INTO PJWSTK\\s15170.MaszynaWirtualnaKomputer
                     (IdKomputer, IdMaszynaWirtualna) 
                     VALUES (@IdKomputer, @IdMaszynaWirtualna);";
 
@@ -665,10 +665,10 @@ namespace ClassroomManagement.Models
 
                     // FIFTH: We add missing software
                     string addSoftwareForComputer = @"BEGIN IF NOT EXISTS( Select IdKomputer, IdOprogramowanie
-                    FROM dbo.OprogramowanieKomputerow
+                    FROM PJWSTK\\s15170.OprogramowanieKomputerow
                     WHERE IdKomputer = @IdKomputer AND IdOprogramowanie = @IdOprogramowanie)
                     BEGIN
-                    INSERT INTO dbo.OprogramowanieKomputerow
+                    INSERT INTO PJWSTK\\s15170.OprogramowanieKomputerow
                     (IdKomputer, IdOprogramowanie) 
                     VALUES (@IdKomputer, @IdOprogramowanie) END END;";
 
@@ -685,9 +685,9 @@ namespace ClassroomManagement.Models
             }
         }
 
-        public IEnumerable<Floor> GetFloors()
-        {
-          
-        }
+        //public IEnumerable<Floor> GetFloors()
+        //{
+        //  retur
+        //}
     }
 }

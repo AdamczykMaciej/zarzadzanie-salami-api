@@ -24,13 +24,11 @@ namespace ClassroomManagementApi.Controllers
 
         //CHECKED
         [HttpGet("buildings")]
-        public Task<IActionResult> GetBuildings()
+        public async Task<IActionResult> GetBuildings()
         {
-            var result = _provider.GetBuildings();
-            if (result == null)
-                return NotFound("No records here");
-            string json = JsonConvert.SerializeObject(result, Formatting.Indented);
-            return Ok(json);
+            var result = await _provider.GetBuildings();
+
+            return Ok(result);
         }
         //CHECKED
         [HttpGet("buildings/{id}", Name ="GetBuilding")]
