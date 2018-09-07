@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using ClassroomManagementApi.Models.DTO.Basic;
 
 namespace ClassroomManagementApi.Controllers
 {
@@ -147,6 +148,16 @@ namespace ClassroomManagementApi.Controllers
             EducationalClassroom result = _provider.GetEducationalClassroom(id);
             if (result == null)
                 return NotFound("Not found. There isn't any record with such an id: " + id);
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented);
+            return Ok(json);
+        }
+
+        [HttpGet("floors")]
+        public IActionResult GetFloors()
+        {
+            List<Floor> result = _provider.GetFloors().ToList();
+            if (result == null)
+                return NotFound("Not found.");
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
             return Ok(json);
         }

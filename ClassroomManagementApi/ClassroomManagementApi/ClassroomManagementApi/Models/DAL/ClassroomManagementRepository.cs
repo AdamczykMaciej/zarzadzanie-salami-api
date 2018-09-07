@@ -709,9 +709,23 @@ namespace ClassroomManagement.Models
             }
         }
 
-        //public IEnumerable<Floor> GetFloors()
-        //{
-        //  retur
-        //}
+        public IEnumerable<Floor> GetFloors()
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                const string query = @"Select DISTINCT Poziom From dbo.Sala;";
+                try
+                {
+                    return connection.Query<Floor>(query);
+                }
+                // if the result is null then it throws InvalidOperationException
+                catch (InvalidOperationException e)
+                {
+                    Console.WriteLine(e.Message);
+                    connection.Close();
+                    return null;
+                }
+            }
+        }
     }
 }

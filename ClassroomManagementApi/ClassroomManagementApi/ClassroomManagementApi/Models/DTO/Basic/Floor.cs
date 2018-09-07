@@ -7,6 +7,6 @@ namespace ClassroomManagementApi.Models.DTO.Basic
 {
     public class Floor
     {
-        public string Nazwa  { get; set; }
+        public string Poziom  { get; set; }
     }
 }
