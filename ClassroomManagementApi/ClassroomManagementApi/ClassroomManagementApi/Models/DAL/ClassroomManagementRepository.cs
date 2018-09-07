@@ -42,7 +42,7 @@ namespace ClassroomManagement.Models
             using (var connection = new SqlConnection(connectionString))
             {
                 await connection.OpenAsync();
-                const string query = @"EXEC zss_BudynekAll_sel;";
+                const string query = @"EXEC dbo.zss_BudynekAll_sel;";
                 buildings = await connection.QueryAsync<Building>(query);
             }
             return buildings;
@@ -52,7 +52,7 @@ namespace ClassroomManagement.Models
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                const string query = @"EXEC zss_Budynek_sel @IdBudynek = @IdBudynek;";
+                const string query = @"EXEC dbo.zss_Budynek_sel @IdBudynek = @IdBudynek;";
                 try
                 {
                     return connection.Query<Building>(query, new { IdBudynek = id }).First();
@@ -70,7 +70,7 @@ namespace ClassroomManagement.Models
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                const string query = @"EXEC zss_FunkcjaSaliAll_sel;";
+                const string query = @"EXEC dbo.zss_FunkcjaSaliAll_sel;";
                 try
                 {
                     return connection.Query<ClassroomFunction>(query);
@@ -88,7 +88,7 @@ namespace ClassroomManagement.Models
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                const string query = @"EXEC zss_FunkcjaSali_sel @IdFunkcja_sali = @IdFunkcja_sali;";
+                const string query = @"EXEC dbo.zss_FunkcjaSali_sel @IdFunkcja_sali = @IdFunkcja_sali;";
                 try
                 {
                     return connection.Query<ClassroomFunction>(query, new { IdFunkcja_sali = id }).First();
@@ -124,7 +124,7 @@ namespace ClassroomManagement.Models
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                const string query = @"EXEC zss_Kampus_sel @IdKampus = @IdKampus;";
+                const string query = @"EXEC dbo.zss_Kampus_sel @IdKampus = @IdKampus;";
                 try
                 {
                     return connection.Query<Campus>(query, new { IdKampus = id }).First();
@@ -214,7 +214,7 @@ namespace ClassroomManagement.Models
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                const string query = @"EXEC zss_OprogramowanieAll_sel;";
+                const string query = @"EXEC dbo.zss_OprogramowanieAll_sel;";
                 try
                 {
                     return connection.Query<Software>(query);
@@ -232,7 +232,7 @@ namespace ClassroomManagement.Models
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                const string query = @"EXEC zss_Oprogramowanie_sel @IdOprogramowanie;";
+                const string query = @"EXEC dbo.zss_Oprogramowanie_sel @IdOprogramowanie;";
                 try
                 {
                     return connection.Query<Software>(query, new { IdOprogramowanie = id }).First();
@@ -304,7 +304,7 @@ namespace ClassroomManagement.Models
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                const string query = @"EXEC zss_KomputerAll_sel;";
+                const string query = @"EXEC dbo.zss_KomputerAll_sel;";
                 try
                 {
                     return connection.Query<Computer>(query);
@@ -322,7 +322,7 @@ namespace ClassroomManagement.Models
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                const string query = @"EXEC zss_Komputer_sel @IdKomputer;";
+                const string query = @"EXEC dbo.zss_Komputer_sel @IdKomputer;";
                 try
                 {
                     return connection.Query<Computer>(query, new { IdKomputer = id }).First();
@@ -376,7 +376,7 @@ namespace ClassroomManagement.Models
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                const string query = @"EXEC zss_SalaAll_sel;";
+                const string query = @"EXEC dbo.zss_SalaAll_sel;";
                 try
                 {
                     return connection.Query<Classroom>(query);
@@ -395,14 +395,16 @@ namespace ClassroomManagement.Models
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                string query = @"EXEC zss_FilterSala_sel @BudynekA = @BuildingA, @BudynekB = @BuildingB,
+                string query = @"EXEC dbo.zss_FilterSala_sel @BudynekA = @BuildingA, @BudynekB = @BuildingB,
                 @BudynekC = @BuildingC, @Klimatyzacja = @AirConditioning,
                 @TV = @TV, @Projektor = @Projector, @TylkoSalaDydaktyczna = @OnlyEducationalClassrooms,
-                @RozmiarSaliMin = @SizeMin, @RozmiarSaliMax = @SizeMax, @LiczbaMiejscMin = @PlacesMin, @LiczbaMiejscMax = @PlacesMax;";
+                @RozmiarSaliMin = @SizeMin, @RozmiarSaliMax = @SizeMax, @LiczbaMiejscMin = @PlacesMin, @LiczbaMiejscMax = @PlacesMax, @Dostep_dla_niepelnosprawnych = @AccessForTheDisabled;";
                 try
                 {
                     // we return EducationalClassrooms because we want to get additional data for Classrooms which are EducationalClassrooms
-                    return connection.Query<EducationalClassroom>(query, new { BuildingA = f.BuildingA, BuildingB = f.BuildingB, BuildingC = f.BuildingC, AirConditioning = f.AirConditioning, TV = f.TV, Projector = f.Projector, OnlyEducationalClassrooms = f.OnlyEducationalClassrooms, SizeMin = f.SizeMin, SizeMax = f.SizeMax, PlacesMin = f.PlacesMin, PlacesMax = f.PlacesMax });
+                    return connection.Query<EducationalClassroom>(query, new { BuildingA = f.BuildingA, BuildingB = f.BuildingB, BuildingC = f.BuildingC,
+                        AirConditioning = f.AirConditioning, TV = f.TV, Projector = f.Projector, OnlyEducationalClassrooms = f.OnlyEducationalClassrooms, SizeMin = f.SizeMin,
+                        SizeMax = f.SizeMax, PlacesMin = f.PlacesMin, PlacesMax = f.PlacesMax, AccessForTheDisabled = f.AccessForTheDisabled });
                 }
                 catch (InvalidOperationException e)
                 {
@@ -417,7 +419,7 @@ namespace ClassroomManagement.Models
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                const string query = @"EXEC zss_Sala_sel @IdSala = @IdSala;";
+                const string query = @"EXEC dbo.zss_Sala_sel @IdSala = @IdSala;";
 
                 try
                 {
@@ -436,7 +438,7 @@ namespace ClassroomManagement.Models
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                const string query = @"INSERT INTO PJWSTK\\s15170.Sala
+                const string query = @"INSERT INTO dbo.Sala
                 (Nazwa_sali, Liczba_miejsc, Pow_m2, Uwagi, IdBudynek, Istnieje, IdFunkcja_sali, Poziom,
                 Dostep_dla_niepelnosprawnych, Uzytkownik, Kolejnosc, IdRozkladSali, LiczbaKomputerow, IdKomputer, Klimatyzacja) 
                 VALUES (@Nazwa_sali, @Liczba_miejsc, @Pow_m2, @Uwagi, @IdBudynek, @Istnieje,
@@ -477,7 +479,7 @@ namespace ClassroomManagement.Models
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                const string query = @"EXEC zss_SalaDydaktycznaAll_sel;";
+                const string query = @"EXEC dbo.zss_SalaDydaktycznaAll_sel;";
                 try
                 {
                     return connection.Query<EducationalClassroom>(query);
@@ -495,7 +497,7 @@ namespace ClassroomManagement.Models
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                const string query = @"EXEC zss_SalaDydaktyczna_sel @IdSala = @IdSala;";
+                const string query = @"EXEC dbo.zss_SalaDydaktyczna_sel @IdSala = @IdSala;";
                 try
                 {
                     return connection.Query<EducationalClassroom>(query, new { IdSala = id }).First();
@@ -531,9 +533,9 @@ namespace ClassroomManagement.Models
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                const string queryVirtualMachinesForComputer = @"EXEC zss_MaszynyWirtualneDlaKomputer_sel @IdKomputer = @IdKomputer;";
-                const string queryComputer = @"EXEC zss_Komputer_sel @IdKomputer = @IdKomputer;";
-                const string querySoftware = @"EXEC zss_OprogramowanieDlaKomputer_sel @IdKomputer = @IdKomputer;";
+                const string queryVirtualMachinesForComputer = @"EXEC dbo.zss_MaszynyWirtualneDlaKomputer_sel @IdKomputer = @IdKomputer;";
+                const string queryComputer = @"EXEC dbo.zss_Komputer_sel @IdKomputer = @IdKomputer;";
+                const string querySoftware = @"EXEC dbo.zss_OprogramowanieDlaKomputer_sel @IdKomputer = @IdKomputer;";
                 try
                 {
                     Computer c = connection.Query<Computer>(queryComputer, new { IdKomputer = id }).First();
@@ -566,20 +568,20 @@ namespace ClassroomManagement.Models
                 try
                 {
                     //Queries
-                    string addComputer = @"EXEC zss_AddKomputer_ins @IdMonitor = @IdMonitor, @Procesor = @Procesor,
+                    string addComputer = @"EXEC dbo.zss_AddKomputer_ins @IdMonitor = @IdMonitor, @Procesor = @Procesor,
                                         @RAM = @RAM, @KartaGraficzna = @KartaGraficzna;";
 
                     // TODO: procedures
-                    string addVirtualMachinesForComputer = @"INSERT INTO PJWSTK\\s15170.MaszynaWirtualnaKomputer
+                    string addVirtualMachinesForComputer = @"INSERT INTO dbo.MaszynaWirtualnaKomputer
                     (IdKomputer, IdMaszynaWirtualna) 
                     VALUES (@IdKomputer, @IdMaszynaWirtualna);";
 
-                    string addSoftwareForComputer = @"INSERT INTO PJWSTK\\s15170.OprogramowanieKomputerow
+                    string addSoftwareForComputer = @"INSERT INTO dbo.OprogramowanieKomputerow
                     (IdKomputer, IdOprogramowanie) 
                     VALUES (@IdKomputer, @IdOprogramowanie);";
 
                     // we need to get IdMonitor from the db because we get from FrontEnd just RozmiarMonitora, no IdMonitor.
-                    //string getIdMonitor = @"Select IdMonitor From PJWSTK\\s15170.Monitor Where RozmiarMonitora = @RozmiarMonitora;";
+                    //string getIdMonitor = @"Select IdMonitor From dbo.Monitor Where RozmiarMonitora = @RozmiarMonitora;";
                     //int idMonitor = connection.Query<Monitor>(getIdMonitor, new { RozmiarMonitora = c.RozmiarMonitora }).First().IdMonitor;
 
                     int idKomputer = connection.Query<Computer>(addComputer,
@@ -617,12 +619,12 @@ namespace ClassroomManagement.Models
                 try
                 {
                     // FIRST: update the computer
-                    string updateComputer = @"Update PJWSTK\\s15170.Komputer set IdMonitor = @IdMonitor, Procesor = @Procesor, RAM = @RAM, KartaGraficzna = @KartaGraficzna
+                    string updateComputer = @"Update dbo.Komputer set IdMonitor = @IdMonitor, Procesor = @Procesor, RAM = @RAM, KartaGraficzna = @KartaGraficzna
                             Where IdKomputer = @IdKomputer;";
                     connection.Execute(updateComputer, new { IdMonitor = c.IdMonitor, Procesor = c.Procesor, RAM = c.RAM, KartaGraficzna = c.KartaGraficzna, IdKomputer = c.IdKomputer });
 
                     // SECOND: we delete all virtual machines that weren't chosen during the edit of the computer
-                    // we create a temp table to use it later as a parameter for our zss_DeleteMaszynaWirtualnaKomputer_del stored procedure
+                    // we create a temp table to use it later as a parameter for our dbo.zss_DeleteMaszynaWirtualnaKomputer_del stored procedure
                     DataTable virtualMachines = new DataTable();
                     virtualMachines.Columns.Add("IdMaszynaWirtualna", typeof(int));
                     virtualMachines.Columns.Add("Nazwa", typeof(string));
@@ -632,11 +634,11 @@ namespace ClassroomManagement.Models
                         virtualMachines.Rows.Add(item.IdMaszynaWirtualna,item.Nazwa);
                     }
                     
-                    string deleteVirtualMachineComputer = @"EXEC zss_DeleteMaszynaWirtualnaKomputer_del @IdKomputer = @IdKomputer, @MaszynyWirtualne = @MaszynyWirtualne;";
-                    connection.Execute(deleteVirtualMachineComputer, new { IdKomputer = c.IdKomputer, MaszynyWirtualne = virtualMachines.AsTableValuedParameter("PJWSTK\\s15170.MaszynaWirtualnaType")});
+                    string deleteVirtualMachineComputer = @"EXEC dbo.zss_DeleteMaszynaWirtualnaKomputer_del @IdKomputer = @IdKomputer, @MaszynyWirtualne = @MaszynyWirtualne;";
+                    connection.Execute(deleteVirtualMachineComputer, new { IdKomputer = c.IdKomputer, MaszynyWirtualne = virtualMachines.AsTableValuedParameter("dbo.MaszynaWirtualnaType")});
 
                     // THIRD: we delete all software that wasn't chosen during the edit of the computer
-                    // we create a temp table to use it later as a parameter for our zss_DeleteOprogramowanieKomputerow_del stored procedure
+                    // we create a temp table to use it later as a parameter for our dbo.zss_DeleteOprogramowanieKomputerow_del stored procedure
 
                     DataTable software = new DataTable();
                     software.Columns.Add("IdOprogramowanie", typeof(int));
@@ -647,14 +649,14 @@ namespace ClassroomManagement.Models
                         software.Rows.Add(item.IdOprogramowanie, item.Nazwa);
                     }
 
-                    string deleteComputerSoftware = @"EXEC zss_DeleteOprogramowanieKomputerow_del @IdKomputer = @IdKomputer, @Oprogramowanie = @Oprogramowanie";
-                    connection.Execute(deleteComputerSoftware, new { IdKomputer = c.IdKomputer, Oprogramowanie = software.AsTableValuedParameter("PJWSTK\\s15170.OprogramowanieType")});
+                    string deleteComputerSoftware = @"EXEC dbo.zss_DeleteOprogramowanieKomputerow_del @IdKomputer = @IdKomputer, @Oprogramowanie = @Oprogramowanie";
+                    connection.Execute(deleteComputerSoftware, new { IdKomputer = c.IdKomputer, Oprogramowanie = software.AsTableValuedParameter("dbo.OprogramowanieType")});
 
                     // FOURTH: We add missing virtual machines
                     string addVirtualMachinesForComputer = @"IF NOT EXISTS( Select IdKomputer, IdMaszynaWirtualna
-                    FROM PJWSTK\\s15170.MaszynaWirtualnaKomputer
+                    FROM dbo.MaszynaWirtualnaKomputer
                     WHERE IdKomputer = @IdKomputer AND IdMaszynaWirtualna = @IdMaszynaWirtualna)
-                    INSERT INTO PJWSTK\\s15170.MaszynaWirtualnaKomputer
+                    INSERT INTO dbo.MaszynaWirtualnaKomputer
                     (IdKomputer, IdMaszynaWirtualna) 
                     VALUES (@IdKomputer, @IdMaszynaWirtualna);";
 
@@ -665,10 +667,10 @@ namespace ClassroomManagement.Models
 
                     // FIFTH: We add missing software
                     string addSoftwareForComputer = @"BEGIN IF NOT EXISTS( Select IdKomputer, IdOprogramowanie
-                    FROM PJWSTK\\s15170.OprogramowanieKomputerow
+                    FROM dbo.OprogramowanieKomputerow
                     WHERE IdKomputer = @IdKomputer AND IdOprogramowanie = @IdOprogramowanie)
                     BEGIN
-                    INSERT INTO PJWSTK\\s15170.OprogramowanieKomputerow
+                    INSERT INTO dbo.OprogramowanieKomputerow
                     (IdKomputer, IdOprogramowanie) 
                     VALUES (@IdKomputer, @IdOprogramowanie) END END;";
 

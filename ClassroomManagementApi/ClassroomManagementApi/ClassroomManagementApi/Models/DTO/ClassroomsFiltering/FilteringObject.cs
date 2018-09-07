@@ -9,6 +9,7 @@ namespace ClassroomManagementApi.Models.Filtering
         public string BuildingC { get; set; }
         public bool TV { get; set; }
         public bool Projector { get; set; }
+        public bool AccessForTheDisabled { get; set; }
         //public string ClassroomFunction { get; set; }
         // false means return (false and true air conditioning)
         // that's because we won't be interested in finding rooms without air conditioning
