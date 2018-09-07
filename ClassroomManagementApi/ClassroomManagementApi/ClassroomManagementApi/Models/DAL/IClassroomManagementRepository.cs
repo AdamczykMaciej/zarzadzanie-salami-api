@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ClassroomManagementApi.Models.DTO.Basic;
-using ClassroomManagementApi.Models.DTO.ComputerDetails;
+
 
 namespace ClassroomManagementApi.Models.DAL
 {

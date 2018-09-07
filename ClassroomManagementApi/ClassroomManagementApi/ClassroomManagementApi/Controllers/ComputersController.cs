@@ -4,7 +4,6 @@ using ClassroomManagement.Models;
 using ClassroomManagementApi.Models;
 using ClassroomManagementApi.Models.DAL;
 using ClassroomManagementApi.Models.DTO.Basic;
-using ClassroomManagementApi.Models.DTO.ComputerDetails;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -36,7 +35,7 @@ namespace ClassroomManagementApi.Controllers
         [HttpGet("computers/{id}", Name = "GetComputer")]
         public IActionResult GetComputer(int id)
         {
-            Computer result = _provider.GetComputer(id);
+            Computer result = _provider.GetComputerDetails(id);
             if (result == null)
                 return NotFound("Not found. There isn't any record with such an id: " + id);
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
@@ -48,7 +47,7 @@ namespace ClassroomManagementApi.Controllers
         {
             _provider.AddComputer(c);
 
-            return CreatedAtRoute("GetComputerDetails", new { id = c.IdKomputer }, c);
+            return CreatedAtRoute("GetComputer", new { id = c.IdKomputer }, c);
         }
 
         [HttpPut("computers")]
@@ -119,17 +118,5 @@ namespace ClassroomManagementApi.Controllers
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
             return Ok(json);
         }
-
-        [HttpGet("computerDetails/{id}", Name = "GetComputerDetails")]
-        public IActionResult GetComputerDetails(int id)
-        {
-            ComputerDetails result = _provider.GetComputerDetails(id);
-            if (result == null)
-                return NotFound("Not found. There isn't any record with such an id: " + id);
-            string json = JsonConvert.SerializeObject(result, Formatting.Indented);
-            return Ok(json);
-        }
-
-
     }
 }

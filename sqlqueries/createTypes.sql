@@ -11,3 +11,9 @@ CREATE TYPE dbo.OprogramowanieType AS TABLE
    Nazwa varchar(100)
    );
 GO
+
+CREATE TYPE dbo.FunkcjaSaliType AS TABLE
+   ( 
+   Nazwa varchar(50)
+   );
+GO

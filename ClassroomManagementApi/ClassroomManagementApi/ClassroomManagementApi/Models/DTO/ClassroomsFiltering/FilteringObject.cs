@@ -1,10 +1,12 @@
 ﻿
+using System.Collections.Generic;
+
 namespace ClassroomManagementApi.Models.Filtering
 {
     public class FilteringObject
     {
-        public string BuildingA { get; set; } // explanation why it is a string, not bool - > I didn't want to have buildings hardcoded in the
-                                              // database, this way it makes it more versatile and better adjustable to changes
+        public IEnumerable<string> ClassroomFunctions { get; set; }
+        public string BuildingA { get; set; } 
         public string BuildingB { get; set; }
         public string BuildingC { get; set; }
         public bool TV { get; set; }

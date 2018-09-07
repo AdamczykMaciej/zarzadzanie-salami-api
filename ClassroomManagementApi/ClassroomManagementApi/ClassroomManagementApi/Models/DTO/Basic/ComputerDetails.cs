@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
 
-namespace ClassroomManagementApi.Models.DTO.ComputerDetails
+namespace ClassroomManagementApi.Models
 {
     [DataContract]
     public class ComputerDetails : Computer
