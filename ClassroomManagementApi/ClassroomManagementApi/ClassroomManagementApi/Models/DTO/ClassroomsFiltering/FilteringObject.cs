@@ -5,7 +5,8 @@ namespace ClassroomManagementApi.Models.Filtering
 {
     public class FilteringObject
     {
-        public IEnumerable<string> ClassroomFunctions { get; set; }
+        public string[] ClassroomFunctions { get; set; }
+        public string[] Buildings { get; set; }
         public string BuildingA { get; set; } 
         public string BuildingB { get; set; }
         public string BuildingC { get; set; }

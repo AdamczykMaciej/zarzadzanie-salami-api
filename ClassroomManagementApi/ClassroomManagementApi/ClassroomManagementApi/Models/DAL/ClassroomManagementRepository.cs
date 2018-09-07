@@ -394,11 +394,21 @@ namespace ClassroomManagement.Models
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                string query = @"EXEC dbo.zss_FilterSala_sel @BudynekA = @BuildingA, @BudynekB = @BuildingB,
-                @BudynekC = @BuildingC, @Klimatyzacja = @AirConditioning,
+                string query = @"EXEC dbo.zss_FilterSala_sel @Budynki = @Buildings, @Klimatyzacja = @AirConditioning,
                 @TV = @TV, @Projektor = @Projector, @TylkoSalaDydaktyczna = @OnlyEducationalClassrooms,
                 @RozmiarSaliMin = @SizeMin, @RozmiarSaliMax = @SizeMax, @LiczbaMiejscMin = @PlacesMin, @LiczbaMiejscMax = @PlacesMax,
                 @Dostep_dla_niepelnosprawnych = @AccessForTheDisabled, @FunkcjeSali = @ClassroomFunctions;";
+
+                DataTable buildings = new DataTable();
+                buildings.Columns.Add("Nazwa", typeof(string));
+
+                if (f.Buildings != null)
+                {
+                    foreach (var item in f.Buildings)
+                    {
+                        buildings.Rows.Add(item);
+                    }
+                }
 
                 DataTable classroomFunctions = new DataTable();
                 classroomFunctions.Columns.Add("Nazwa", typeof(string));
@@ -414,7 +424,7 @@ namespace ClassroomManagement.Models
                 try
                 {
                     // we return EducationalClassrooms because we want to get additional data for Classrooms which are EducationalClassrooms
-                    return connection.Query<EducationalClassroom>(query, new { BuildingA = f.BuildingA, BuildingB = f.BuildingB, BuildingC = f.BuildingC,
+                    return connection.Query<EducationalClassroom>(query, new { Buildings = buildings.AsTableValuedParameter("dbo.BudynekType"),
                         AirConditioning = f.AirConditioning, TV = f.TV, Projector = f.Projector, OnlyEducationalClassrooms = f.OnlyEducationalClassrooms, SizeMin = f.SizeMin,
                         SizeMax = f.SizeMax, PlacesMin = f.PlacesMin, PlacesMax = f.PlacesMax, AccessForTheDisabled = f.AccessForTheDisabled, ClassroomFunctions = classroomFunctions.AsTableValuedParameter("dbo.FunkcjaSaliType")});
                 }

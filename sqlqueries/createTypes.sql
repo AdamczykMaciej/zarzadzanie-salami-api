@@ -17,3 +17,9 @@ CREATE TYPE dbo.FunkcjaSaliType AS TABLE
    Nazwa varchar(50)
    );
 GO
+
+CREATE TYPE dbo.BudynekType AS TABLE
+   ( 
+   Nazwa varchar(20)
+   );
+GO
