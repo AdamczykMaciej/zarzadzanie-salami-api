@@ -713,7 +713,7 @@ namespace ClassroomManagement.Models
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                const string query = @"Select DISTINCT Poziom From dbo.Sala;";
+                const string query = @"EXEC dbo.zss_Poziom_sel;;";
                 try
                 {
                     return connection.Query<Floor>(query);
