@@ -43,5 +43,7 @@ namespace ClassroomManagementApi.Models
         public int IdKomputer { get; set; }
         [DataMember]
         public bool Klimatyzacja { get; set; }
+        [DataMember(Name = "Czy dydaktyczna?")]
+        public bool CzyDydaktyczna { get; set; }
     }
 }

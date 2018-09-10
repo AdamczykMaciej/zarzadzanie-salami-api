@@ -125,7 +125,7 @@ namespace ClassroomManagementApi.Controllers
         }
         //CHECKED
         [HttpPost("classrooms")]
-        public IActionResult AddClassroom([FromBody] Classroom c)
+        public IActionResult AddClassroom([FromBody] EducationalClassroom c)
         {
             _provider.AddClassroom(c);
 

@@ -456,37 +456,54 @@ namespace ClassroomManagement.Models
             }
         }
 
-        public void AddClassroom(Classroom s)
+        public void AddClassroom(EducationalClassroom c)
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                const string query = @"INSERT INTO dbo.Sala
+                const string addSala = @"INSERT INTO dbo.Sala
                 (Nazwa_sali, Liczba_miejsc, Pow_m2, Uwagi, IdBudynek, Istnieje, IdFunkcja_sali, Poziom,
                 Dostep_dla_niepelnosprawnych, Uzytkownik, Kolejnosc, IdRozkladSali, LiczbaKomputerow, IdKomputer, Klimatyzacja) 
                 VALUES (@Nazwa_sali, @Liczba_miejsc, @Pow_m2, @Uwagi, @IdBudynek, @Istnieje,
                 @IdFunkcja_sali, @Poziom, @Dostep_dla_niepelnosprawnych, @Uzytkownik,
                 @Kolejnosc, @IdRozkladSali, @LiczbaKomputerow, @IdKomputer, @Klimatyzacja);";
+
+                const string addSalaDydaktyczna = @"INSERT INTO dbo.SalaDydaktyczna
+                (Liczba_gniazd_sieciowych, TV, Projektor, Liczba_miejsc_dydaktycznych) 
+                VALUES (@Liczba_gniazd_sieciowych = @Liczba_gniazd_sieciowych, @TV = @TV, @Projektor = @Projektor, @Liczba_miejsc_dydaktycznych);";
                 try
                 {
-                    connection.Execute(query,
+                    int idClassroom = connection.Query<Classroom>(addSala,
                         new
                         {
-                            s.Nazwa_sali,
-                            s.Liczba_miejsc,
-                            s.Pow_m2,
-                            s.Uwagi,
-                            s.IdBudynek,
-                            s.Istnieje,
-                            s.IdFunkcja_sali,
-                            s.Poziom,
-                            s.Dostep_dla_niepelnosprawnych,
-                            s.Uzytkownik,
-                            s.Kolejnosc,
-                            s.IdRozkladSali,
-                            s.LiczbaKomputerow,
-                            s.IdKomputer,
-                            s.Klimatyzacja
-                        });
+                            c.Nazwa_sali,
+                            c.Liczba_miejsc,
+                            c.Pow_m2,
+                            c.Uwagi,
+                            c.IdBudynek,
+                            c.Istnieje,
+                            c.IdFunkcja_sali,
+                            c.Poziom,
+                            c.Dostep_dla_niepelnosprawnych,
+                            c.Uzytkownik,
+                            c.Kolejnosc,
+                            c.IdRozkladSali,
+                            c.LiczbaKomputerow,
+                            c.IdKomputer,
+                            c.Klimatyzacja
+                        }).First().IdSala;
+
+                    if(c.CzyDydaktyczna == true)
+                    {
+                        connection.Execute(addSalaDydaktyczna,
+                            new
+                            {
+                                idClassroom,
+                                c.Liczba_gniazd_sieciowych,
+                                c.TV,
+                                c.Projektor,
+                                c.Liczba_miejsc_dydaktycznych
+                            });
+                    }
                 }
                 catch (InvalidOperationException e)
                 {
