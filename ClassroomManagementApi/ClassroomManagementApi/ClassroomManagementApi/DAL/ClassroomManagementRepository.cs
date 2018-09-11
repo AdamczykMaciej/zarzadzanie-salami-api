@@ -460,16 +460,15 @@ namespace ClassroomManagement.Models
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                const string addSala = @"INSERT INTO dbo.Sala
-                (Nazwa_sali, Liczba_miejsc, Pow_m2, Uwagi, IdBudynek, Istnieje, IdFunkcja_sali, Poziom,
-                Dostep_dla_niepelnosprawnych, Uzytkownik, Kolejnosc, IdRozkladSali, LiczbaKomputerow, IdKomputer, Klimatyzacja) 
-                VALUES (@Nazwa_sali, @Liczba_miejsc, @Pow_m2, @Uwagi, @IdBudynek, @Istnieje,
-                @IdFunkcja_sali, @Poziom, @Dostep_dla_niepelnosprawnych, @Uzytkownik,
-                @Kolejnosc, @IdRozkladSali, @LiczbaKomputerow, @IdKomputer, @Klimatyzacja);";
+                const string addSala = @"EXEC dbo.zss_Sala_ins @Nazwa_sali = @Nazwa_sali, @Liczba_miejsc =  @Liczba_miejsc,
+                @Pow_m2 = @Pow_m2, @Uwagi = @Uwagi,@IdBudynek = @IdBudynek, @Istnieje = @Istnieje,
+                @IdFunkcja_sali = @IdFunkcja_sali, @Poziom = @Poziom, @Dostep_dla_niepelnosprawnych = @Dostep_dla_niepelnosprawnych,
+                @Uzytkownik = @Uzytkownik, @Kolejnosc = @Kolejnosc,@IdRozkladSali = @IdRozkladSali,@LiczbaKomputerow = @LiczbaKomputerow,
+                @IdKomputer = @IdKomputer, @Klimatyzacja = @Klimatyzacja;";
 
-                const string addSalaDydaktyczna = @"INSERT INTO dbo.SalaDydaktyczna
-                (Liczba_gniazd_sieciowych, TV, Projektor, Liczba_miejsc_dydaktycznych) 
-                VALUES (@Liczba_gniazd_sieciowych = @Liczba_gniazd_sieciowych, @TV = @TV, @Projektor = @Projektor, @Liczba_miejsc_dydaktycznych);";
+                const string addSalaDydaktyczna = @"INSERT INTO dbo.Sala_dydaktyczna
+                (IdSala, Liczba_gniazd_sieciowych, TV, Projektor, Liczba_miejsc_dydaktycznych) 
+                VALUES (@IdSala, @Liczba_gniazd_sieciowych, @TV, @Projektor, @Liczba_miejsc_dydaktycznych);";
                 try
                 {
                     int idClassroom = connection.Query<Classroom>(addSala,
@@ -497,7 +496,7 @@ namespace ClassroomManagement.Models
                         connection.Execute(addSalaDydaktyczna,
                             new
                             {
-                                idClassroom,
+                                IdSala = idClassroom,
                                 c.Liczba_gniazd_sieciowych,
                                 c.TV,
                                 c.Projektor,
@@ -512,6 +511,11 @@ namespace ClassroomManagement.Models
                 }
 
             }
+        }
+
+        public void UpdateClassroom(EducationalClassroom c)
+        {
+
         }
 
         public IEnumerable<EducationalClassroom> GetEducationalClassrooms()

@@ -36,7 +36,8 @@ namespace ClassroomManagementApi.Models.DAL
         IEnumerable<Classroom> GetClassrooms();
         IEnumerable<Classroom> FilterClassrooms(FilteringObject f);
         Classroom GetClassroom(int id);
-        void AddClassroom(EducationalClassroom s);
+        void AddClassroom(EducationalClassroom c);
+        void UpdateClassroom(EducationalClassroom c);
         IEnumerable<EducationalClassroom> GetEducationalClassrooms();
         EducationalClassroom GetEducationalClassroom(int id);
         IEnumerable<VirtualMachineComputer> GetVirtualMachineComputers();
