@@ -39,8 +39,9 @@ namespace ClassroomManagementApi.Models
         public string NazwaRozkladuSali { get; set; }
         [DataMember(Name = "Liczba komputerów")]
         public int LiczbaKomputerow { get; set; }
+        // IdKomputer can be null
         [DataMember]
-        public int IdKomputer { get; set; }
+        public int? IdKomputer { get; set; }
         [DataMember]
         public bool Klimatyzacja { get; set; }
         [DataMember(Name = "Czy dydaktyczna?")]
