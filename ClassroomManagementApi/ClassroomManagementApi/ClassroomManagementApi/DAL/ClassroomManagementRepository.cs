@@ -679,7 +679,7 @@ namespace ClassroomManagement.Models
             }
         }
 
-        public void AddComputer(ComputerDetails c)
+        public void AddComputer(ComputerDetails c, int? idSala)
         {
             using (var connection = new SqlConnection(connectionString))
             {
@@ -689,6 +689,9 @@ namespace ClassroomManagement.Models
                     string addComputer = @"EXEC dbo.zss_AddKomputer_ins @IdMonitor = @IdMonitor, @Procesor = @Procesor,
                                         @RAM = @RAM, @KartaGraficzna = @KartaGraficzna;";
 
+                    // depends whether the whole process is just for creating a new computer or for creating a new computer + assigning
+                    // to a sala which is being focused
+                    string addComputerToClassroom = "Update dbo.Sala Set IdKomputer = @IdKomputer Where IdSala = @IdSala;";
                     // TODO: procedures
                     string addVirtualMachinesForComputer = @"INSERT INTO dbo.MaszynaWirtualnaKomputer
                     (IdKomputer, IdMaszynaWirtualna) 
@@ -720,6 +723,9 @@ namespace ClassroomManagement.Models
                     {
                         connection.Execute(addSoftwareForComputer, new { IdKomputer = idKomputer, IdOprogramowanie = item.IdOprogramowanie });
                     }
+
+                    // adding a computer to a classroom (updating a classroom)
+                    connection.Execute(addComputerToClassroom, new { IdKomputer = idKomputer, IdSala = idSala});
                 }
                 catch (InvalidOperationException e)
                 {

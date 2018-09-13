@@ -43,9 +43,9 @@ namespace ClassroomManagementApi.Controllers
         }
 
         [HttpPost("computers")]
-        public IActionResult AddComputer([FromBody] ComputerDetails c)
+        public IActionResult AddComputer([System.Web.Http.FromUri] int? idSala, [FromBody] ComputerDetails c)
         {
-            _provider.AddComputer(c);
+            _provider.AddComputer(c, idSala);
 
             return CreatedAtRoute("GetComputer", new { id = c.IdKomputer }, c);
         }

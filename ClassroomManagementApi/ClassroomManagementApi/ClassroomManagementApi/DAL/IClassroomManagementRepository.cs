@@ -29,7 +29,7 @@ namespace ClassroomManagementApi.Models.DAL
         IEnumerable<ComputerSoftware> GetComputersForSoftware(int id);
         IEnumerable<Computer> GetComputers();
         Computer GetComputer(int id);
-        void AddComputer(ComputerDetails c);
+        void AddComputer(ComputerDetails c, int? idSala);
         void EditComputer(ComputerDetails c);
         IEnumerable<ClassroomStructure> GetClassroomStructures();
         ClassroomStructure GetClassroomStructure(int id);
