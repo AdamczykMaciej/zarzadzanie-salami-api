@@ -131,6 +131,14 @@ namespace ClassroomManagementApi.Controllers
 
             return CreatedAtRoute("GetClassroom", new { id = c.IdSala }, c);
         }
+
+        [HttpPut("classrooms")]
+        public IActionResult EditClassroom([FromBody] EducationalClassroom c)
+        {
+            _provider.EditClassroom(c);
+
+            return CreatedAtRoute("GetClassroom", new { id = c.IdSala }, c);
+        }
         //CHECKED
         [HttpGet("educationalClassrooms", Name = "GetEducationalClassrooms")]
         public IActionResult GetEducationaClassrooms()
