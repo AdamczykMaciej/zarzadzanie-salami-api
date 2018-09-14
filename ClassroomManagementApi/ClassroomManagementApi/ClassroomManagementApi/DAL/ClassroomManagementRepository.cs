@@ -665,7 +665,7 @@ namespace ClassroomManagement.Models
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                string addComputerToClassroom = "Update dbo.Sala Set IdKomputer = @IdKomputer Where IdSala = @IdSala;";
+                string addComputerToClassroom = "EXEC dbo.zss_UpdateKomputerInSala_upd @IdKomputer = @IdKomputer, @IdSala = @IdSala;";
                 connection.Execute(addComputerToClassroom, new { IdKomputer =idComputer, IdSala = idClassroom });
             }
         }
@@ -680,17 +680,14 @@ namespace ClassroomManagement.Models
                     string addComputer = @"EXEC dbo.zss_AddKomputer_ins @IdMonitor = @IdMonitor, @Procesor = @Procesor,
                                         @RAM = @RAM, @KartaGraficzna = @KartaGraficzna;";
 
-                    // depends whether the whole process is just for creating a new computer or for creating a new computer + assigning
-                    // to a sala which is being focused
-                    string addComputerToClassroom = "Update dbo.Sala Set IdKomputer = @IdKomputer Where IdSala = @IdSala;";
                     // TODO: procedures
-                    string addVirtualMachinesForComputer = @"INSERT INTO dbo.MaszynaWirtualnaKomputer
-                    (IdKomputer, IdMaszynaWirtualna) 
-                    VALUES (@IdKomputer, @IdMaszynaWirtualna);";
+                    string addVirtualMachinesForComputer = @"EXEC zss_MaszynaWirtualnaKomputer_ins
+                                                        @IdKomputer = @IdKomputer,
+                                                        @IdMaszynaWirtualna = @IdMaszynaWirtualna;";
 
-                    string addSoftwareForComputer = @"INSERT INTO dbo.OprogramowanieKomputerow
-                    (IdKomputer, IdOprogramowanie) 
-                    VALUES (@IdKomputer, @IdOprogramowanie);";
+                    string addSoftwareForComputer = @"EXEC zss_OprogramowanieKomputerow_ins 
+                                                    @IdKomputer = @IdKomputer,
+                                                    @IdOprogramowanie = @IdOprogramowanie;";
 
                     int idKomputer = connection.Query<Computer>(addComputer,
                         new
@@ -709,12 +706,6 @@ namespace ClassroomManagement.Models
                     foreach (var item in c.Software)
                     {
                         connection.Execute(addSoftwareForComputer, new { IdKomputer = idKomputer, item.IdOprogramowanie });
-                    }
-
-                    // adding a computer to a classroom (updating a classroom)
-                    if (idSala != 0)
-                    {
-                        connection.Execute(addComputerToClassroom, new { IdKomputer = idKomputer, IdSala = idSala });
                     }
                 }
                 catch (InvalidOperationException e)
@@ -785,8 +776,13 @@ namespace ClassroomManagement.Models
                 try
                 {
                     // FIRST: update the computer
-                    string updateComputer = @"Update dbo.Komputer set IdMonitor = @IdMonitor, Procesor = @Procesor, RAM = @RAM, KartaGraficzna = @KartaGraficzna
-                            Where IdKomputer = @IdKomputer;";
+                    string updateComputer =
+                        @"EXEC dbo.zss_Komputer_upd 
+                        @IdMonitor = @IdMonitor,
+                        @Procesor = @Procesor,
+                        @RAM = @RAM,
+                        @KartaGraficzna = @KartaGraficzna,
+                        @IdKomputer = @IdKomputer;";
                     connection.Execute(updateComputer, new { c.IdMonitor, c.Procesor, c.RAM, c.KartaGraficzna, c.IdKomputer });
 
                     // SECOND: we delete all virtual machines that weren't chosen during the edit of the computer
@@ -820,30 +816,23 @@ namespace ClassroomManagement.Models
                     connection.Execute(deleteComputerSoftware, new { c.IdKomputer, Oprogramowanie = software.AsTableValuedParameter("dbo.OprogramowanieType")});
 
                     // FOURTH: We add missing virtual machines
-                    string addVirtualMachinesForComputer = @"IF NOT EXISTS( Select IdKomputer, IdMaszynaWirtualna
-                    FROM dbo.MaszynaWirtualnaKomputer
-                    WHERE IdKomputer = @IdKomputer AND IdMaszynaWirtualna = @IdMaszynaWirtualna)
-                    INSERT INTO dbo.MaszynaWirtualnaKomputer
-                    (IdKomputer, IdMaszynaWirtualna) 
-                    VALUES (@IdKomputer, @IdMaszynaWirtualna);";
+                    string addVirtualMachineComputers = @"EXEC dbo.zss_MaszynaWirtualnaKomputer_ins
+                                                        @IdKomputer = @IdKomputer,
+                                                        @IdMaszynaWirtualna = @IdMaszynaWirtualna;";
 
                     foreach (var item in c.VirtualMachines)
                     {
-                        connection.Execute(addVirtualMachinesForComputer, new { c.IdKomputer, item.IdMaszynaWirtualna });
+                        connection.Execute(addVirtualMachineComputers, new { c.IdKomputer, item.IdMaszynaWirtualna });
                     }
 
                     // FIFTH: We add missing software
-                    string addSoftwareForComputer = @"BEGIN IF NOT EXISTS( Select IdKomputer, IdOprogramowanie
-                    FROM dbo.OprogramowanieKomputerow
-                    WHERE IdKomputer = @IdKomputer AND IdOprogramowanie = @IdOprogramowanie)
-                    BEGIN
-                    INSERT INTO dbo.OprogramowanieKomputerow
-                    (IdKomputer, IdOprogramowanie) 
-                    VALUES (@IdKomputer, @IdOprogramowanie) END END;";
+                    string addComputerSoftware = @"EXEC dbo.zss_OprogramowanieKomputerow_ins
+                                                    @IdKomputer = @IdKomputer,
+                                                    @IdOprogramowanie = @IdOprogramowanie;";
 
                     foreach (var item in c.Software)
                     {
-                        connection.Execute(addSoftwareForComputer, new { c.IdKomputer, item.IdOprogramowanie });
+                        connection.Execute(addComputerSoftware, new { c.IdKomputer, item.IdOprogramowanie });
                     }
                 }
                 catch (InvalidOperationException e)
