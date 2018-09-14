@@ -1,11 +1,8 @@
 ﻿using ClassroomManagementApi.Models.Filtering;
-using ClassroomManagementApi.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using ClassroomManagementApi.Models.DTO.Basic;
-
 
 namespace ClassroomManagementApi.Models.DAL
 {
@@ -41,5 +38,6 @@ namespace ClassroomManagementApi.Models.DAL
         IEnumerable<VirtualMachineComputer> GetVirtualMachineComputers();
         ComputerDetails GetComputerDetails(int id);
         IEnumerable<Floor> GetFloors();
+        void AddComputerToClassroom(int idClassroom, int idComputer);
     }
 }

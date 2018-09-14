@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ClassroomManagement.Models;
 using ClassroomManagementApi.Models.DAL;
 using ClassroomManagementApi.Models.Filtering;
 using ClassroomManagementApi.Models;
@@ -123,6 +122,12 @@ namespace ClassroomManagementApi.Controllers
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
             return Ok(json);
         }
+
+        [HttpPut("classrooms/{idClassroom}")]
+        public void AddComputerToClassroom(int idClassroom, [FromBody] int idComputer)
+        {
+            _provider.AddComputerToClassroom(idClassroom, idComputer);
+        }
         //CHECKED
         [HttpPost("classrooms")]
         public IActionResult AddClassroom([FromBody] EducationalClassroom c)
@@ -169,5 +174,6 @@ namespace ClassroomManagementApi.Controllers
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
             return Ok(json);
         }
+
     }
 }

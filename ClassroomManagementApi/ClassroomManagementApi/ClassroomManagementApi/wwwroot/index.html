@@ -8,7 +8,7 @@
     <h2>ClassroomManagementApi</h2>
     </br>
     <h3>Requests Routes:</h3>
-    <ul style="width: 55em">
+    <ul style="width: 60em">
         <!-- some may not work, because I had to add maszynawirtualnaKomputer table into the db -->
         <li><a href="api/buildings">api/buildings</a></li>
         <li>api/buildings/{id}</li>
@@ -18,20 +18,21 @@
         <li>api/campus/{id}</li>
         <li><a href="api/classroomStructures">api/classroomStructures</a></li>
         <li>api/classroomStructures/{id}</li>
-        <li><a href="api/classrooms">api/classrooms</a> - gets all classrooms together with educationalClassrooms parameters (for all classrooms)</li>
+        <li><a href="api/classrooms">api/classrooms</a>  <b>(gets all classrooms together with educationalClassrooms parameters (for all classrooms)</b></li>
         <li>
             api/classrooms?Buildings=..&TV=..&Projector=..&AirConditioning=..&OnlyEducationalClassrooms=..&ClassroomFunctions=..&AccessForTheDisabled=..
-            &SizeMin=..&SizeMax=..&PlacesMin=..&PlacesMax=.. - Parameters: Buildings, ClassroomFunctions can have multiple values
+            &SizeMin=..&SizeMax=..&PlacesMin=..&PlacesMax=.. <b>- Parameters: Buildings, ClassroomFunctions can have multiple values (FILTERING)</b>
         </li>
         <li>api/classrooms/{id}</li>
-        <li>api/classrooms [POST]</li>
-        <li>api/classrooms [PUT]</li>
+        <li>api/classrooms [POST] <b>(creating a classroom, together with virtual machines and software, don't have to specify an id of a computer)</b></li>
+        <li>api/classrooms [PUT] <b>(updating a classroom, if we want to update an educationalClassroom then we have to add a parameter CzyDydaktyczna=true)</b></li>
         <li><a href="api/educationalClassrooms">api/educationalClassroms</a></li>
         <li>api/educationalClassroms/{id}</li>
         <li><a href="api/computers">api/computers</a></li>
         <li>api/computers [POST]</li>
-        <li>api/computers&idSala=... [POST] (this one is for adding a computer + updating a classroom, so that we have the newly created computer assigned immediately to the classroom)</li>
+        <li>api/computers&idSala=... [POST] <b>(this one is for adding a computer + updating a classroom, so that we have the newly created computer assigned immediately to the classroom)</b></li>
         <li>api/computers [PUT]</li>
+        <li>api/computers/{id} [PUT] <b>(for adding a computer to a classroom, we give in the body of request an id of a computer)</b></li>
         <li>api/computers/{id}</li>
         <li><a href="api/virtualMachines">api/virtualMachines</a></li>
         <li><a href="api/virtualMachineComputers">api/virtualMachineComputers</a></li>
@@ -41,11 +42,12 @@
         <li><a href="api/software">api/software</a></li>
         <li>api/software/{id}</li>
         <li><a href="api/computerSoftware">api/computerSoftware</a></li>
-        <li><a href="api/FLOORS">api/floors </a> - gives a list of all distinct floors</li>
+        <li><a href="api/FLOORS">api/floors </a> <b>(gives a list of all distinct floors)</b></li>
     </ul>
     <br />
-    <br />
-    author: Maciej Adamczyk
-    2018r.
+    <i>
+        author: Maciej Adamczyk
+        2018r.
+    </i>
 </body>
 </html>

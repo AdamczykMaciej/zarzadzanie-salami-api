@@ -441,9 +441,13 @@ namespace ClassroomManagement.Models
                 @Uzytkownik = @Uzytkownik, @Kolejnosc = @Kolejnosc,@IdRozkladSali = @IdRozkladSali,@LiczbaKomputerow = @LiczbaKomputerow,
                 @IdKomputer = @IdKomputer, @Klimatyzacja = @Klimatyzacja;";
 
-                const string addSalaDydaktyczna = @"INSERT INTO dbo.Sala_dydaktyczna
-                (IdSala, Liczba_gniazd_sieciowych, TV, Projektor, Liczba_miejsc_dydaktycznych) 
-                VALUES (@IdSala, @Liczba_gniazd_sieciowych, @TV, @Projektor, @Liczba_miejsc_dydaktycznych);";
+                const string addSalaDydaktyczna = 
+                    @"EXEC dbo.zss_Sala_dydaktyczna_ins 
+                    @IdSala = @IdSala,
+                    @Liczba_gniazd_sieciowych = @Liczba_gniazd_sieciowych,
+                    @TV = @TV,
+                    @Projektor = @Projektor,
+                    @Liczba_miejsc_dydaktycznych = @Liczba_miejsc_dydaktycznych;";
                 try
                 {
                     int idClassroom = connection.Query<Classroom>(addSala,
@@ -495,13 +499,24 @@ namespace ClassroomManagement.Models
                 try
                 {
                     // FIRST: update the computer
-                    string updateClassroom = @"Update dbo.Sala set 
-                    Nazwa_sali = @Nazwa_sali, Liczba_miejsc = @Liczba_miejsc, Pow_m2 = @Pow_m2, Uwagi = @Uwagi,
-                    IdBudynek = @IdBudynek, Istnieje = @Istnieje, IdFunkcja_sali = @IdFunkcja_sali, Poziom = @Poziom,
-                    Dostep_dla_niepelnosprawnych = @Dostep_dla_niepelnosprawnych, Uzytkownik = @Uzytkownik,
-                    Kolejnosc = @Kolejnosc, IdRozkladSali = @IdRozkladSali, LiczbaKomputerow = @LiczbaKomputerow,
-                    IdKomputer = @IdKomputer, Klimatyzacja = @Klimatyzacja
-                            Where IdSala = @IdSala;";
+                    string updateClassroom =
+                        @"EXEC dbo.zss_Sala_upd
+						@Nazwa_sali = @Nazwa_sali,
+						@Liczba_miejsc = @Liczba_miejsc,
+						@Pow_m2 = @Pow_m2,
+						@Uwagi = @Uwagi,
+						@IdBudynek = @IdBudynek,
+						@Istnieje = @Istnieje,
+						@IdFunkcja_sali = @IdFunkcja_sali,
+						@Poziom = @Poziom,
+						@Dostep_dla_niepelnosprawnych = @Dostep_dla_niepelnosprawnych,
+						@Uzytkownik = @Uzytkownik,
+						@Kolejnosc = @Kolejnosc,
+                        @IdRozkladSali = @IdRozkladSali,
+						@LiczbaKomputerow = @LiczbaKomputerow,
+						@IdKomputer = @IdKomputer,
+                        @Klimatyzacja = @Klimatyzacja,
+                        @IdSala = @IdSala";
                     connection.Execute(updateClassroom,
                         new {
                             c.Nazwa_sali,
@@ -528,22 +543,28 @@ namespace ClassroomManagement.Models
                         // update
 
                         string updateEducationalClassroom =
-                            @"Update dbo.Sala_dydaktyczna set 
-                            Liczba_gniazd_sieciowych = @Liczba_gniazd_sieciowych,
-                            TV = @TV,
-                            Projektor = @Projektor,
-                            Liczba_miejsc_dydaktycznych = @Liczba_miejsc_dydaktycznych,
-                            Where IdSala = @IdSala;";
+                            @"EXEC dbo.zss_Sala_dydaktyczna_upd 
+                            @Liczba_gniazd_sieciowych = @Liczba_gniazd_sieciowych,
+                            @TV = @TV,
+                            @Projektor = @Projektor,
+                            @Liczba_miejsc_dydaktycznych = @Liczba_miejsc_dydaktycznych,
+                            @IdSala = @IdSala;";
+
+                        connection.Execute(updateEducationalClassroom, new
+                        {
+                            c.Liczba_gniazd_sieciowych,
+                            c.TV,
+                            c.Projektor,
+                            c.Liczba_miejsc_dydaktycznych,
+                            c.IdSala
+                        });
                     }
                     else
                     {
                         string deleteEducationalClassroom =
-                            @"IF EXISTS(
-                            Select IdSala, Liczba_gniazd_sieciowych, TV, Projektor, Liczba_miejsc_dydaktycznych
-                            FROM dbo.Sala_dyaktyczna
-                            WHERE IdSala = @IdSala)
-                            DELETE FROM dbo.Sala_dydaktyczna
-                            WHERE IdSala = @IdSala";
+                            @"EXEC dbo.zss_Sala_dydaktyczna_del @IdSala = @IdSala;";
+
+                        connection.Execute(deleteEducationalClassroom, new { c.IdSala });
                     }
                 }
                 catch (InvalidOperationException e)
@@ -640,6 +661,15 @@ namespace ClassroomManagement.Models
             }
         }
 
+        public void AddComputerToClassroom(int idClassroom, int idComputer)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                string addComputerToClassroom = "Update dbo.Sala Set IdKomputer = @IdKomputer Where IdSala = @IdSala;";
+                connection.Execute(addComputerToClassroom, new { IdKomputer =idComputer, IdSala = idClassroom });
+            }
+        }
+
         public void AddComputer(ComputerDetails c, int? idSala)
         {
             using (var connection = new SqlConnection(connectionString))
@@ -682,7 +712,10 @@ namespace ClassroomManagement.Models
                     }
 
                     // adding a computer to a classroom (updating a classroom)
-                    connection.Execute(addComputerToClassroom, new { IdKomputer = idKomputer, IdSala = idSala});
+                    if (idSala != 0)
+                    {
+                        connection.Execute(addComputerToClassroom, new { IdKomputer = idKomputer, IdSala = idSala });
+                    }
                 }
                 catch (InvalidOperationException e)
                 {
@@ -691,6 +724,58 @@ namespace ClassroomManagement.Models
                 }
             }
         }
+
+        //public void AddComputer(ComputerDetails c, int? idSala)
+        //{
+        //    using (var connection = new SqlConnection(connectionString))
+        //    {
+        //        try
+        //        {
+        //            //Queries
+        //            string addComputer = @"EXEC dbo.zss_AddKomputer_ins @IdMonitor = @IdMonitor, @Procesor = @Procesor,
+        //                                @RAM = @RAM, @KartaGraficzna = @KartaGraficzna;";
+
+        //            // depends whether the whole process is just for creating a new computer or for creating a new computer + assigning
+        //            // to a sala which is being focused
+        //            string addComputerToClassroom = "Update dbo.Sala Set IdKomputer = @IdKomputer Where IdSala = @IdSala;";
+        //            // TODO: procedures
+        //            string addVirtualMachinesForComputer = @"INSERT INTO dbo.MaszynaWirtualnaKomputer
+        //            (IdKomputer, IdMaszynaWirtualna) 
+        //            VALUES (@IdKomputer, @IdMaszynaWirtualna);";
+
+        //            string addSoftwareForComputer = @"INSERT INTO dbo.OprogramowanieKomputerow
+        //            (IdKomputer, IdOprogramowanie) 
+        //            VALUES (@IdKomputer, @IdOprogramowanie);";
+
+        //            int idKomputer = connection.Query<Computer>(addComputer,
+        //                new
+        //                {
+        //                    c.IdMonitor,
+        //                    c.Procesor,
+        //                    c.RAM,
+        //                    c.KartaGraficzna
+        //                }).First().IdKomputer;
+
+        //            foreach (var item in c.VirtualMachines)
+        //            {
+        //                connection.Execute(addVirtualMachinesForComputer, new { IdKomputer = idKomputer, item.IdMaszynaWirtualna });
+        //            }
+
+        //            foreach (var item in c.Software)
+        //            {
+        //                connection.Execute(addSoftwareForComputer, new { IdKomputer = idKomputer, item.IdOprogramowanie });
+        //            }
+
+        //            // adding a computer to a classroom (updating a classroom)
+        //            connection.Execute(addComputerToClassroom, new { IdKomputer = idKomputer, IdSala = idSala});
+        //        }
+        //        catch (InvalidOperationException e)
+        //        {
+        //            Console.WriteLine(e.Message);
+        //            connection.Close();
+        //        }
+        //    }
+        //}
         // TODO: finish Update
         public void EditComputer(ComputerDetails c)
         {

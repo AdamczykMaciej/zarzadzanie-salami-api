@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web.Http;
-using ClassroomManagement.Models;
 using ClassroomManagementApi.Models;
 using ClassroomManagementApi.Models.DAL;
 using ClassroomManagementApi.Models.DTO.Basic;
