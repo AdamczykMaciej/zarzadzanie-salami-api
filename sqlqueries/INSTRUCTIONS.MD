@@ -12,3 +12,4 @@ InsertMissingEntities.sql
 4.) To set a constraint to a default value, not null
 notNullDefaultConstraint.sql
 5.) Update rows with default values e.g. 0
+6.) There is also a database diagram created in dziekanat_hash which we can copy. It is called dbo.ZarzadzanieSalami
