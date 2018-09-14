@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Web.Http;
 using ClassroomManagement.Models;
 using ClassroomManagementApi.Models;
 using ClassroomManagementApi.Models.DAL;
@@ -68,6 +69,17 @@ namespace ClassroomManagementApi.Controllers
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
             return Ok(json);
         }
+
+        [HttpGet("virtualMachines/{id}")]
+        public IActionResult GetVirtualMachine(int id)
+        {
+           VirtualMachine result = _provider.GetVirtualMachine(id);
+            if (result == null)
+                return NotFound("Not found. There isn't any record with such an id: " + id);
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented);
+            return Ok(json);
+        }
+
         //TODO: CHECK
         [HttpGet("virtualMachineComputers")]
         public IActionResult GetVirtualMachineComputers()
@@ -88,6 +100,17 @@ namespace ClassroomManagementApi.Controllers
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
             return Ok(json);
         }
+
+        [HttpGet("monitors/{id}")]
+        public IActionResult GetMonitor(int id)
+        {
+            Monitor result = _provider.GetMonitor(id);
+            if (result == null)
+                return NotFound("Not found. There isn't any record with such an id: " + id);
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented);
+            return Ok(json);
+        }
+    
         //CHECKED
         [HttpGet("software")]
         public IActionResult GetSoftware()

@@ -105,7 +105,7 @@ namespace ClassroomManagement.Models
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                const string query = @"SELECT * FROM Kampus;";
+                const string query = @"EXEC dbo.zss_KampusAll_sel;";
                 try
                 {
                     return connection.Query<Campus>(query);
@@ -141,7 +141,7 @@ namespace ClassroomManagement.Models
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                const string query = @"SELECT * FROM MaszynaWirtualna;";
+                const string query = @"EXEC dbo.zss_MaszynaWirtualnaAll_sel;";
                 try
                 {
                     return connection.Query<VirtualMachine>(query);
@@ -159,10 +159,10 @@ namespace ClassroomManagement.Models
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                const string query = @"SELECT * FROM MaszynaWirtualna WHERE IdMaszynaWirtualna = @IdMaszynaWirtualna;";
+                const string query = @"EXEC dbo.zss_MaszynaWirtualna_sel @IdMaszynaWirtualna = @IdMaszynaWirtualna;";
                 try
                 {
-                    return connection.Query<VirtualMachine>(query, new { IdVirtualMachine = id }).First();
+                    return connection.Query<VirtualMachine>(query, new { IdMaszynaWirtualna = id }).First();
                 }
                 catch (InvalidOperationException e)
                 {
@@ -177,7 +177,7 @@ namespace ClassroomManagement.Models
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                const string query = @"SELECT * FROM Monitor;";
+                const string query = @"EXEC dbo.zss_MonitorAll_Sel;";
                 try
                 {
                     return connection.Query<Monitor>(query);
@@ -195,7 +195,7 @@ namespace ClassroomManagement.Models
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                const string query = @"SELECT * FROM Monitor WHERE IdMonitor = @IdMonitor;";
+                const string query = @"EXEC zss_Monitor_sel @IdMonitor = @IdMonitor;";
                 try
                 {
                     return connection.Query<Monitor>(query, new { IdMonitor = id }).First();
@@ -249,7 +249,7 @@ namespace ClassroomManagement.Models
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                const string query = @"SELECT * FROM OprogramowanieKomputerow;";
+                const string query = @"EXEC zss_OprogramowanieKomputerowAll_sel;";
                 try
                 {
                     return connection.Query<ComputerSoftware>(query);
@@ -261,43 +261,7 @@ namespace ClassroomManagement.Models
                     return null;
                 }
             }
-        }
-
-        public IEnumerable<ComputerSoftware> GetSoftwareForComputer(int id)
-        {
-            using (var connection = new SqlConnection(connectionString))
-            {
-                const string query = @"SELECT * FROM OprogramowanieKomputerow WHERE IdKomputer = @IdKomputer;";
-                try
-                {
-                    return connection.Query<ComputerSoftware>(query);
-                }
-                catch (InvalidOperationException e)
-                {
-                    Console.WriteLine(e.Message);
-                    connection.Close();
-                    return null;
-                }
-            }
-        }
-
-        public IEnumerable<ComputerSoftware> GetComputersForSoftware(int id)
-        {
-            using (var connection = new SqlConnection(connectionString))
-            {
-                const string query = @"SELECT * FROM OprogramowanieKomputerow WHERE IdOprogramowanie = @IdOprogramowanie;";
-                try
-                {
-                    return connection.Query<ComputerSoftware>(query);
-                }
-                catch (InvalidOperationException e)
-                {
-                    Console.WriteLine(e.Message);
-                    connection.Close();
-                    return null;
-                }
-            }
-        }
+        } 
 
         public IEnumerable<Computer> GetComputers()
         {
@@ -339,7 +303,7 @@ namespace ClassroomManagement.Models
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                const string query = @"SELECT * FROM RozkladSali;";
+                const string query = @"EXEC zss_RozkladSaliAll_sel;";
                 try
                 {
                     return connection.Query<ClassroomStructure>(query);
@@ -357,7 +321,7 @@ namespace ClassroomManagement.Models
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                const string query = @"SELECT * FROM RozkladSali WHERE IdRozkladSali = @IdRozkladSali;";
+                const string query = @"EXEC zss_RozkladSali_sel @IdRozkladSali = @IdRozkladSali;";
                 try
                 {
                     return connection.Query<ClassroomStructure>(query, new { IdRozkladSali = id }).First();
@@ -630,7 +594,7 @@ namespace ClassroomManagement.Models
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                const string query = @"Select * From MaszynaWirtualnaKomputer;";
+                const string query = @"EXEC zss_MaszynaWirtualnaKomputerAll_sel;";
                 try
                 {
                     return connection.Query<VirtualMachineComputer>(query);
