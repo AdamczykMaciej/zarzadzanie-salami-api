@@ -8,36 +8,37 @@
     <h2>ClassroomManagementApi</h2>
     </br>
     <h3>Requests Routes:</h3>
-    <ul>
+    <ul style="width: 55em">
         <!-- some may not work, because I had to add maszynawirtualnaKomputer table into the db -->
-        <li><a href="api/buildings">api/buildings</a> ------- WORKING</li>
-        <li>api/buildings/{id} ------- WORKING</li>
-        <li><a href="api/classroomFunctions">api/classroomFunctions</a> ------- WORKING</li>
-        <li>apiclassroomFunctions/{id} ------- WORKING</li>
-        <li><a href="api/campus">api/campus</a> ------- WORKING</li>
-        <li>api/campus/{id} ------- WORKING</li>
-        <li><a href="api/classroomStructures">api/classroomStructures</a> ------- WORKING</li>
-        <li>api/classroomStructures/{id} ------- WORKING</li>
-        <li><a href="api/classrooms">api/classrooms</a> ------- WORKING - gets all classrooms together with educationalClassrooms parameters (for all classrooms)</li>
+        <li><a href="api/buildings">api/buildings</a></li>
+        <li>api/buildings/{id}</li>
+        <li><a href="api/classroomFunctions">api/classroomFunctions</a></li>
+        <li>apiclassroomFunctions/{id}</li>
+        <li><a href="api/campus">api/campus</a></li>
+        <li>api/campus/{id}</li>
+        <li><a href="api/classroomStructures">api/classroomStructures</a></li>
+        <li>api/classroomStructures/{id}</li>
+        <li><a href="api/classrooms">api/classrooms</a> - gets all classrooms together with educationalClassrooms parameters (for all classrooms)</li>
         <li>
             api/classrooms?Buildings=..&TV=..&Projector=..&AirConditioning=..&OnlyEducationalClassrooms=..&ClassroomFunctions=..&AccessForTheDisabled=..
-            &SizeMin=..&SizeMax=..&PlacesMin=..&PlacesMax=.. -------- WORKING - Parameters: Buildings, ClassroomFunctions can have multiple values
+            &SizeMin=..&SizeMax=..&PlacesMin=..&PlacesMax=.. - Parameters: Buildings, ClassroomFunctions can have multiple values
         </li>
-        <li>api/classrooms/{id} ------- WORKING</li>
-        <li>api/classrooms [POST] ------ WORKING</li>
-        <li><a href="api/educationalClassrooms">api/educationalClassroms</a> ------- WORKING</li>
-        <li>api/educationalClassroms/{id} ------- WORKING</li>
-        <li><a href="api/computers">api/computers</a> ------- WORKING</li>
-        <li>api/computers [POST] ------- WORKING</li>
-        <li>api/computers&idSala=... [POST] ------- WORKING (this one is for adding a computer + updating a classroom, so that we have the newly created computer assigned immediately to a particular classroom</li>
-        <li>api/computers [PUT] ------- WORKING</li>
-        <li>api/computers/{id} ------- WORKING</li>
-        <li><a href="api/virtualMachines">api/virtualMachines</a> ------- WORKING</li>
-        <li><a href="api/monitors">api/monitors</a> ------- WORKING</li>
-        <li><a href="api/software">api/software</a> ------- WORKING</li>
-        <li>api/software/{id} ------- WORKING</li>
-        <li><a href="api/computerSoftware">api/computerSoftware</a> ------- WORKING</li>
-        <li><a href="api/FLOORS">api/floors </a>------- WORKING - gives a list of all distinct floors</li>
+        <li>api/classrooms/{id}</li>
+        <li>api/classrooms [POST]</li>
+        <li>api/classrooms [PUT]</li>
+        <li><a href="api/educationalClassrooms">api/educationalClassroms</a></li>
+        <li>api/educationalClassroms/{id}</li>
+        <li><a href="api/computers">api/computers</a></li>
+        <li>api/computers [POST]</li>
+        <li>api/computers&idSala=... [POST] (this one is for adding a computer + updating a classroom, so that we have the newly created computer assigned immediately to the classroom)</li>
+        <li>api/computers [PUT]</li>
+        <li>api/computers/{id}</li>
+        <li><a href="api/virtualMachines">api/virtualMachines</a></li>
+        <li><a href="api/monitors">api/monitors</a></li>
+        <li><a href="api/software">api/software</a></li>
+        <li>api/software/{id}</li>
+        <li><a href="api/computerSoftware">api/computerSoftware</a></li>
+        <li><a href="api/FLOORS">api/floors </a> - gives a list of all distinct floors</li>
     </ul>
     <br />
     <br />
