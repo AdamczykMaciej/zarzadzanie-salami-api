@@ -27,7 +27,7 @@ namespace ClassroomManagementApi.Models
         public string Funkcja_sali { get; set; }
         [DataMember]
         public string Poziom { get; set; }
-        [DataMember(Name = "Dostep dla niepelnosprawnych")]
+        [DataMember(Name = "Dostęp dla niepełnosprawnych")]
         public bool Dostep_dla_niepelnosprawnych { get; set; }
         [DataMember]
         public string Uzytkownik { get; set; }

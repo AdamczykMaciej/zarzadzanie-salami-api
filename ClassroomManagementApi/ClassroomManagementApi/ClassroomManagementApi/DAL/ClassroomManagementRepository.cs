@@ -390,7 +390,7 @@ namespace ClassroomManagement.Models
                     // we return EducationalClassrooms because we want to get additional data for Classrooms which are EducationalClassrooms
                     return connection.Query<EducationalClassroom>(query, 
                         new {
-                        Buildings = buildings.AsTableValuedParameter("dbo.BudynekType"),
+                        Buildings = buildings.AsTableValuedParameter("dbo.BudynekTableType"),
                         f.AirConditioning,
                         f.TV,
                         f.Projector,
@@ -400,7 +400,7 @@ namespace ClassroomManagement.Models
                         f.PlacesMin,
                         f.PlacesMax,
                         f.AccessForTheDisabled,
-                        ClassroomFunctions = classroomFunctions.AsTableValuedParameter("dbo.FunkcjaSaliType")
+                        ClassroomFunctions = classroomFunctions.AsTableValuedParameter("dbo.FunkcjaSaliTableType")
                         });
                 }
                 catch (InvalidOperationException e)
@@ -798,7 +798,7 @@ namespace ClassroomManagement.Models
                     
                     string deleteVirtualMachineComputer = @"EXEC dbo.zss_DeleteMaszynaWirtualnaKomputer_del @IdKomputer = @IdKomputer, @MaszynyWirtualne = @MaszynyWirtualne;";
                     connection.Execute(deleteVirtualMachineComputer,
-                        new { c.IdKomputer, MaszynyWirtualne = virtualMachines.AsTableValuedParameter("dbo.MaszynaWirtualnaType")});
+                        new { c.IdKomputer, MaszynyWirtualne = virtualMachines.AsTableValuedParameter("dbo.MaszynaWirtualnaTableType")});
 
                     // THIRD: we delete all software that wasn't chosen during the edit of the computer
                     // we create a temp table to use it later as a parameter for our dbo.zss_DeleteOprogramowanieKomputerow_del stored procedure
@@ -813,7 +813,7 @@ namespace ClassroomManagement.Models
                     }
 
                     string deleteComputerSoftware = @"EXEC dbo.zss_DeleteOprogramowanieKomputerow_del @IdKomputer = @IdKomputer, @Oprogramowanie = @Oprogramowanie";
-                    connection.Execute(deleteComputerSoftware, new { c.IdKomputer, Oprogramowanie = software.AsTableValuedParameter("dbo.OprogramowanieType")});
+                    connection.Execute(deleteComputerSoftware, new { c.IdKomputer, Oprogramowanie = software.AsTableValuedParameter("dbo.OprogramowanieTableType")});
 
                     // FOURTH: We add missing virtual machines
                     string addVirtualMachineComputers = @"EXEC dbo.zss_MaszynaWirtualnaKomputer_ins
