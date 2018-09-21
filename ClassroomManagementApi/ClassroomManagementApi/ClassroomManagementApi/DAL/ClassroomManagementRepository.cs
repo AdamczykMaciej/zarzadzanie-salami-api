@@ -361,27 +361,34 @@ namespace ClassroomManagement.Models
                 string query = @"EXEC dbo.zss_FilterSala_sel @Budynki = @Buildings, @Klimatyzacja = @AirConditioning,
                 @TV = @TV, @Projektor = @Projector, @TylkoSalaDydaktyczna = @OnlyEducationalClassrooms,
                 @RozmiarSaliMin = @SizeMin, @RozmiarSaliMax = @SizeMax, @LiczbaMiejscMin = @PlacesMin, @LiczbaMiejscMax = @PlacesMax,
-                @Dostep_dla_niepelnosprawnych = @AccessForTheDisabled, @FunkcjeSali = @ClassroomFunctions;";
+                @Dostep_dla_niepelnosprawnych = @AccessForTheDisabled, @FunkcjeSali = @ClassroomFunctions,
+                @SearchCategory = @SearchCategory, @Search = @Search;";
 
                 DataTable buildings = new DataTable();
+                buildings.Columns.Add("IdBudynek", typeof(int));
                 buildings.Columns.Add("Nazwa", typeof(string));
 
                 if (f.Buildings != null)
                 {
+                    int id = 0;
                     foreach (var item in f.Buildings)
                     {
-                        buildings.Rows.Add(item);
+                        buildings.Rows.Add(id,item);
+                        id++;
                     }
                 }
 
                 DataTable classroomFunctions = new DataTable();
+                classroomFunctions.Columns.Add("IdFunkcjaSali", typeof(int));
                 classroomFunctions.Columns.Add("Nazwa", typeof(string));
 
                 if (f.ClassroomFunctions != null)
                 {
+                    int id = 0;
                     foreach (var item in f.ClassroomFunctions)
                     {
-                        classroomFunctions.Rows.Add(item);
+                        classroomFunctions.Rows.Add(id, item);
+                        id++;
                     }
                 }
 
@@ -400,7 +407,9 @@ namespace ClassroomManagement.Models
                         f.PlacesMin,
                         f.PlacesMax,
                         f.AccessForTheDisabled,
-                        ClassroomFunctions = classroomFunctions.AsTableValuedParameter("dbo.FunkcjaSaliTableType")
+                        ClassroomFunctions = classroomFunctions.AsTableValuedParameter("dbo.FunkcjaSaliTableType"),
+                        f.SearchCategory,
+                        f.Search
                         });
                 }
                 catch (InvalidOperationException e)
@@ -666,7 +675,7 @@ namespace ClassroomManagement.Models
             using (var connection = new SqlConnection(connectionString))
             {
                 string addComputerToClassroom = "EXEC dbo.zss_UpdateKomputerInSala_upd @IdKomputer = @IdKomputer, @IdSala = @IdSala;";
-                connection.Execute(addComputerToClassroom, new { IdKomputer =idComputer, IdSala = idClassroom });
+                connection.Execute(addComputerToClassroom, new { IdKomputer = idComputer, IdSala = idClassroom });
             }
         }
 
@@ -788,7 +797,7 @@ namespace ClassroomManagement.Models
                     // SECOND: we delete all virtual machines that weren't chosen during the edit of the computer
                     // we create a temp table to use it later as a parameter for our dbo.zss_DeleteMaszynaWirtualnaKomputer_del stored procedure
                     DataTable virtualMachines = new DataTable();
-                    virtualMachines.Columns.Add("IdMaszynaWirtualna", typeof(int));
+                    virtualMachines.Columns.Add("IdMaszynaWirtualna", typeof(Int32));
                     virtualMachines.Columns.Add("Nazwa", typeof(string));
 
                     foreach (var item in c.VirtualMachines)
@@ -804,7 +813,7 @@ namespace ClassroomManagement.Models
                     // we create a temp table to use it later as a parameter for our dbo.zss_DeleteOprogramowanieKomputerow_del stored procedure
 
                     DataTable software = new DataTable();
-                    software.Columns.Add("IdOprogramowanie", typeof(int));
+                    software.Columns.Add("IdOprogramowanie", typeof(Int32));
                     software.Columns.Add("Nazwa", typeof(string));
 
                     foreach (var item in c.Software)
