@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using ClassroomManagementApi.Models.DTO.Basic;
 using System.Threading.Tasks;
+using Monitor = ClassroomManagementApi.Models.Monitor;
 
 namespace ClassroomManagement.Models
 {
@@ -35,330 +36,230 @@ namespace ClassroomManagement.Models
             this.connectionString = connectionString;
         }
 
-        public async Task<IEnumerable<Building>> GetBuildings()
+        public async Task<IEnumerable<Building>> GetBuildingsAsync()
         {
-            IEnumerable<Building> buildings;
+            IEnumerable<Building> result;
             using (var connection = new SqlConnection(connectionString))
             {
                 await connection.OpenAsync();
                 const string query = @"EXEC dbo.zss_BudynekAll_sel;";
-                buildings = await connection.QueryAsync<Building>(query);
+                result = await connection.QueryAsync<Building>(query);
             }
-            return buildings;
+            return result;
         }
 
-        public Building GetBuilding(int id)
+        public async Task<Building> GetBuildingAsync(int id)
         {
+            Building result;
             using (var connection = new SqlConnection(connectionString))
             {
+                await connection.OpenAsync();
                 const string query = @"EXEC dbo.zss_Budynek_sel @IdBudynek = @IdBudynek;";
-                try
-                {
-                    return connection.Query<Building>(query, new { IdBudynek = id }).First();
-                }
-                catch (InvalidOperationException e)
-                {
-                    Console.WriteLine(e.Message);
-                    connection.Close();
-                    return null;
-                }
+                result = await connection.QuerySingleOrDefaultAsync<Building>(query, new { IdBudynek = id });
             }
+            return result;
         }
 
-        public IEnumerable<ClassroomFunction> GetClassroomFunctions()
+        public async Task<IEnumerable<ClassroomFunction>> GetClassroomFunctionsAsync()
         {
+            IEnumerable<ClassroomFunction> result;
             using (var connection = new SqlConnection(connectionString))
             {
+                await connection.OpenAsync();
                 const string query = @"EXEC dbo.zss_FunkcjaSaliAll_sel;";
-                try
-                {
-                    return connection.Query<ClassroomFunction>(query);
-                }
-                catch (InvalidOperationException e)
-                {
-                    Console.WriteLine(e.Message);
-                    connection.Close();
-                    return null;
-                }
+                result = await connection.QueryAsync<ClassroomFunction>(query);
             }
+            return result;
         }
 
-        public ClassroomFunction GetClassroomFunction(int id)
+        public async Task<ClassroomFunction> GetClassroomFunctionAsync(int id)
         {
+            ClassroomFunction result;
             using (var connection = new SqlConnection(connectionString))
             {
-                const string query = @"EXEC dbo.zss_FunkcjaSali_sel @IdFunkcja_sali = @IdFunkcja_sali;";
-                try
-                {
-                    return connection.Query<ClassroomFunction>(query, new { IdFunkcja_sali = id }).First();
-                }
-                catch (InvalidOperationException e)
-                {
-                    Console.WriteLine(e.Message);
-                    connection.Close();
-                    return null;
-                }
+                await connection.OpenAsync();
+                const string query = @"EXEC dbo.zss_FunkcjaSali_sel @IdFunkcja_sali = @IdFunkcja_sali;"; 
+                // returns null if nothing was found
+                result = await connection.QuerySingleOrDefaultAsync<ClassroomFunction>(query, new { IdFunkcja_sali = id });
             }
+            return result;
         }
 
-        public IEnumerable<Campus> GetCampus()
+        public async Task<IEnumerable<Campus>> GetCampusAsync()
         {
+            IEnumerable<Campus> result;
             using (var connection = new SqlConnection(connectionString))
             {
+                await connection.OpenAsync();
                 const string query = @"EXEC dbo.zss_KampusAll_sel;";
-                try
-                {
-                    return connection.Query<Campus>(query);
-                }
-                catch (InvalidOperationException e)
-                {
-                    Console.WriteLine(e.Message);
-                    connection.Close();
-                    return null;
-                }
+                result = await connection.QueryAsync<Campus>(query);
             }
+            return result;
         }
 
-        public Campus GetCampus(int id)
+        public async Task<Campus> GetCampusAsync(int id)
         {
+            Campus result;
             using (var connection = new SqlConnection(connectionString))
             {
+                await connection.OpenAsync();
                 const string query = @"EXEC dbo.zss_Kampus_sel @IdKampus = @IdKampus;";
-                try
-                {
-                    return connection.Query<Campus>(query, new { IdKampus = id }).First();
-                }
-                catch (InvalidOperationException e)
-                {
-                    Console.WriteLine(e.Message);
-                    connection.Close();
-                    return null;
-                }
+                result = await connection.QuerySingleOrDefaultAsync<Campus>(query, new { IdKampus = id });
             }
+            return result;
         }
 
-        public IEnumerable<VirtualMachine> GetVirtualMachines()
+        public async Task<IEnumerable<VirtualMachine>> GetVirtualMachinesAsync()
         {
+            IEnumerable<VirtualMachine> result;
             using (var connection = new SqlConnection(connectionString))
             {
+                await connection.OpenAsync();
                 const string query = @"EXEC dbo.zss_MaszynaWirtualnaAll_sel;";
-                try
-                {
-                    return connection.Query<VirtualMachine>(query);
-                }
-                catch (InvalidOperationException e)
-                {
-                    Console.WriteLine(e.Message);
-                    connection.Close();
-                    return null;
-                }
+                result = await connection.QueryAsync<VirtualMachine>(query);
             }
+            return result;
         }
 
-        public VirtualMachine GetVirtualMachine(int id)
+        public async Task<VirtualMachine> GetVirtualMachineAsync(int id)
         {
+            VirtualMachine result;
             using (var connection = new SqlConnection(connectionString))
             {
+                await connection.OpenAsync();
                 const string query = @"EXEC dbo.zss_MaszynaWirtualna_sel @IdMaszynaWirtualna = @IdMaszynaWirtualna;";
-                try
-                {
-                    return connection.Query<VirtualMachine>(query, new { IdMaszynaWirtualna = id }).First();
-                }
-                catch (InvalidOperationException e)
-                {
-                    Console.WriteLine(e.Message);
-                    connection.Close();
-                    return null;
-                }
+                result = await connection.QuerySingleOrDefaultAsync<VirtualMachine>(query, new { IdMaszynaWirtualna = id });
             }
+            return result;
         }
 
-        public IEnumerable<Monitor> GetMonitors()
+        public async Task<IEnumerable<Monitor>> GetMonitorsAsync()
         {
+            IEnumerable<Monitor> result;
             using (var connection = new SqlConnection(connectionString))
             {
+                await connection.OpenAsync();
                 const string query = @"EXEC dbo.zss_MonitorAll_Sel;";
-                try
-                {
-                    return connection.Query<Monitor>(query);
-                }
-                catch (InvalidOperationException e)
-                {
-                    Console.WriteLine(e.Message);
-                    connection.Close();
-                    return null;
-                }
+                result = await connection.QueryAsync<Monitor>(query);
             }
+            return result;
         }
 
-        public Monitor GetMonitor(int id)
+        public async Task<Monitor> GetMonitorAsync(int id)
         {
+            Monitor result;
             using (var connection = new SqlConnection(connectionString))
             {
+                await connection.OpenAsync();
                 const string query = @"EXEC zss_Monitor_sel @IdMonitor = @IdMonitor;";
-                try
-                {
-                    return connection.Query<Monitor>(query, new { IdMonitor = id }).First();
-                }
-                catch (InvalidOperationException e)
-                {
-                    Console.WriteLine(e.Message);
-                    connection.Close();
-                    return null;
-                }
+                result = await connection.QuerySingleOrDefaultAsync<Monitor>(query, new { IdMonitor = id });
             }
+            return result;
         }
 
-        public IEnumerable<Software> GetSoftware()
+        public async Task<IEnumerable<Software>> GetSoftwareAsync()
         {
+            IEnumerable<Software> result;
             using (var connection = new SqlConnection(connectionString))
             {
+                await connection.OpenAsync();
                 const string query = @"EXEC dbo.zss_OprogramowanieAll_sel;";
-                try
-                {
-                    return connection.Query<Software>(query);
-                }
-                catch (InvalidOperationException e)
-                {
-                    Console.WriteLine(e.Message);
-                    connection.Close();
-                    return null;
-                }
+                result = await connection.QueryAsync<Software>(query);
             }
+            return result;
         }
 
-        public Software GetSoftware(int id)
+        public async Task<Software> GetSoftwareAsync(int id)
         {
+            Software result;
             using (var connection = new SqlConnection(connectionString))
             {
+                await connection.OpenAsync();
                 const string query = @"EXEC dbo.zss_Oprogramowanie_sel @IdOprogramowanie;";
-                try
-                {
-                    return connection.Query<Software>(query, new { IdOprogramowanie = id }).First();
-                }
-                catch (InvalidOperationException e)
-                {
-                    Console.WriteLine(e.Message);
-                    connection.Close();
-                    return null;
-                }
+                result = await connection.QuerySingleOrDefaultAsync<Software>(query, new { IdOprogramowanie = id });
             }
+            return result;
         }
 
-        public IEnumerable<ComputerSoftware> GetComputerSoftware()
+        public async Task<IEnumerable<ComputerSoftware>> GetComputerSoftwareAsync()
         {
+            IEnumerable<ComputerSoftware> result;
             using (var connection = new SqlConnection(connectionString))
             {
+                await connection.OpenAsync();
                 const string query = @"EXEC zss_OprogramowanieKomputerowAll_sel;";
-                try
-                {
-                    return connection.Query<ComputerSoftware>(query);
-                }
-                catch (InvalidOperationException e)
-                {
-                    Console.WriteLine(e.Message);
-                    connection.Close();
-                    return null;
-                }
+                result = await connection.QueryAsync<ComputerSoftware>(query);
             }
+            return result;
         } 
 
-        public IEnumerable<Computer> GetComputers()
+        public async Task<IEnumerable<Computer>> GetComputersAsync()
         {
+            IEnumerable<Computer> result;
             using (var connection = new SqlConnection(connectionString))
             {
+                await connection.OpenAsync();
                 const string query = @"EXEC dbo.zss_KomputerAll_sel;";
-                try
-                {
-                    return connection.Query<Computer>(query);
-                }
-                catch (InvalidOperationException e)
-                {
-                    Console.WriteLine(e.Message);
-                    connection.Close();
-                    return null;
-                }
+                result = await connection.QueryAsync<Computer>(query);
             }
+            return result;
         }
 
-        public Computer GetComputer(int id)
+        public async Task<Computer> GetComputerAsync(int id)
         {
+            Computer result;
             using (var connection = new SqlConnection(connectionString))
             {
+                await connection.OpenAsync();
                 const string query = @"EXEC dbo.zss_Komputer_sel @IdKomputer;";
-                try
-                {
-                    return connection.Query<Computer>(query, new { IdKomputer = id }).First();
-                }
-                catch (InvalidOperationException e)
-                {
-                    Console.WriteLine(e.Message);
-                    connection.Close();
-                    return null;
-                }
+                result = await connection.QuerySingleOrDefaultAsync<Computer>(query, new { IdKomputer = id });
             }
+            return result;
         }
 
-        public IEnumerable<ClassroomStructure> GetClassroomStructures()
+        public async Task<IEnumerable<ClassroomStructure>> GetClassroomStructuresAsync()
         {
+            IEnumerable<ClassroomStructure> result;
             using (var connection = new SqlConnection(connectionString))
             {
+                await connection.OpenAsync();
                 const string query = @"EXEC zss_RozkladSaliAll_sel;";
-                try
-                {
-                    return connection.Query<ClassroomStructure>(query);
-                }
-                catch (InvalidOperationException e)
-                {
-                    Console.WriteLine(e.Message);
-                    connection.Close();
-                    return null;
-                }
+                result = await connection.QueryAsync<ClassroomStructure>(query);
             }
+            return result;
         }
 
-        public ClassroomStructure GetClassroomStructure(int id)
+        public async Task<ClassroomStructure> GetClassroomStructureAsync(int id)
         {
+            ClassroomStructure result;
             using (var connection = new SqlConnection(connectionString))
             {
+                await connection.OpenAsync();
                 const string query = @"EXEC zss_RozkladSali_sel @IdRozkladSali = @IdRozkladSali;";
-                try
-                {
-                    return connection.Query<ClassroomStructure>(query, new { IdRozkladSali = id }).First();
-                }
-                catch (InvalidOperationException e)
-                {
-                    Console.WriteLine(e.Message);
-                    connection.Close();
-                    return null;
-                }
+                result = await connection.QuerySingleOrDefaultAsync<ClassroomStructure>(query, new { IdRozkladSali = id });
             }
+            return result;
         }
 
-        public IEnumerable<Classroom> GetClassrooms()
+        public async Task<IEnumerable<Classroom>> GetClassroomsAsync()
         {
+            IEnumerable<Classroom> result;
             using (var connection = new SqlConnection(connectionString))
             {
+                await connection.OpenAsync();
                 const string query = @"EXEC dbo.zss_SalaAll_sel;";
-                try
-                {
-                    return connection.Query<Classroom>(query);
-                }
-                // if the result is null then it throws InvalidOperationException
-                catch (InvalidOperationException e)
-                {
-                    Console.WriteLine(e.Message);
-                    connection.Close();
-                    return null;
-                }
+                result = await connection.QueryAsync<Classroom>(query);
             }
+            return result;
         }
 
-        public IEnumerable<Classroom> FilterClassrooms(FilteringObject f)
+        public async Task<IEnumerable<Classroom>> FilterClassroomsAsync(FilteringObject f)
         {
+            IEnumerable<Classroom> result;
             using (var connection = new SqlConnection(connectionString))
             {
-                string query = @"EXEC dbo.zss_FilterSala_sel @Budynki = @Buildings, @Klimatyzacja = @AirConditioning,
+                await connection.OpenAsync();
+                const string query = @"EXEC dbo.zss_FilterSala_sel @Budynki = @Buildings, @Klimatyzacja = @AirConditioning,
                 @TV = @TV, @Projektor = @Projector, @TylkoSalaDydaktyczna = @OnlyEducationalClassrooms,
                 @RozmiarSaliMin = @SizeMin, @RozmiarSaliMax = @SizeMax, @LiczbaMiejscMin = @PlacesMin, @LiczbaMiejscMax = @PlacesMax,
                 @Dostep_dla_niepelnosprawnych = @AccessForTheDisabled, @FunkcjeSali = @ClassroomFunctions,
@@ -392,11 +293,10 @@ namespace ClassroomManagement.Models
                     }
                 }
 
-                try
-                {
-                    // we return EducationalClassrooms because we want to get additional data for Classrooms which are EducationalClassrooms
-                    return connection.Query<EducationalClassroom>(query, 
-                        new {
+                // we return EducationalClassrooms because we want to get additional data for Classrooms which are EducationalClassrooms
+                result = await connection.QueryAsync<EducationalClassroom>(query,
+                    new
+                    {
                         Buildings = buildings.AsTableValuedParameter("dbo.BudynekTableType"),
                         f.AirConditioning,
                         f.TV,
@@ -410,34 +310,21 @@ namespace ClassroomManagement.Models
                         ClassroomFunctions = classroomFunctions.AsTableValuedParameter("dbo.FunkcjaSaliTableType"),
                         f.SearchCategory,
                         f.Search
-                        });
-                }
-                catch (InvalidOperationException e)
-                {
-                    Console.WriteLine(e.Message);
-                    connection.Close();
-                    return null;
-                }
+                    });
             }
+            return result;
         }
 
-        public Classroom GetClassroom(int id)
+        public async Task<Classroom> GetClassroomAsync(int id)
         {
+            Classroom result;
             using (var connection = new SqlConnection(connectionString))
             {
+                await connection.OpenAsync();
                 const string query = @"EXEC dbo.zss_Sala_sel @IdSala = @IdSala;";
-
-                try
-                {
-                    return connection.Query<Classroom>(query, new { IdSala = id }).First();
-                }
-                catch (InvalidOperationException e)
-                {
-                    Console.WriteLine(e.Message);
-                    connection.Close();
-                    return null;
-                }
+                result = await connection.QuerySingleOrDefaultAsync<Classroom>(query, new { IdSala = id });
             }
+            return result;
         }
 
         public void AddClassroom(EducationalClassroom c)
@@ -584,89 +471,64 @@ namespace ClassroomManagement.Models
             }
         }
 
-        public IEnumerable<EducationalClassroom> GetEducationalClassrooms()
+        public async Task<IEnumerable<EducationalClassroom>> GetEducationalClassroomsAsync()
         {
+            IEnumerable<EducationalClassroom> result;
             using (var connection = new SqlConnection(connectionString))
             {
+                await connection.OpenAsync();
                 const string query = @"EXEC dbo.zss_SalaDydaktycznaAll_sel;";
-                try
-                {
-                    return connection.Query<EducationalClassroom>(query);
-                }
-                catch (InvalidOperationException e)
-                {
-                    Console.WriteLine(e.Message);
-                    connection.Close();
-                    return null;
-                }
+                result = await connection.QueryAsync<EducationalClassroom>(query);
             }
+            return result;
         }
 
-        public EducationalClassroom GetEducationalClassroom(int id)
+        public async Task<EducationalClassroom> GetEducationalClassroomAsync(int id)
         {
+            EducationalClassroom result;
             using (var connection = new SqlConnection(connectionString))
             {
+                await connection.OpenAsync();
                 const string query = @"EXEC dbo.zss_SalaDydaktyczna_sel @IdSala = @IdSala;";
-                try
-                {
-                    return connection.Query<EducationalClassroom>(query, new { IdSala = id }).First();
-                }
-                catch (InvalidOperationException e)
-                {
-                    Console.WriteLine(e.Message);
-                    connection.Close();
-                    return null;
-                }
+                result = await connection.QuerySingleOrDefaultAsync<EducationalClassroom>(query, new { IdSala = id });
             }
+            return result;
         }
         //TODO: create procedures instead of select statements (no *)
-        public IEnumerable<VirtualMachineComputer> GetVirtualMachineComputers()
+        public async Task<IEnumerable<VirtualMachineComputer>> GetVirtualMachineComputersAsync()
         {
+            IEnumerable<VirtualMachineComputer> result; 
             using (var connection = new SqlConnection(connectionString))
             {
+                await connection.OpenAsync();
                 const string query = @"EXEC zss_MaszynaWirtualnaKomputerAll_sel;";
-                try
-                {
-                    return connection.Query<VirtualMachineComputer>(query);
-                }
-                catch (InvalidOperationException e)
-                {
-                    Console.WriteLine(e.Message);
-                    connection.Close();
-                    return null;
-                }
+                result = await connection.QueryAsync<VirtualMachineComputer>(query);
             }
+            return result;
         }
 
-        public ComputerDetails GetComputerDetails(int id)
+        public async Task<ComputerDetails> GetComputerDetailsAsync(int id)
         {
+            ComputerDetails result;
             using (var connection = new SqlConnection(connectionString))
             {
+                await connection.OpenAsync();
                 const string queryVirtualMachinesForComputer = @"EXEC dbo.zss_MaszynyWirtualneDlaKomputer_sel @IdKomputer = @IdKomputer;";
                 const string queryComputer = @"EXEC dbo.zss_Komputer_sel @IdKomputer = @IdKomputer;";
                 const string querySoftware = @"EXEC dbo.zss_OprogramowanieDlaKomputer_sel @IdKomputer = @IdKomputer;";
-                try
+                Computer c = connection.Query<Computer>(queryComputer, new { IdKomputer = id }).First();
+                ComputerDetails cd = new ComputerDetails
                 {
-                    Computer c = connection.Query<Computer>(queryComputer, new { IdKomputer = id }).First();
-                    ComputerDetails cd = new ComputerDetails
-                    {
-                        IdKomputer = c.IdKomputer,
-                        IdMonitor = c.IdMonitor,
-                        RozmiarMonitora = c.RozmiarMonitora,
-                        Procesor = c.Procesor,
-                        RAM = c.RAM,
-                        KartaGraficzna = c.KartaGraficzna,
-                        VirtualMachines = connection.Query<VirtualMachine>(queryVirtualMachinesForComputer, new { IdKomputer = id }),
-                        Software = connection.Query<Software>(querySoftware, new { IdKomputer = id })
-                    };
-                    return cd;
-                }
-                catch (InvalidOperationException e)
-                {
-                    Console.WriteLine(e.Message);
-                    connection.Close();
-                    return null;
-                }
+                    IdKomputer = c.IdKomputer,
+                    IdMonitor = c.IdMonitor,
+                    RozmiarMonitora = c.RozmiarMonitora,
+                    Procesor = c.Procesor,
+                    RAM = c.RAM,
+                    KartaGraficzna = c.KartaGraficzna,
+                    VirtualMachines = await connection.QueryAsync<VirtualMachine>(queryVirtualMachinesForComputer, new { IdKomputer = id }),
+                    Software = await connection.QueryAsync<Software>(querySoftware, new { IdKomputer = id })
+                };
+                return cd;
             }
         }
 
@@ -725,58 +587,6 @@ namespace ClassroomManagement.Models
             }
         }
 
-        //public void AddComputer(ComputerDetails c, int? idSala)
-        //{
-        //    using (var connection = new SqlConnection(connectionString))
-        //    {
-        //        try
-        //        {
-        //            //Queries
-        //            string addComputer = @"EXEC dbo.zss_AddKomputer_ins @IdMonitor = @IdMonitor, @Procesor = @Procesor,
-        //                                @RAM = @RAM, @KartaGraficzna = @KartaGraficzna;";
-
-        //            // depends whether the whole process is just for creating a new computer or for creating a new computer + assigning
-        //            // to a sala which is being focused
-        //            string addComputerToClassroom = "Update dbo.Sala Set IdKomputer = @IdKomputer Where IdSala = @IdSala;";
-        //            // TODO: procedures
-        //            string addVirtualMachinesForComputer = @"INSERT INTO dbo.MaszynaWirtualnaKomputer
-        //            (IdKomputer, IdMaszynaWirtualna) 
-        //            VALUES (@IdKomputer, @IdMaszynaWirtualna);";
-
-        //            string addSoftwareForComputer = @"INSERT INTO dbo.OprogramowanieKomputerow
-        //            (IdKomputer, IdOprogramowanie) 
-        //            VALUES (@IdKomputer, @IdOprogramowanie);";
-
-        //            int idKomputer = connection.Query<Computer>(addComputer,
-        //                new
-        //                {
-        //                    c.IdMonitor,
-        //                    c.Procesor,
-        //                    c.RAM,
-        //                    c.KartaGraficzna
-        //                }).First().IdKomputer;
-
-        //            foreach (var item in c.VirtualMachines)
-        //            {
-        //                connection.Execute(addVirtualMachinesForComputer, new { IdKomputer = idKomputer, item.IdMaszynaWirtualna });
-        //            }
-
-        //            foreach (var item in c.Software)
-        //            {
-        //                connection.Execute(addSoftwareForComputer, new { IdKomputer = idKomputer, item.IdOprogramowanie });
-        //            }
-
-        //            // adding a computer to a classroom (updating a classroom)
-        //            connection.Execute(addComputerToClassroom, new { IdKomputer = idKomputer, IdSala = idSala});
-        //        }
-        //        catch (InvalidOperationException e)
-        //        {
-        //            Console.WriteLine(e.Message);
-        //            connection.Close();
-        //        }
-        //    }
-        //}
-        // TODO: finish Update
         public void EditComputer(ComputerDetails c)
         {
 
@@ -852,23 +662,16 @@ namespace ClassroomManagement.Models
             }
         }
 
-        public IEnumerable<Floor> GetFloors()
+        public async Task<IEnumerable<Floor>> GetFloorsAsync()
         {
+            IEnumerable<Floor> result;
             using (var connection = new SqlConnection(connectionString))
             {
+                await connection.OpenAsync();
                 const string query = @"EXEC dbo.zss_Poziom_sel;;";
-                try
-                {
-                    return connection.Query<Floor>(query);
-                }
-                // if the result is null then it throws InvalidOperationException
-                catch (InvalidOperationException e)
-                {
-                    Console.WriteLine(e.Message);
-                    connection.Close();
-                    return null;
-                }
+                result = await connection.QueryAsync<Floor>(query);
             }
+            return result;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ClassroomManagementApi.Models;
 using ClassroomManagementApi.Models.DAL;
 using ClassroomManagementApi.Models.DTO.Basic;
@@ -22,19 +23,17 @@ namespace ClassroomManagementApi.Controllers
 
         //CHECKED
         [HttpGet("computers")]
-        public IActionResult GetComputers()
+        public async Task<IActionResult> GetComputersAsync()
         {
-           List<Computer> result = _provider.GetComputers().ToList();
-            if (result == null)
-                return NotFound("No records found");
+            var result = await _provider.GetComputersAsync();
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
             return Ok(json);
         }
         //CHECKED
         [HttpGet("computers/{id}", Name = "GetComputer")]
-        public IActionResult GetComputer(int id)
+        public async Task<IActionResult> GetComputerAsync(int id)
         {
-            Computer result = _provider.GetComputerDetails(id);
+            var result = await _provider.GetComputerDetailsAsync(id);
             if (result == null)
                 return NotFound("Not found. There isn't any record with such an id: " + id);
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
@@ -59,19 +58,17 @@ namespace ClassroomManagementApi.Controllers
 
         //CHECKED
         [HttpGet("virtualMachines")]
-        public IActionResult GetVirtualMachines()
+        public async Task<IActionResult> GetVirtualMachinesAsync()
         {
-            List<VirtualMachine> result = _provider.GetVirtualMachines().ToList();
-            if (result == null)
-                return NotFound("No records found");
+            var result = await _provider.GetVirtualMachinesAsync();
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
             return Ok(json);
         }
 
         [HttpGet("virtualMachines/{id}")]
-        public IActionResult GetVirtualMachine(int id)
+        public async Task<IActionResult> GetVirtualMachineAsync(int id)
         {
-           VirtualMachine result = _provider.GetVirtualMachine(id);
+           var result = await _provider.GetVirtualMachineAsync(id);
             if (result == null)
                 return NotFound("Not found. There isn't any record with such an id: " + id);
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
@@ -80,29 +77,25 @@ namespace ClassroomManagementApi.Controllers
 
         //TODO: CHECK
         [HttpGet("virtualMachineComputers")]
-        public IActionResult GetVirtualMachineComputers()
+        public async Task<IActionResult> GetVirtualMachineComputersAsync()
         {
-            List<VirtualMachineComputer> result = _provider.GetVirtualMachineComputers().ToList();
-            if (result == null)
-                return NotFound("No records found");
+            var result = await _provider.GetVirtualMachineComputersAsync();
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
             return Ok(json);
         }
         //CHECKED
         [HttpGet("monitors")]
-        public IActionResult GetMonitors()
+        public async Task<IActionResult> GetMonitorsAsync()
         {
-            List<Monitor> result = _provider.GetMonitors().ToList();
-            if (result == null)
-                return NotFound("No records found");
+            var result = await _provider.GetMonitorsAsync();
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
             return Ok(json);
         }
 
         [HttpGet("monitors/{id}")]
-        public IActionResult GetMonitor(int id)
+        public async Task<IActionResult> GetMonitorAsync(int id)
         {
-            Monitor result = _provider.GetMonitor(id);
+           var result = await _provider.GetMonitorAsync(id);
             if (result == null)
                 return NotFound("Not found. There isn't any record with such an id: " + id);
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
@@ -111,19 +104,17 @@ namespace ClassroomManagementApi.Controllers
     
         //CHECKED
         [HttpGet("software")]
-        public IActionResult GetSoftware()
+        public async Task<IActionResult> GetSoftwareAsync()
         {
-            List<Software> result = _provider.GetSoftware().ToList();
-            if (result == null)
-                return NotFound("No records found");
+            var result = await _provider.GetSoftwareAsync();
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
             return Ok(json);
         }
 
         [HttpGet("software/{id}")]
-        public IActionResult GetSoftware(int id)
+        public async Task<IActionResult> GetSoftwareAsync(int id)
         {
-            Software result = _provider.GetSoftware(id);
+            var result = await _provider.GetSoftwareAsync(id);
             if (result == null)
                 return NotFound("Not found. There isn't any record with such an id: " + id);
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
@@ -131,11 +122,9 @@ namespace ClassroomManagementApi.Controllers
         }
         //CHECKED
         [HttpGet("computerSoftware")]
-        public IActionResult GetComputerSoftware()
+        public async Task<IActionResult> GetComputerSoftwareAsync()
         {
-            List<ComputerSoftware> result = _provider.GetComputerSoftware().ToList();
-            if (result == null)
-                return NotFound("No records found");
+            var result = await _provider.GetComputerSoftwareAsync();
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
             return Ok(json);
         }

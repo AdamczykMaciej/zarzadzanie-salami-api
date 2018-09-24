@@ -9,35 +9,35 @@ namespace ClassroomManagementApi.Models.DAL
     public interface IClassroomManagementRepository
     {
         //TODO: Remove unnecessary methods
-        Task<IEnumerable<Building>> GetBuildings();
-        Building GetBuilding(int id);
-        IEnumerable<ClassroomFunction> GetClassroomFunctions();
-        ClassroomFunction GetClassroomFunction(int id);
-        IEnumerable<Campus> GetCampus();
-        Campus GetCampus(int id);
-        IEnumerable<VirtualMachine> GetVirtualMachines();
-        VirtualMachine GetVirtualMachine(int id);
-        IEnumerable<Monitor> GetMonitors();
-        Monitor GetMonitor(int id);
-        IEnumerable<Software> GetSoftware();
-        Software GetSoftware(int id);
-        IEnumerable<ComputerSoftware> GetComputerSoftware();
-        IEnumerable<Computer> GetComputers();
-        Computer GetComputer(int id);
+        Task<IEnumerable<Building>> GetBuildingsAsync();
+        Task<Building> GetBuildingAsync(int id);
+        Task<IEnumerable<ClassroomFunction>> GetClassroomFunctionsAsync();
+        Task<ClassroomFunction> GetClassroomFunctionAsync(int id);
+        Task<IEnumerable<Campus>> GetCampusAsync();
+        Task<Campus> GetCampusAsync(int id);
+        Task<IEnumerable<VirtualMachine>> GetVirtualMachinesAsync();
+        Task<VirtualMachine> GetVirtualMachineAsync(int id);
+        Task<IEnumerable<Monitor>> GetMonitorsAsync();
+        Task<Monitor> GetMonitorAsync(int id);
+        Task<IEnumerable<Software>> GetSoftwareAsync();
+        Task<Software> GetSoftwareAsync(int id);
+        Task<IEnumerable<ComputerSoftware>> GetComputerSoftwareAsync();
+        Task<IEnumerable<Computer>> GetComputersAsync();
+        Task<Computer> GetComputerAsync(int id);
         void AddComputer(ComputerDetails c, int? idSala);
         void EditComputer(ComputerDetails c);
-        IEnumerable<ClassroomStructure> GetClassroomStructures();
-        ClassroomStructure GetClassroomStructure(int id);
-        IEnumerable<Classroom> GetClassrooms();
-        IEnumerable<Classroom> FilterClassrooms(FilteringObject f);
-        Classroom GetClassroom(int id);
+        Task<IEnumerable<ClassroomStructure>> GetClassroomStructuresAsync();
+        Task<ClassroomStructure> GetClassroomStructureAsync(int id);
+        Task<IEnumerable<Classroom>> GetClassroomsAsync();
+        Task<IEnumerable<Classroom>> FilterClassroomsAsync(FilteringObject f);
+        Task<Classroom> GetClassroomAsync(int id);
         void AddClassroom(EducationalClassroom c);
         void EditClassroom(EducationalClassroom c);
-        IEnumerable<EducationalClassroom> GetEducationalClassrooms();
-        EducationalClassroom GetEducationalClassroom(int id);
-        IEnumerable<VirtualMachineComputer> GetVirtualMachineComputers();
-        ComputerDetails GetComputerDetails(int id);
-        IEnumerable<Floor> GetFloors();
+        Task<IEnumerable<EducationalClassroom>> GetEducationalClassroomsAsync();
+        Task<EducationalClassroom> GetEducationalClassroomAsync(int id);
+        Task<IEnumerable<VirtualMachineComputer>> GetVirtualMachineComputersAsync();
+        Task<ComputerDetails> GetComputerDetailsAsync(int id);
+        Task<IEnumerable<Floor>> GetFloorsAsync();
         void AddComputerToClassroom(int idClassroom, int idComputer);
     }
 }

@@ -26,17 +26,15 @@ namespace ClassroomManagementApi.Controllers
         [HttpGet("buildings")]
         public async Task<IActionResult> GetBuildings()
         {
-            var result = await _provider.GetBuildings();
-            if (result == null)
-                return NotFound("No records here");
+            var result = await _provider.GetBuildingsAsync();
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
             return Ok(json);
         }
         //CHECKED
         [HttpGet("buildings/{id}", Name ="GetBuilding")]
-        public IActionResult GetBuilding(int id)
+        public async Task<IActionResult> GetBuilding(int id)
         {
-            Building result = _provider.GetBuilding(id);
+            var result = await _provider.GetBuildingAsync(id);
             if (result == null)
                 return NotFound("Not found. There isn't any record with such an id: " + id);
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
@@ -44,19 +42,17 @@ namespace ClassroomManagementApi.Controllers
         }
         //CHECKED
         [HttpGet("classroomFunctions")]
-        public IActionResult GeClassroomFunctions()
+        public async Task<IActionResult> GeClassroomFunctions()
         {
-            List<ClassroomFunction> result = _provider.GetClassroomFunctions().ToList();
-            if (result == null)
-                return NotFound("No records here");
+            var result = await _provider.GetClassroomFunctionsAsync();
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
             return Ok(json);
         }
         //CHECKED
         [HttpGet("classroomFunctions/{id}")]
-        public IActionResult GetClassroomFunction(int id)
+        public async Task<IActionResult> GetClassroomFunction(int id)
         {
-            ClassroomFunction result = _provider.GetClassroomFunction(id);
+            var result = await _provider.GetClassroomFunctionAsync(id);
             if (result == null)
                 return NotFound("Not found. There isn't any record with such an id: " + id);
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
@@ -64,19 +60,17 @@ namespace ClassroomManagementApi.Controllers
         }
         //CHECKED
         [HttpGet("campus")]
-        public IActionResult GetCampus()
+        public async Task<IActionResult> GetCampusAsync()
         {
-            List<Campus> result = _provider.GetCampus().ToList();
-            if (result == null)
-                return NotFound("No records here");
+            var result = await _provider.GetCampusAsync();
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
             return Ok(json);
         }
         //CHECKED
         [HttpGet("campus/{id}")]
-        public IActionResult GetCampus(int id)
+        public async Task<IActionResult> GetCampusAsync(int id)
         {
-            Campus result = _provider.GetCampus(id);
+            var result = await  _provider.GetCampusAsync(id);
             if (result == null)
                 return NotFound("Not found. There isn't any record with such an id: " + id);
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
@@ -84,19 +78,17 @@ namespace ClassroomManagementApi.Controllers
         }
         //CHECKED
         [HttpGet("classroomStructures")]
-        public IActionResult GetClassroomStructures()
+        public async Task<IActionResult> GetClassroomStructuresAsync()
         {
-            List<ClassroomStructure> result = _provider.GetClassroomStructures().ToList();
-            if (result == null)
-                return NotFound("No records here");
+            var result = await _provider.GetClassroomStructuresAsync();
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
             return Ok(json);
         }
         //CHECKED
         [HttpGet("classroomStructures/{id}")]
-        public IActionResult GetClassroomStructure(int id)
+        public async Task<IActionResult> GetClassroomStructureAsync(int id)
         {
-            ClassroomStructure result = _provider.GetClassroomStructure(id);
+            var result = await _provider.GetClassroomStructureAsync(id);
             if (result == null)
                 return NotFound("Not found. There isn't any record with such an id: " + id);
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
@@ -104,19 +96,17 @@ namespace ClassroomManagementApi.Controllers
         }
         //CHECKED
         [HttpGet("classrooms", Name = "GetClassrooms")]
-        public IActionResult GetClassrooms([FromQuery] FilteringObject f)
+        public async Task<IActionResult> GetClassroomsAsync([FromQuery] FilteringObject f)
         {
-            List<Classroom> result = _provider.FilterClassrooms(f).ToList();
-            if (result == null)
-                return NotFound("No records here.");
+            var result = await _provider.FilterClassroomsAsync(f);
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
             return Ok(json);
         }
 
         [HttpGet("classrooms/{id}", Name = "GetClassroom")]
-        public IActionResult GetClassroom(int id)
+        public async Task<IActionResult> GetClassroomAsync(int id)
         {
-            Classroom result = _provider.GetClassroom(id);
+            var result = await _provider.GetClassroomAsync(id);
             if (result == null)
                 return NotFound("Not found. There isn't any record with such an id: " + id);
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
@@ -146,19 +136,17 @@ namespace ClassroomManagementApi.Controllers
         }
         //CHECKED
         [HttpGet("educationalClassrooms", Name = "GetEducationalClassrooms")]
-        public IActionResult GetEducationaClassrooms()
+        public async Task<IActionResult> GetEducationaClassroomsAsync()
         {
-            List<EducationalClassroom> result = _provider.GetEducationalClassrooms().ToList();
-            if (result == null)
-                return NotFound("No records here");
+            var result = await _provider.GetEducationalClassroomsAsync();
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
             return Ok(json);
         }
         //CHECKED
         [HttpGet("educationalClassrooms/{id}")]
-        public IActionResult GetEducationalClassroom(int id)
+        public async Task<IActionResult> GetEducationalClassroomAsync(int id)
         {
-            EducationalClassroom result = _provider.GetEducationalClassroom(id);
+            var result = await _provider.GetEducationalClassroomAsync(id);
             if (result == null)
                 return NotFound("Not found. There isn't any record with such an id: " + id);
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
@@ -166,11 +154,9 @@ namespace ClassroomManagementApi.Controllers
         }
 
         [HttpGet("floors")]
-        public IActionResult GetFloors()
+        public async Task<IActionResult> GetFloorsAsync()
         {
-            List<Floor> result = _provider.GetFloors().ToList();
-            if (result == null)
-                return NotFound("Not found.");
+            var result = await _provider.GetFloorsAsync();
             string json = JsonConvert.SerializeObject(result, Formatting.Indented);
             return Ok(json);
         }
