@@ -15,7 +15,6 @@ namespace ClassroomManagementApi
 {
     public class Program
     {
-        //private static IContainer Container { get; set; }
 
         public static void Main(string[] args)
         {

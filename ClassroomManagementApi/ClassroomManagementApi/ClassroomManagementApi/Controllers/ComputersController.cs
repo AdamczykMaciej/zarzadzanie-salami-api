@@ -9,7 +9,6 @@ using Newtonsoft.Json;
 
 namespace ClassroomManagementApi.Controllers
 {
-    // TODO: After holidays - Add missing methods + insert some dummy data, and procedure for classroomDetails
     [Route("api")]
     [ApiController]
     public class ComputersController : ControllerBase
@@ -75,7 +74,7 @@ namespace ClassroomManagementApi.Controllers
             return Ok(json);
         }
 
-        //TODO: CHECK
+        //CHECKED
         [HttpGet("virtualMachineComputers")]
         public async Task<IActionResult> GetVirtualMachineComputersAsync()
         {

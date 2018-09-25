@@ -30,12 +30,6 @@ namespace ClassroomManagement.Models
             this.connectionString = conString;
         }
 
-        // TODO: delete it: it is equivalent to the above
-        public ClassroomManagementRepository(string connectionString)
-        {
-            this.connectionString = connectionString;
-        }
-
         public async Task<IEnumerable<Building>> GetBuildingsAsync()
         {
             IEnumerable<Building> result;
@@ -494,7 +488,7 @@ namespace ClassroomManagement.Models
             }
             return result;
         }
-        //TODO: create procedures instead of select statements (no *)
+
         public async Task<IEnumerable<VirtualMachineComputer>> GetVirtualMachineComputersAsync()
         {
             IEnumerable<VirtualMachineComputer> result; 
@@ -547,11 +541,10 @@ namespace ClassroomManagement.Models
             {
                 try
                 {
-                    //Queries
+                    //Queries - procedures
                     string addComputer = @"EXEC dbo.zss_AddKomputer_ins @IdMonitor = @IdMonitor, @Procesor = @Procesor,
                                         @RAM = @RAM, @KartaGraficzna = @KartaGraficzna;";
 
-                    // TODO: procedures
                     string addVirtualMachinesForComputer = @"EXEC zss_MaszynaWirtualnaKomputer_ins
                                                         @IdKomputer = @IdKomputer,
                                                         @IdMaszynaWirtualna = @IdMaszynaWirtualna;";
