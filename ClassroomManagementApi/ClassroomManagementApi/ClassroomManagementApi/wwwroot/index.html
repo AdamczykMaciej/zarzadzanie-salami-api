@@ -18,7 +18,7 @@
         <h3>Classroom functions</h3>
 
         <li><a href="api/classroomFunctions">api/classroomFunctions</a></li>
-        <li>apiclassroomFunctions/{id}</li>
+        <li>api/classroomFunctions/{id}</li>
 
         <h3>Campus</h3>
 
@@ -32,14 +32,14 @@
 
         <h3>Classrooms</h3>
 
-        <li><a href="api/classrooms">api/classrooms</a>  <b>(gets all classrooms together with educationalClassrooms parameters (for all classrooms)</b></li>
+        <li><a href="api/classrooms">api/classrooms</a>  <b>(returns all classrooms together with educationalClassrooms parameters (for all classrooms))</b></li>
         <li>
             api/classrooms?SearchCategory=..&Search=..&Buildings=..&TV=..&Projector=..&AirConditioning=..&OnlyEducationalClassrooms=..&ClassroomFunctions=..&AccessForTheDisabled=..
             &SizeMin=..&SizeMax=..&PlacesMin=..&PlacesMax=.. <b>- Parameters: Buildings, ClassroomFunctions can have multiple values (FILTERING)</b>
         </li>
         <li>api/classrooms/{id} [PUT] computer id param in body of request <b>(for binding a classroom with a computer)</b></li>
-        <li>api/classrooms [POST] <b>(creating a classroom, together with virtual machines and software, don't have to specify an id of a computer)</b></li>
-        <li>api/classrooms [PUT] <b>(updating a classroom, if we want to update an educationalClassroom then we have to add a parameter CzyDydaktyczna=true)</b></li>
+        <li>api/classrooms [POST] <b>(creates a classroom, together with virtual machines and software, don't have to specify any id of a computer)</b></li>
+        <li>api/classrooms [PUT] <b>(updates a classroom, if we want to update an educationalClassroom then we have to add a parameter CzyDydaktyczna=true)</b></li>
 
         <h3>Educational Classrooms</h3>
 
@@ -49,11 +49,10 @@
         <h3>Computers</h3>
 
         <li><a href="api/computers">api/computers</a></li>
+        <li>api/computers/{id}</li>
         <li>api/computers [POST]</li>
         <li>api/computers&idSala=... [POST] <b>(this one is for adding a computer + if we want, updating a classroom, so that we have the newly created computer assigned immediately to the classroom)</b></li>
         <li>api/computers [PUT]</li>
-        <li>api/computers/{id} [PUT] <b>(for adding a computer to a classroom, we give in the body of request an id of a computer)</b></li>
-        <li>api/computers/{id}</li>
 
         <h3>Virtual Machines</h3>
 

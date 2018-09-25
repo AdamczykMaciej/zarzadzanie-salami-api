@@ -316,7 +316,7 @@ namespace ClassroomManagement.Models
             {
                 await connection.OpenAsync();
                 const string query = @"EXEC dbo.zss_Sala_sel @IdSala = @IdSala;";
-                result = await connection.QuerySingleOrDefaultAsync<Classroom>(query, new { IdSala = id });
+                result = await connection.QuerySingleOrDefaultAsync<EducationalClassroom>(query, new { IdSala = id });
             }
             return result;
         }
@@ -535,7 +535,7 @@ namespace ClassroomManagement.Models
             }
         }
 
-        public void AddComputer(ComputerDetails c, int? idSala)
+        public void AddComputer(ComputerDetails c)
         {
             using (var connection = new SqlConnection(connectionString))
             {

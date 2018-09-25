@@ -24,7 +24,7 @@ namespace ClassroomManagementApi.Models.DAL
         Task<IEnumerable<ComputerSoftware>> GetComputerSoftwareAsync();
         Task<IEnumerable<Computer>> GetComputersAsync();
         Task<Computer> GetComputerAsync(int id);
-        void AddComputer(ComputerDetails c, int? idSala);
+        void AddComputer(ComputerDetails c);
         void EditComputer(ComputerDetails c);
         Task<IEnumerable<ClassroomStructure>> GetClassroomStructuresAsync();
         Task<ClassroomStructure> GetClassroomStructureAsync(int id);

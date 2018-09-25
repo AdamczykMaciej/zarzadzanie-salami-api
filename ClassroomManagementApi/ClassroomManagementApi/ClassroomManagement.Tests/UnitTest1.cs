@@ -27,7 +27,7 @@ namespace ClassroomManagement.Tests
         public void Test1()
         {
             string connectionString = "Data Source=sql-ag1-listen.pjwstk.edu.pl;Initial Catalog=dziekanat_hash;Integrated Security=True";
-            ClassroomManagementRepository p = new ClassroomManagementRepository(connectionString);
+            ClassroomManagementRepository p = new ClassroomManagementRepository();
 
             //Building b = new Building
             //{

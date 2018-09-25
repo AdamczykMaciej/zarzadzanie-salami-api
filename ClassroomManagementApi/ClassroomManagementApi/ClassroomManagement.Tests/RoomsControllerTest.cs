@@ -7,6 +7,7 @@ using FluentAssertions;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -50,7 +51,7 @@ namespace ClassroomManagement.Tests
                 AirConditioning = true
             };
             Mock<IClassroomManagementRepository> mockRepository = new Mock<IClassroomManagementRepository>();
-            mockRepository.Setup(x => x.GetClassrooms()).Returns(listOfClassrooms);
+            mockRepository.Setup(x => x.GetClassroomsAsync()).Returns(listOfClassrooms.As<Task<IEnumerable<Classroom>>>());
             var roomsController = new RoomsController(mockRepository.Object);
             roomsController.Should().NotBeNull();
         }
