@@ -72,7 +72,7 @@ namespace ClassroomManagement.Models
             using (var connection = new SqlConnection(connectionString))
             {
                 await connection.OpenAsync();
-                const string query = @"EXEC dbo.zss_FunkcjaSali_sel @IdFunkcja_sali = @IdFunkcja_sali;"; 
+                const string query = @"EXEC dbo.zss_FunkcjaSali_sel @IdFunkcja_sali = @IdFunkcja_sali;";
                 // returns null if nothing was found
                 result = await connection.QuerySingleOrDefaultAsync<ClassroomFunction>(query, new { IdFunkcja_sali = id });
             }
@@ -185,7 +185,7 @@ namespace ClassroomManagement.Models
                 result = await connection.QueryAsync<ComputerSoftware>(query);
             }
             return result;
-        } 
+        }
 
         public async Task<IEnumerable<Computer>> GetComputersAsync()
         {
@@ -268,7 +268,7 @@ namespace ClassroomManagement.Models
                     int id = 0;
                     foreach (var item in f.Buildings)
                     {
-                        buildings.Rows.Add(id,item);
+                        buildings.Rows.Add(id, item);
                         id++;
                     }
                 }
@@ -331,7 +331,7 @@ namespace ClassroomManagement.Models
                 @Uzytkownik = @Uzytkownik, @Kolejnosc = @Kolejnosc,@IdRozkladSali = @IdRozkladSali,@LiczbaKomputerow = @LiczbaKomputerow,
                 @IdKomputer = @IdKomputer, @Klimatyzacja = @Klimatyzacja;";
 
-                const string addSalaDydaktyczna = 
+                const string addSalaDydaktyczna =
                     @"EXEC dbo.zss_Sala_dydaktyczna_ins 
                     @IdSala = @IdSala,
                     @Liczba_gniazd_sieciowych = @Liczba_gniazd_sieciowych,
@@ -360,7 +360,7 @@ namespace ClassroomManagement.Models
                             c.Klimatyzacja
                         }).First().IdSala;
 
-                    if(c.CzyDydaktyczna == true)
+                    if (c.CzyDydaktyczna == true)
                     {
                         connection.Execute(addSalaDydaktyczna,
                             new
@@ -408,7 +408,8 @@ namespace ClassroomManagement.Models
                         @Klimatyzacja = @Klimatyzacja,
                         @IdSala = @IdSala";
                     connection.Execute(updateClassroom,
-                        new {
+                        new
+                        {
                             c.Nazwa_sali,
                             c.Liczba_miejsc,
                             c.Pow_m2,
@@ -428,7 +429,7 @@ namespace ClassroomManagement.Models
                         });
 
                     // check if c.CzyDydaktyczna = true
-                    if(c.CzyDydaktyczna == true)
+                    if (c.CzyDydaktyczna == true)
                     {
                         // update
 
@@ -491,7 +492,7 @@ namespace ClassroomManagement.Models
 
         public async Task<IEnumerable<VirtualMachineComputer>> GetVirtualMachineComputersAsync()
         {
-            IEnumerable<VirtualMachineComputer> result; 
+            IEnumerable<VirtualMachineComputer> result;
             using (var connection = new SqlConnection(connectionString))
             {
                 await connection.OpenAsync();
@@ -605,12 +606,12 @@ namespace ClassroomManagement.Models
 
                     foreach (var item in c.VirtualMachines)
                     {
-                        virtualMachines.Rows.Add(item.IdMaszynaWirtualna,item.Nazwa);
+                        virtualMachines.Rows.Add(item.IdMaszynaWirtualna, item.Nazwa);
                     }
-                    
+
                     string deleteVirtualMachineComputer = @"EXEC dbo.zss_DeleteMaszynaWirtualnaKomputer_del @IdKomputer = @IdKomputer, @MaszynyWirtualne = @MaszynyWirtualne;";
                     connection.Execute(deleteVirtualMachineComputer,
-                        new { c.IdKomputer, MaszynyWirtualne = virtualMachines.AsTableValuedParameter("dbo.MaszynaWirtualnaTableType")});
+                        new { c.IdKomputer, MaszynyWirtualne = virtualMachines.AsTableValuedParameter("dbo.MaszynaWirtualnaTableType") });
 
                     // THIRD: we delete all software that wasn't chosen during the edit of the computer
                     // we create a temp table to use it later as a parameter for our dbo.zss_DeleteOprogramowanieKomputerow_del stored procedure
@@ -625,7 +626,7 @@ namespace ClassroomManagement.Models
                     }
 
                     string deleteComputerSoftware = @"EXEC dbo.zss_DeleteOprogramowanieKomputerow_del @IdKomputer = @IdKomputer, @Oprogramowanie = @Oprogramowanie";
-                    connection.Execute(deleteComputerSoftware, new { c.IdKomputer, Oprogramowanie = software.AsTableValuedParameter("dbo.OprogramowanieTableType")});
+                    connection.Execute(deleteComputerSoftware, new { c.IdKomputer, Oprogramowanie = software.AsTableValuedParameter("dbo.OprogramowanieTableType") });
 
                     // FOURTH: We add missing virtual machines
                     string addVirtualMachineComputers = @"EXEC dbo.zss_MaszynaWirtualnaKomputer_ins
