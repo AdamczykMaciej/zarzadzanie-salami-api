@@ -1,1 +1,1 @@
-INSERT INTO dbo.MaszynaWirtualna (Nazwa) VALUES ('Ubuntu 16.04');
+INSERT INTO dbo.Monitor (RozmiarMonitora) VALUES (20);

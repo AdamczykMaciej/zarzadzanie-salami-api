@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2018-07-31 11:27:06.711
+-- Last modification date: 2018-08-16 10:40:24.058
 
 -- tables
 -- Table: Budynek
@@ -41,7 +41,6 @@ CREATE TABLE Komputer (
     Procesor varchar(100)  NOT NULL,
     RAM varchar(100)  NOT NULL,
     KartaGraficzna varchar(100)  NOT NULL,
-    IdMaszynaWirtualna int  NULL,
     CONSTRAINT Komputer_pk PRIMARY KEY  (IdKomputer)
 );
 
@@ -50,6 +49,13 @@ CREATE TABLE MaszynaWirtualna (
     IdMaszynaWirtualna int  NOT NULL,
     Nazwa varchar(50)  NOT NULL,
     CONSTRAINT MaszynaWirtualna_pk PRIMARY KEY  (IdMaszynaWirtualna)
+);
+
+-- Table: MaszynaWirtualnaKomputer
+CREATE TABLE MaszynaWirtualnaKomputer (
+    IdMaszynaWirtualna int  NOT NULL,
+    IdKomputer int  NOT NULL,
+    CONSTRAINT MaszynaWirtualnaKomputer_pk PRIMARY KEY  (IdMaszynaWirtualna,IdKomputer)
 );
 
 -- Table: Monitor
@@ -68,9 +74,9 @@ CREATE TABLE Oprogramowanie (
 
 -- Table: OprogramowanieKomputerow
 CREATE TABLE OprogramowanieKomputerow (
-    IdKomputerow int  NOT NULL,
+    IdKomputer int  NOT NULL,
     IdOprogramowanie int  NOT NULL,
-    CONSTRAINT OprogramowanieKomputerow_pk PRIMARY KEY  (IdKomputerow,IdOprogramowanie)
+    CONSTRAINT OprogramowanieKomputerow_pk PRIMARY KEY  (IdKomputer,IdOprogramowanie)
 );
 
 -- Table: RozkladSali
@@ -129,11 +135,6 @@ ALTER TABLE dbo.Sala ADD CONSTRAINT FK_Sala_Funkcja_sali
     FOREIGN KEY (IdFunkcja_sali)
     REFERENCES dbo.Funkcja_sali (IdFunkcja_sali);
 
--- Reference: Komputer_MaszynaWirtualna (table: Komputer)
-ALTER TABLE Komputer ADD CONSTRAINT Komputer_MaszynaWirtualna
-    FOREIGN KEY (IdMaszynaWirtualna)
-    REFERENCES MaszynaWirtualna (IdMaszynaWirtualna);
-
 -- Reference: Komputer_Monitor (table: Komputer)
 ALTER TABLE Komputer ADD CONSTRAINT Komputer_Monitor
     FOREIGN KEY (IdMonitor)
@@ -141,8 +142,23 @@ ALTER TABLE Komputer ADD CONSTRAINT Komputer_Monitor
 
 -- Reference: Komputer_OprogramowanieKomputerow (table: OprogramowanieKomputerow)
 ALTER TABLE OprogramowanieKomputerow ADD CONSTRAINT Komputer_OprogramowanieKomputerow
-    FOREIGN KEY (IdKomputerow)
+    FOREIGN KEY (IdKomputer)
     REFERENCES Komputer (IdKomputer);
+
+-- Reference: MaszynaWirtualnaKomputer_Komputer (table: MaszynaWirtualnaKomputer)
+ALTER TABLE MaszynaWirtualnaKomputer ADD CONSTRAINT MaszynaWirtualnaKomputer_Komputer
+    FOREIGN KEY (IdKomputer)
+    REFERENCES Komputer (IdKomputer);
+
+-- Reference: MaszynaWirtualnaKomputer_MaszynaWirtualna (table: MaszynaWirtualnaKomputer)
+ALTER TABLE MaszynaWirtualnaKomputer ADD CONSTRAINT MaszynaWirtualnaKomputer_MaszynaWirtualna
+    FOREIGN KEY (IdMaszynaWirtualna)
+    REFERENCES MaszynaWirtualna (IdMaszynaWirtualna);
+
+-- Reference: Oprogramowanie_OprogramowanieKomputerow (table: OprogramowanieKomputerow)
+ALTER TABLE OprogramowanieKomputerow ADD CONSTRAINT Oprogramowanie_OprogramowanieKomputerow
+    FOREIGN KEY (IdOprogramowanie)
+    REFERENCES Oprogramowanie (IdOprogramowanie);
 
 -- Reference: Sala_Komputer (table: Sala)
 ALTER TABLE dbo.Sala ADD CONSTRAINT Sala_Komputer
@@ -159,11 +175,6 @@ ALTER TABLE dbo.Sala_dydaktyczna ADD CONSTRAINT Sala_dydaktyczna_Sala_FK
     FOREIGN KEY (IdSala)
     REFERENCES dbo.Sala (IdSala)
     ON DELETE  CASCADE;
-
--- Reference: SpecjalistyczneOprogramowanie_OprogramowanieKomputerow (table: OprogramowanieKomputerow)
-ALTER TABLE OprogramowanieKomputerow ADD CONSTRAINT SpecjalistyczneOprogramowanie_OprogramowanieKomputerow
-    FOREIGN KEY (IdOprogramowanie)
-    REFERENCES Oprogramowanie (IdOprogramowanie);
 
 -- End of file.
 

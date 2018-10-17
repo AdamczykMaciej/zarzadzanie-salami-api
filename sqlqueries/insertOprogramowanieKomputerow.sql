@@ -1,2 +1,2 @@
-INSERT INTO dbo.OprogramowanieKomputerow (IdKomputerow, IdOprogramowanie)
+INSERT INTO dbo.OprogramowanieKomputerow (IdKomputer, IdOprogramowanie)
  VALUES (1,1);
